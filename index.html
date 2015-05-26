@@ -3,27 +3,26 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
 	</head>
-	<body>
+	<body onload="startup()">
 
 		<h1>Goats Galore</h1>
 				
-		<p>Number of goats owned: <span id="cookies">0</span></p>
+		<p></p>
 
-		Items: <br/>
-		Goat Maker: <span id="cursors">0</span><br/>
-		<br/>
-		<br/>
-
-		<button type="button" onClick="cookieClick(1)">
-			Click me for a goat!
-			</button>
-		<br/>
-		<br/>
-
-		<button type="button" onCLick="buyCursor()">
-			Buy Goat Maker!<br/>
-			Cost: <span id="cursorCost">10</span>
-			</button>
+		<div id="info">
+			<div id="currencyText"> Money: <span id="currency">0</span><br/></div>
+			
+			Available Goat Space: <span id="goatSpace">0</span><br/>
+			
+			<div id="plotText">
+				Plots: <span id="plots">0</span><br/>
+			</div>
+		</div>
+		
+		<div id="purchase">
+			<div id="currency" class="purchaseButton" onClick="currencyClick(1)">Click for money!</div><br/>
+			<div id="land" class="purchaseButton" onclick="buyPlot();">Buy Plot - <span id="plotCost">25</span></div>
+		</div>
 			
 		<div id="footer">
 			<div id="saveButton" class="footerDiv" onclick="save();">Save</div>

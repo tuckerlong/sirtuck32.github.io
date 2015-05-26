@@ -7,6 +7,38 @@ h1 {
 	text-align: center;
 }
 
+#info {
+  background-color: gray;
+  position: fixed;
+  height: 50%;
+  width: 20%;
+  border: 1px solid black;
+  left: calc(1%);
+  top: calc(25%);
+}
+
+#purchase {
+  background-color: gray;
+  position: fixed;
+  height: 50%;
+  width: 50%;
+  border: 1px solid black;
+  left: calc(25%);
+  top: calc(25%);
+}
+
+.purchaseButton {
+  background-color: white;
+  border: 1px solid black;
+  width: 150px;
+  height: 18px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+}
+
 #footer {
   background-color: gray;
   position: fixed;
