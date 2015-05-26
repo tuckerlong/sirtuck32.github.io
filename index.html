@@ -10,18 +10,26 @@
 		<p></p>
 
 		<div id="info">
-			<div id="currencyText"> Money: <span id="currency">0</span><br/></div>
+			<div id="currencyText">Money: <span id="currency">0</span></div>
 			
-			Available Goat Space: <span id="goatSpace">0</span><br/>
-			
-			<div id="plotText">
-				Plots: <span id="plots">0</span><br/>
-			</div>
+			<div id="currencyVal">Per Second: <span id="currencyInc">0</span></div>
+			<br/>
+			Available Goat Space: <span id="goatSpace">0</span>
+			<br/>
+			<div id="plotText">Plots: <span id="plots">0</span></div>
+			<div id="goatText">Goats: <span id="goats">0</span></div>
 		</div>
 		
 		<div id="purchase">
-			<div id="currency" class="purchaseButton" onClick="currencyClick(1)">Click for money!</div><br/>
+			<div id="currency" class="purchaseButton" onClick="currencyClick(1)">Click for money!</div>
+			<br/>
 			<div id="land" class="purchaseButton" onclick="buyPlot();">Buy Plot - <span id="plotCost">25</span></div>
+			<br/>
+			<div id="goat" class="purchaseButton" onclick="buyGoat();">Buy Goat - <span id="goatCost">10</span></div>
+		</div>
+		
+		<div id="upgrades">
+			<div id="grass" class="purchaseButton" onclick="upgradeGrass();">Upgrade Grass - <span id="grassCost">100</span></div>
 		</div>
 			
 		<div id="footer">

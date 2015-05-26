@@ -39,6 +39,16 @@ h1 {
   cursor: pointer;
 }
 
+#upgrades {
+  background-color: gray;
+  position: fixed;
+  height: 50%;
+  width: 20%;
+  border: 1px solid black;
+  left: calc(79%);
+  top: calc(25%);
+}
+
 #footer {
   background-color: gray;
   position: fixed;
