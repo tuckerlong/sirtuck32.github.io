@@ -1,0 +1,36 @@
+body {
+	background-color: lightblue;
+}
+
+h1 {
+	color: navy;
+	text-align: center;
+}
+
+#footer {
+  background-color: gray;
+  position: fixed;
+  height: 30px;
+  width: 100%;
+  border: 1px solid black;
+  left: -1px;
+  top: calc(100% - 30px);
+}
+
+.footerDiv {
+  background-color: white;
+  border: 1px solid black;
+  width: 50px;
+  height: 18px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#deleteSaveButton {
+  width: 100px;
+  float: right;
+  margin-right: 5px;
+}

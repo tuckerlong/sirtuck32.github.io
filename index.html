@@ -5,35 +5,31 @@
 	</head>
 	<body>
 
-		<h1>My First Heading</h1>
-		<button type="button" onClick="save()">
-			Save.
-			</button>
-		<br/>
-		<br/>
-		
-		<button type="button" onClick="load()">
-			Load.
-			</button>
-		<br/>
-
-		<p>My First paragraph. Number of cookies <span id="cookies">0</span>.</p>
+		<h1>Goats Galore</h1>
+				
+		<p>Number of goats owned: <span id="cookies">0</span></p>
 
 		Items: <br/>
-		Cursors: <span id="cursors">0</span><br/>
+		Goat Maker: <span id="cursors">0</span><br/>
 		<br/>
 		<br/>
 
 		<button type="button" onClick="cookieClick(1)">
-			Click me!
+			Click me for a goat!
 			</button>
 		<br/>
 		<br/>
 
 		<button type="button" onCLick="buyCursor()">
-			Buy Cursor!<br/>
+			Buy Goat Maker!<br/>
 			Cost: <span id="cursorCost">10</span>
 			</button>
+			
+		<div id="footer">
+			<div id="saveButton" class="footerDiv" onclick="save();">Save</div>
+			<div id="loadButton" class="footerDiv" onclick="load();">Load</div>
+			<div id="deleteSaveButton" class="footerDiv" onclick="deleteSave();">Delete Save</div>
+		</div>
 
 		<script type="text/javascript" src="main.js"></script>
 	</body>

@@ -49,7 +49,7 @@ function load() {
 	document.getElementById("cursors").innerHTML = prettify(cursors);
 }
 
-function remove() {
+function deleteSave() {
 	localStorage.removeItem("save")
 }
 
