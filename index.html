@@ -12,8 +12,10 @@
 
 		<div id="info">
 			<div id="currencyText">Money: <span id="currency">0</span></div>
-			
 			<div id="currencyVal">Per Second: <span id="currencyInc">0</span></div>
+			<br/>
+			<div id="electricityText">Electricity: <span id="electricity">0</span></div>
+			<div id="electricityVal">Per Second: <span id="electricityInc">0</span></div>
 			<br/>
 			Available Goat Space: <span id="goatSpace">0</span>
 			<br/>
@@ -21,6 +23,8 @@
 			<div id="goatText">Goats: <span id="goats">0</span></div>
 			<div id="goatHeroText">Goat Heroes: <span id="goatHeroes">0</span></div>
 			<div id="sunGoatText">Sun Goats: <span id="sunGoats">0</span></div>
+			<div id="scienceGoatText">Science Goats: <span id="scienceGoats">0</span></div>
+			<div id="bionicGoatText">Bionic Goats: <span id="bionicGoats">0</span></div>
 		</div>
 		
 		<div id="quest">
@@ -36,6 +40,10 @@
 			<div id="goat" class="purchaseButton" onclick="buyGoat();">Buy Goat - <span id="goatCost">10</span> money</div>
 			<br/>
 			<div id="goatHero" class="purchaseButton" onclick="buyGoatHero();">Buy Goat Hero - <span id="goatHeroCost">20</span> goats</div>
+			<br/>
+			<div id="scienceGoat" class="purchaseButton" onclick="buyScienceGoat();">Buy Science Goat - <span id="scienceGoatCost">20</span> money</div>
+			<br/>
+			<div id="bionicGoat" class="purchaseButton" onclick="buyBionicGoat();">Buy Bionic Goat - <span id="bionicGoatCost">20</span> electricity</div>
 		</div>
 		
 		<div id="upgrades">
@@ -65,5 +73,6 @@
 		
 		<script type="text/javascript" src="main.js"></script>
 		<script type="text/javascript" src="gods.js"></script>
+		<script type="text/javascript" src="science.js"></script>
 	</body>
 </html>

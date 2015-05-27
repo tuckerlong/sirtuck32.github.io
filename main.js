@@ -47,6 +47,11 @@ function buyPlot() {
 		document.getElementById("goatHeroText").style.visibility = "visible";
 		
 		document.getElementById("grass").style.visibility = "visible";
+		
+		if(plots >= 2) {
+			document.getElementById("scienceGoat").style.visibility = "visible";
+			document.getElementById("scienceGoatText").style.visibility = "visible";
+		}
 	};
 	
 	var nextCost = Math.floor(25 * (plots + 1));
@@ -111,6 +116,25 @@ function updateCost() {
 	
 	nextCost = Math.floor(20 * (goatHeroes + 1));
 	document.getElementById("goatHeroCost").innerHTML = prettify(nextCost);
+	
+	// SCIENCE
+	nextCost = Math.floor(20 * (scienceGoats + 1));
+	document.getElementById("scienceGoatCost").innerHTML = prettify(nextCost);
+	
+	nextCost = Math.floor(20 * (bionicGoats + 1));
+	document.getElementById("bionicGoatCost").innerHTML = prettify(nextCost);
+}
+
+function updateValues() {
+	document.getElementById("currency").innerHTML = prettify(currency);
+	document.getElementById("plots").innerHTML = prettify(plots);
+	document.getElementById("goats").innerHTML = prettify(goats);
+	document.getElementById("goatHeroes").innerHTML = prettify(goatHeroes);
+	document.getElementById("sunGoats").innerHTML = prettify(sunGoats);
+	
+	// SCIENCE
+	document.getElementById("scienceGoats").innerHTML = prettify(scienceGoats)
+	document.getElementById("bionicGoats").innerHTML = prettify(bionicGoats)
 }
 
 function startQuest() {
@@ -152,6 +176,9 @@ function upgradeGrass() {
 function calculateCurrency() {
 	currencyInc = goats * (goatMod * grass);
 	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
+	
+	electricityInc = scienceGoats * scienceGoatMod;
+	document.getElementById("electricityInc").innerHTML = prettify(electricityInc);
 }
 
 function prettify(input) {
@@ -167,12 +194,14 @@ function startup() {
 	document.getElementById("goat").style.visibility = "hidden";
 	document.getElementById("goatText").style.visibility = "hidden";
 	
+	document.getElementById("grass").style.visibility = "hidden";
+	
+	
+	// GODS
 	document.getElementById("goatHero").style.visibility = "hidden";
 	document.getElementById("goatHeroText").style.visibility = "hidden";
 	
 	document.getElementById("quest").style.visibility = "hidden";
-	
-	document.getElementById("grass").style.visibility = "hidden";
 	
 	document.getElementById("god").style.display = "none";
 	document.getElementById("goatseidon").style.display = "none";
@@ -180,15 +209,18 @@ function startup() {
 	
 	document.getElementById("gopollo").style.display = "none";
 		document.getElementById("sunGoatText").style.visibility = "hidden";
+		
+		
+	// SCIENCE
+	document.getElementById("electricityText").style.visibility = "hidden";
+	document.getElementById("electricityVal").style.visibility = "hidden";
 	
+	document.getElementById("scienceGoat").style.visibility = "hidden";
+	document.getElementById("scienceGoatText").style.visibility = "hidden";
 	
-	//document.getElementById("gometer").toggle();
-	//document.getElementById("gometer").toggle();
-	//document.getElementById("boon2").style.left = "hidden";
-	//document.getElementById("goatseidon").style.visibility = "hidden";
+	document.getElementById("bionicGoat").style.visibility = "hidden";
+	document.getElementById("bionicGoatText").style.visibility = "hidden";
 	
-	//document.getElementById("gometer").style.z-index = 100;
-	//document.getElementById("goatseidon").style.z-index = 150;
 	
 	load();
 }
@@ -247,6 +279,7 @@ function praiseIt() {
 
 window.setInterval(function() {
 	currencyClick((goats * goatMod * grass));
+	electricityClick((scienceGoats * scienceGoatMod ));
 }, 1000);
 
 window.setInterval(function() {

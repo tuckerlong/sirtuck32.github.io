@@ -1,6 +1,8 @@
+var sunGoats = 0;
+
 function buySunGoat() {
-	var curCost = Math.floor(1 * (goatHeroes + 1));
-	var secCost = Math.floor(10 * Math.pow(1.2, goats));
+	var curCost = Math.floor(1 * (sunGoats + 1));
+	var secCost = Math.floor(10 * Math.pow(1.2, sunGoats));
 	
 	if(goatHeroes >= curCost && currency >= secCost) {
 		console.log("in here");
@@ -8,17 +10,12 @@ function buySunGoat() {
 		currency -= secCost;
 		goatHeroes = goatHeroes - curCost;
 		
-		document.getElementById("currency").innerHTML = prettify(currency);
-		document.getElementById("goatHeroes").innerHTML = prettify(goatHeroes);
-		document.getElementById("sunGoats").innerHTML = prettify(sunGoats);
-		
+		updateValues();
 		updateCost();
 		calculateCurrency();
 		
-		document.getElementById("quest").style.visibility = "visible";
-		
-		var nextCost = Math.floor(1 * (goatHeroes + 1));
-		var nextSecCost = Math.floor(10 * Math.pow(1.2, goats));
+		var nextCost = Math.floor(1 * (sunGoats + 1));
+		var nextSecCost = Math.floor(10 * Math.pow(1.2, sunGoats));
 		document.getElementById("sunGoatCost").innerHTML = prettify(nextCost) + " Goat Hero(es), " + prettify(nextSecCost) + " money";
 	};
 }
