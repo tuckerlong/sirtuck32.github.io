@@ -17,6 +17,16 @@ h1 {
   top: calc(25%);
 }
 
+#quest {
+  background-color: gray;
+  position: fixed;
+  height: 30px;
+  width: 50%;
+  border: 1px solid black;
+  left: calc(25%);
+  top: calc(25% - 50px);
+}
+
 #purchase {
   background-color: gray;
   position: fixed;
@@ -30,13 +40,43 @@ h1 {
 .purchaseButton {
   background-color: white;
   border: 1px solid black;
-  width: 150px;
+  width: 200px;
   height: 18px;
   text-align: center;
   margin: 5px;
   margin-right: 0px;
   display: inline-block;
   cursor: pointer;
+}
+
+#god {
+  position: fixed;
+  height: 3%;
+  width: 20%;
+  left: calc(1%);
+  top: calc(77%);
+}
+
+#gods {
+  background-color: gray;
+  position: fixed;
+  height: calc(10%);
+  width: 20%;
+  border: 1px solid black;
+  left: calc(1%);
+  top: calc(80%);
+}
+
+#favorDiv {
+  background-color: white;
+  position: absolute;
+  border: 1px solid black;
+  width: 150px;
+  height: 18px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  left: calc(99% - 150px);
 }
 
 #upgrades {
