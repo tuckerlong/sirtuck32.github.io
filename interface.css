@@ -116,3 +116,34 @@ h1 {
   float: right;
   margin-right: 5px;
 }
+
+.goatseidon {
+  display:none;
+  background-color: gray;
+  position: fixed;
+  height: calc(10%);
+  width: 20%;
+  border: 1px solid black;
+  left: calc(1%);
+  top: calc(80%);
+}
+
+.gometer {
+  background-color: gray;
+  position: fixed;
+  height: calc(10%);
+  width: 20%;
+  border: 1px solid black;
+  left: calc(1%);
+  top: calc(80%);
+}
+
+.godblock {
+  background-color: gray;
+  position: fixed;
+  height: calc(10%);
+  width: 20%;
+  border: 1px solid black;
+  left: calc(1%);
+  top: calc(80%);
+}

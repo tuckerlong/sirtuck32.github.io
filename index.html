@@ -3,6 +3,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
 	</head>
+	
 	<body onload="startup()">
 
 		<h1>Goats Galore</h1>
@@ -19,6 +20,7 @@
 			<div id="plotText">Plots: <span id="plots">0</span></div>
 			<div id="goatText">Goats: <span id="goats">0</span></div>
 			<div id="goatHeroText">Goat Heroes: <span id="goatHeroes">0</span></div>
+			<div id="sunGoatText">Sun Goats: <span id="sunGoats">0</span></div>
 		</div>
 		
 		<div id="quest">
@@ -41,9 +43,19 @@
 		</div>
 		
 		<div id="god"> GOD: <span id="godName"></span></div> 
-		<div id="gods"> 
+			<div id="goatseidon" class="godblock">
+				<div id="boon1">Test</div>
+				<div id="boon2">Rest</div>
+			</div>
+		
+			<div id="gometer" class="godblock">
+				<div id="boon1">Fast</div>
+			</div>
 			
-		</div>
+			<div id="gopollo" class="godblock">
+				<div id="boon1" class="purchaseButton" onclick="praiseIt();">Praise It</div>
+				<div id="boon1" class="purchaseButton" onclick="buySunGoat();">Buy Sun Goat - <span id="sunGoatCost">1 Goat Hero, 10 money</span></div>
+			</div>
 			
 		<div id="footer">
 			<div id="saveButton" class="footerDiv" onclick="save();">Save</div>
@@ -52,5 +64,6 @@
 		</div>
 		
 		<script type="text/javascript" src="main.js"></script>
+		<script type="text/javascript" src="gods.js"></script>
 	</body>
 </html>

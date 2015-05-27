@@ -1,13 +1,15 @@
 //bower install progressbar.js
 
-var currency = 100000;
+
+var currency = 1000000;
 var currencyInc = 0;
 var cursors = 0;
 var prestige = 0;
 var plots = 0;
 var plotShow = "hidden";
 
-var goats = 50;
+var goats = 60;
+var goatMod = 0.4;
 var goatSpace = 0;
 
 var goatHeroes = 0;
@@ -52,7 +54,7 @@ function buyPlot() {
 }
 
 function buyGoat() {
-	var curCost = Math.floor(10 * (goats + 1));
+	var curCost = Math.floor(10 * Math.pow(1.2, goats));
 	if(currency >= curCost && goatSpace >= 1) {
 		goats = goats + 1;
 		goatSpace = goatSpace - 1;
@@ -76,7 +78,7 @@ function buyGoat() {
 		window.setTimeout(function(){wanderAround(100, img, 50)}, 200);
 	};
 	
-	var nextCost = Math.floor(10 * (goats + 1));
+	var nextCost = Math.floor(10 * Math.pow(1.2, goats));
 	document.getElementById("goatCost").innerHTML = prettify(nextCost);
 }
 
@@ -103,6 +105,14 @@ function buyGoatHero() {
 	document.getElementById("goatHeroCost").innerHTML = prettify(nextCost);
 }
 
+function updateCost() {
+	var nextCost = Math.floor(10 * (goats + 1));
+	document.getElementById("goatCost").innerHTML = prettify(nextCost);
+	
+	nextCost = Math.floor(20 * (goatHeroes + 1));
+	document.getElementById("goatHeroCost").innerHTML = prettify(nextCost);
+}
+
 function startQuest() {
 	quest = "active";
 }
@@ -126,7 +136,7 @@ function wanderAround(counter, img, left) {
 }
 
 function upgradeGrass() {
-	var curCost = Math.floor(100 * grass);
+	var curCost = Math.floor(100 * Math.pow(1.5, grass));
 	if(currency >= curCost) {
 		grass = grass + 1;
 		currency = currency - curCost;
@@ -135,12 +145,12 @@ function upgradeGrass() {
 		calculateCurrency();
 	};
 	
-	var nextCost = Math.floor(100 * grass);
+	var nextCost = Math.floor(100 * Math.pow(1.5, grass));
 	document.getElementById("grassCost").innerHTML = prettify(nextCost);
 }
 
 function calculateCurrency() {
-	currencyInc = goats * (0.1 * grass);
+	currencyInc = goats * (goatMod * grass);
 	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
 }
 
@@ -163,6 +173,22 @@ function startup() {
 	document.getElementById("quest").style.visibility = "hidden";
 	
 	document.getElementById("grass").style.visibility = "hidden";
+	
+	document.getElementById("god").style.display = "none";
+	document.getElementById("goatseidon").style.display = "none";
+	document.getElementById("gometer").style.display = "none";
+	
+	document.getElementById("gopollo").style.display = "none";
+		document.getElementById("sunGoatText").style.visibility = "hidden";
+	
+	
+	//document.getElementById("gometer").toggle();
+	//document.getElementById("gometer").toggle();
+	//document.getElementById("boon2").style.left = "hidden";
+	//document.getElementById("goatseidon").style.visibility = "hidden";
+	
+	//document.getElementById("gometer").style.z-index = 100;
+	//document.getElementById("goatseidon").style.z-index = 150;
 	
 	load();
 }
@@ -214,8 +240,13 @@ function deleteSave() {
 	localStorage.removeItem("save")
 }
 
+function praiseIt() {
+	console.log("test");
+	document.getElementById("land").style.display = "none";
+}
+
 window.setInterval(function() {
-	currencyClick((goats/10 * grass));
+	currencyClick((goats * goatMod * grass));
 }, 1000);
 
 window.setInterval(function() {
@@ -231,19 +262,26 @@ window.setInterval(function() {
 			
 			if(rndm < 0.33) {
 				if(confirm("You found the statue of the Ancient God Goatseidon. Will you worship it?") == true) {
-					document.getElementById("godName").innerHTML = "GOATSEIDON"
+					document.getElementById("godName").innerHTML = "GOATSEIDON"	
+					document.getElementById("god").style.display = "block";
+					document.getElementById("goatseidon").style.display = "block";		
 				} else {
 				
 				}
 			} else if(rndm >= 0.33 && rndm < 0.66) {
-				if(confirm("You found the statue of the Ancient God Gometer Will you worship it?") == true) {
+				if(confirm("You found the statue of the Ancient God Gometer. Will you worship it?") == true) {
 					document.getElementById("godName").innerHTML = "GOMETER"
+					document.getElementById("god").style.display = "block";
+					document.getElementById("gometer").style.display = "block";
 				} else {
 				
 				}
 			} else {
 				if(confirm("You found the statue of the Ancient God Gopollo. Will you worship it?") == true) {
 					document.getElementById("godName").innerHTML = "GOPOLLO"
+					document.getElementById("god").style.display = "block";
+					document.getElementById("gopollo").style.display = "block";
+					document.getElementById("sunGoatText").style.visibility = "visible";
 				} else {
 				
 				}
