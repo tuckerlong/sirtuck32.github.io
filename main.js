@@ -215,7 +215,7 @@ function deleteSave() {
 }
 
 window.setInterval(function() {
-	currencyClick(goats/10);
+	currencyClick((goats/10 * grass));
 }, 1000);
 
 window.setInterval(function() {
