@@ -7,7 +7,7 @@ var scienceGoatMod = 0.1;
 var bionicGoats = 0;
 
 function electricityClick(number) {
-	electricity += number;
+	electricity += prettify(number);
 	document.getElementById("electricity").innerHTML = prettify(electricity);
 	
 	if(electricity >= 25) {

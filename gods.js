@@ -1,5 +1,18 @@
+var god = "";
+
+var favor = 0;
+var favorInc = 0;
+
 var goatHeroes = 0;
+
 var sunGoats = 0;
+var sunGoatCurrencyMod = 1.0;
+var sunGoatFavorMod = 1.0;
+
+function favorClick(number) {
+	favor += prettify(number);
+	document.getElementById("favor").innerHTML = prettify(favor);
+}
 
 function buyGoatHero() {
 	var curCost = getGoatHeroCost();
@@ -24,21 +37,30 @@ function getGoatHeroCost() {
 }
 
 function buySunGoat() {
-	var curCost = Math.floor(1 * (sunGoats + 1));
-	var secCost = Math.floor(10 * Math.pow(1.2, sunGoats));
+	var curCost = getSunGoatCostOne();
+	var secCost = getSunGoatCostTwo();
 	
-	if(goatHeroes >= curCost && currency >= secCost) {
-		console.log("in here");
+	if(goatHeroes >= curCost && favor >= secCost) {
 		sunGoats = sunGoats + 1;
-		currency -= secCost;
+		favor -= secCost;
 		goatHeroes = goatHeroes - curCost;
 		
 		updateValues();
 		updateCost();
 		calculateCurrency();
-		
-		var nextCost = Math.floor(1 * (sunGoats + 1));
-		var nextSecCost = Math.floor(10 * Math.pow(1.2, sunGoats));
-		document.getElementById("sunGoatCost").innerHTML = prettify(nextCost) + " Goat Hero(es), " + prettify(nextSecCost) + " money";
 	};
+}
+
+function getSunGoatCostOne() {
+	return Math.floor(1 * (sunGoats + 1));
+}
+
+function getSunGoatCostTwo() {
+	return Math.floor(10 * Math.pow(1.2, sunGoats));
+}
+
+function praiseIt() {
+	favor += 1;
+	
+	updateValues();
 }

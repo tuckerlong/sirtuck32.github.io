@@ -1,30 +1,10 @@
-//bower install progressbar.js
-
-
 var currency = 0;
 var currencyInc = 0;
-var cursors = 0;
-var prestige = 0;
-
-var grass = 1;
 
 var quest = "inactive";
 
-var createPlot = "false";
-
-function currencyClick(number) {
-	currency = currency + number;
-	document.getElementById("currency").innerHTML = prettify(currency);
-	
-	if(currency >= 25 && document.getElementById("plots") === null) {
-		createButton("land", buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
-		updateCost();
-	}
-}
-
-function createButton(id, onclick, text, varName, varCost, div) {
+function createButton(onclick, text, varName, varCost, div) {
 	var button = document.createElement("div");
-	button.id = id;
 	button.className = "purchaseButton";
 	button.onclick = onclick;
 	
@@ -49,30 +29,8 @@ function createButton(id, onclick, text, varName, varCost, div) {
 	br = document.createElement("br");
 	div.appendChild(br);
 	div.appendChild(button);
-}
-
-function updateCost() {
-	var nextCost = getPlotCost();
-	var ele = document.getElementById("plotCost");
-	if(ele !== null) ele.innerHTML = prettify(nextCost);
 	
-	nextCost = getGoatCost();
-	ele = document.getElementById("goatCost");
-	if(ele !== null) ele.innerHTML = prettify(nextCost);
-	
-	nextCost = getGoatHeroCost();
-	ele = document.getElementById("goatHeroCost");
-	if(ele !== null) ele.innerHTML = prettify(nextCost);
-	
-	/*nextCost = Math.floor(20 * (goatHeroes + 1));
-	document.getElementById("goatHeroCost").innerHTML = prettify(nextCost);
-	
-	// SCIENCE
-	nextCost = Math.floor(20 * (scienceGoats + 1));
-	document.getElementById("scienceGoatCost").innerHTML = prettify(nextCost);
-	
-	nextCost = Math.floor(20 * (bionicGoats + 1));
-	document.getElementById("bionicGoatCost").innerHTML = prettify(nextCost);*/
+	return button;
 }
 
 function updateValues() {
@@ -84,19 +42,100 @@ function updateValues() {
 	ele = document.getElementById("goats");
 	if(ele !== null) ele.innerHTML = prettify(goats);
 	
-	ele = document.getElementById("goatHeroes");
-	if(ele !== null) ele.innerHTML = prettify(goatHeroes);
+	ele = document.getElementById("grass");
+	if(ele !== null) ele.innerHTML = prettify(grass);
+
+		ele = document.getElementById("grassGoatShow");
+		if(ele !== null) ele.innerHTML = prettify(goats);
 		
+		ele = document.getElementById("grassGoatModShow");
+		if(ele !== null) ele.innerHTML = prettify(goatMod);
+			
 	goatSpace = plots * plotMod - goats;
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
-	//document.getElementById("plots").innerHTML = prettify(plots);
-	/*document.getElementById("goats").innerHTML = prettify(goats);
-	document.getElementById("goatHeroes").innerHTML = prettify(goatHeroes);
-	document.getElementById("sunGoats").innerHTML = prettify(sunGoats);
 	
-	// SCIENCE
-	document.getElementById("scienceGoats").innerHTML = prettify(scienceGoats)
-	document.getElementById("bionicGoats").innerHTML = prettify(bionicGoats)*/
+	
+	
+	/*
+	 * 
+	 *
+	 * GODS EXPANSION
+	 *
+	 *
+	 */
+	ele = document.getElementById("favor");
+	if(ele !== null) ele.innerHTML = prettify(favor);
+	
+	ele = document.getElementById("goatHeroes");
+	if(ele !== null) ele.innerHTML = prettify(goatHeroes);
+	
+	ele = document.getElementById("sunGoats");
+	if(ele !== null) ele.innerHTML = prettify(sunGoats);
+
+		ele = document.getElementById("sunGoatCostOneShow");
+		if(ele !== null) ele.innerHTML = prettify(goatHeroes);
+}
+
+function updateCost() {
+	/*
+	 * 
+	 *
+	 * BASIC
+	 *
+	 *
+	 */
+	var nextCost = getPlotCost();
+	var ele = document.getElementById("plotCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getGoatCost();
+	ele = document.getElementById("goatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getGrassCost();
+	ele = document.getElementById("grassCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	/*
+	 * 
+	 *
+	 * GODS EXPANSION
+	 *
+	 *
+	 */
+	nextCost = getGoatHeroCost();
+	ele = document.getElementById("goatHeroCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getSunGoatCostOne();
+	var nextSecCost = getSunGoatCostTwo()
+	ele = document.getElementById("sunGoatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost) + " Goat Hero(es), " + prettify(nextSecCost) + " favor";
+}
+
+function calculateCurrency() {
+	/*
+	 * 
+	 *
+	 * BASIC
+	 *
+	 *
+	 */
+	currencyInc = (goats * goatMod * grass) + (sunGoats * sunGoatCurrencyMod);
+	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
+	
+	/*
+	 * 
+	 *
+	 * GODS EXPANSION
+	 *
+	 *
+	 */
+	favorInc = (sunGoats * sunGoatFavorMod);
+	document.getElementById("favorInc").innerHTML = prettify(favorInc);
+	
+	electricityInc = scienceGoats * scienceGoatMod;
+	document.getElementById("electricityInc").innerHTML = prettify(electricityInc);
 }
 
 function startQuest() {
@@ -121,27 +160,6 @@ function wanderAround(counter, img, left) {
 	}
 }
 
-function upgradeGrass() {
-	var curCost = Math.floor(100 * Math.pow(1.5, grass));
-	if(currency >= curCost) {
-		grass = grass + 1;
-		currency = currency - curCost;
-		document.getElementById("currency").innerHTML = prettify(currency);
-		
-		calculateCurrency();
-	};
-	
-	var nextCost = Math.floor(100 * Math.pow(1.5, grass));
-	document.getElementById("grassCost").innerHTML = prettify(nextCost);
-}
-
-function calculateCurrency() {
-	currencyInc = goats * (goatMod * grass);
-	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
-	
-	electricityInc = scienceGoats * scienceGoatMod;
-	document.getElementById("electricityInc").innerHTML = prettify(electricityInc);
-}
 
 function prettify(input) {
 	var output = Math.round(input * 10000000)/10000000;
@@ -153,7 +171,9 @@ function startup() {
 	// This doesn't work on ie?
 	//document.getElementById("").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	
+	document.getElementById("tabs").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	document.getElementById("purchase").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
+	document.getElementById("upgrades").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	document.getElementById("quest").style.visibility = "hidden";
 	
 	document.getElementById("purchase").style.display = "block";	
@@ -161,6 +181,17 @@ function startup() {
 	document.getElementById("gopollo").style.display = "none";
 	document.getElementById("goatseidon").style.display = "none";
 	document.getElementById("gometer").style.display = "none";	
+	
+	
+	
+	/*
+	 * 
+	 *
+	 * GODS EXPANSION
+	 *
+	 *
+	 */
+	document.getElementById("gopollo").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	// BASIC
 	/*document.getElementById("goat").style.visibility = "hidden";
 	document.getElementById("grass").style.visibility = "hidden";
@@ -200,7 +231,11 @@ function save() {
 		currency: currency,
 		plots: plots,
 		goats: goats,
-		goatHeroes: goatHeroes
+		grass: grass,
+		goatHeroes: goatHeroes,
+		god: god,
+		favor: favor,
+		sunGoats: sunGoats
 	}
 	localStorage.setItem("save", JSON.stringify(save));
 }
@@ -216,20 +251,26 @@ function load() {
 			plots = savegame.plots;
 		if(typeof savegame.goats !== "undefined")
 			goats = savegame.goats;
+		if(typeof savegame.grass !== "undefined")
+			grass = savegame.grass;
 		if(typeof savegame.goatHeroes !== "undefined")
 			goatHeroes = savegame.goatHeroes;
+		if(typeof savegame.god !== "undefined")
+			god = savegame.god;
+		if(typeof savegame.favor !== "undefined")
+			favor = savegame.favor;
+		if(typeof savegame.sunGoats !== "undefined")
+			sunGoats = savegame.sunGoats;
 			
 		if((currency >= 25 && plots == 0) || plots >= 1)
-			createButton("land", buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
+			createButton(buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
 		
-		if(plots >= 1) {
-			createButton("goat", buyGoat, "Goat", "goats", "<span id=\"goatCost\">0</span> money", document.getElementById("purchase"));
-			createButton("goatHero", buyGoatHero, "Goat Hero", "goatHeroes", "<span id=\"goatHeroCost\">0</span> money", document.getElementById("purchase"));
-		}
+		if(plots >= 1) plotBonusOne();
+		if(plots >= 2) plotBonusTwo();
 		
-		if(goatHeroes == 1) {
-			document.getElementById("quest").style.visibility = "visible";
-		}
+		if(goatHeroes >= 1) document.getElementById("quest").style.visibility = "visible";
+		
+		if(god !== "") document.getElementById("godName").innerHTML = god;
 		
 		updateValues();
 		updateCost();
@@ -256,23 +297,27 @@ function showPurchase() {
 function showGod() {
 	document.getElementById("purchase").style.display = "none";	
 	document.getElementById("upgrades").style.display = "none";
-	document.getElementById("gopollo").style.display = "block";
-	document.getElementById("goatseidon").style.display = "none";
-	document.getElementById("gometer").style.display = "none";
+	if(god ==="GOPOLLO")
+		document.getElementById("gopollo").style.display = "block";
+	else if(god === "GOATSEIDON")
+		document.getElementById("goatseidon").style.display = "block";
+	else if(god === "GOMETER")
+		document.getElementById("gometer").style.display = "block";
+	else{
+		document.getElementById("gopollo").style.display = "none";
+		document.getElementById("goatseidon").style.display = "none";
+		document.getElementById("gometer").style.display = "none";
+	}
 }
 
 function deleteSave() {
 	localStorage.removeItem("save")
 }
 
-function praiseIt() {
-	console.log("test");
-	document.getElementById("land").style.display = "none";
-}
-
 window.setInterval(function() {
-	currencyClick((goats * goatMod * grass));
-	electricityClick((scienceGoats * scienceGoatMod ));
+	currencyClick(currencyInc);
+	electricityClick(electricityInc);
+	favorClick(favorInc);
 }, 1000);
 
 window.setInterval(function() {
@@ -284,33 +329,42 @@ window.setInterval(function() {
 			document.getElementById("questBar").value = 0;
 			document.getElementById("progress").innerHTML = "Finished"
 			
-			rndm = Math.random();
 			
-			if(rndm < 0.33) {
-				if(confirm("You found the statue of the Ancient God Goatseidon. Will you worship it?") == true) {
-					document.getElementById("godName").innerHTML = "GOATSEIDON"	
-					document.getElementById("god").style.display = "block";
-					document.getElementById("goatseidon").style.display = "block";		
+			rndm = Math.random();
+			if(god === "") {
+				if(rndm < 0.25) {
+					rndm = Math.random();
+					if(rndm < 0.33) {
+						if(confirm("You found the statue of the Ancient God Goatseidon. Will you worship it?") == true) {
+							god = "GOATSEIDON";
+							document.getElementById("godName").innerHTML = god;
+							document.getElementById("god").style.display = "block";
+							document.getElementById("goatseidon").style.display = "block";	
+						}
+					} else if(rndm >= 0.33 && rndm < 0.66) {
+						if(confirm("You found the statue of the Ancient God Gometer. Will you worship it?") == true) {
+							god = "GOMETER";
+							document.getElementById("godName").innerHTML = god;
+							document.getElementById("god").style.display = "block";
+							document.getElementById("gometer").style.display = "block";
+						}
+					} else {
+						if(confirm("You found the statue of the Ancient God Gopollo. Will you worship it?") == true) {
+							god = "GOPOLLO";
+							document.getElementById("godName").innerHTML = god;
+							document.getElementById("god").style.display = "block";
+							document.getElementById("gopollo").style.display = "block";
+						}
+					}
 				} else {
-				
-				}
-			} else if(rndm >= 0.33 && rndm < 0.66) {
-				if(confirm("You found the statue of the Ancient God Gometer. Will you worship it?") == true) {
-					document.getElementById("godName").innerHTML = "GOMETER"
-					document.getElementById("god").style.display = "block";
-					document.getElementById("gometer").style.display = "block";
-				} else {
-				
+					rndm = prettify(Math.floor(Math.random() * 100)); 
+					alert("You found " + rndm + " money.");
+					currencyClick(rndm);
 				}
 			} else {
-				if(confirm("You found the statue of the Ancient God Gopollo. Will you worship it?") == true) {
-					document.getElementById("godName").innerHTML = "GOPOLLO"
-					document.getElementById("god").style.display = "block";
-					document.getElementById("gopollo").style.display = "block";
-					document.getElementById("sunGoatText").style.visibility = "visible";
-				} else {
-				
-				}
+				rndm = prettify(Math.floor(Math.random() * 100)); 
+				alert("You found " + rndm + " money. Keep questing and you might find something amazing!");
+				currencyClick(rndm);
 			}
 		}
 	}

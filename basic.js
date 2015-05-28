@@ -9,6 +9,19 @@ var goatBaseCost = 25;
 var goatRate = 1.1;
 var goatSpace = 0;
 
+var grass = 1;
+var plotSize = 1;
+
+function currencyClick(number) {
+	currency = currency + prettify(number);
+	document.getElementById("currency").innerHTML = prettify(currency);
+	
+	if(currency >= 25 && document.getElementById("plots") === null) {
+		createButton(buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
+		updateCost();
+	}
+}
+
 function buyPlot() {
 	var curCost = getPlotCost();
 	if(currency >= curCost) {
@@ -16,18 +29,37 @@ function buyPlot() {
 		goatSpace = goatSpace + 10;
 		currency = currency - curCost;
 		
-		if(plots == 1) {
-			createButton("goat", buyGoat, "Goat", "goats", "<span id=\"goatCost\">0</span> money", document.getElementById("purchase"));
-			createButton("goatHero", buyGoatHero, "Goat Hero", "goatHeroes", "<span id=\"goatHeroCost\">0</span> goats", document.getElementById("purchase"));
-		}
+		if(plots == 1) plotBonusOne();
+		if(plots == 2) plotBonusTwo();
 		
-		if(plots == 2)
-			createButton("scienceGoat", buyScienceGoat, "Science Goat", "scienceGoats", "<span id=\"scienceGoatCost\">0</span> money", document.getElementById("purchase"));
-			
 		updateValues();
 		updateCost();
 		calculateCurrency();
 	}
+}
+
+function plotBonusOne() {
+	createButton(buyGoat, "Goat", "goats", "<span id=\"goatCost\">0</span> money", document.getElementById("purchase"));
+	createButton(buyGoatHero, "Goat Hero", "goatHeroes", "<span id=\"goatHeroCost\">0</span> goats", document.getElementById("purchase"));			
+	var button = createButton(upgradeGrass, "Grass", "grass", "<span id=\"grassCost\">0</span> money", document.getElementById("upgrades"));
+	
+	var br = document.createElement("br");
+	button.appendChild(br);
+	
+	var des = document.createElement("div");
+	des.className = "description";
+	des.innerHTML = "Increases money production of base goats by <span id=\"grassGoatModShow\">0.1</span> per/s for each grass."
+	button.appendChild(des);
+	
+	des = document.createElement("div");
+	des.className = "description";
+	des.innerHTML = "You currently have <span id=\"grassGoatShow\">0</span> base goats."
+	button.appendChild(des);
+}
+
+function plotBonusTwo() {
+	createButton(buyScienceGoat, "Science Goat", "scienceGoats", "<span id=\"scienceGoatCost\">0</span> money", document.getElementById("purchase"));
+	createButton(upgradeGrass, "Larger Plots", "plotSize", "<span id=\"plotUpgradeCost\">0</span> money", document.getElementById("upgrades"));
 }
 
 function getPlotCost() {
@@ -61,4 +93,20 @@ function buyGoat() {
 
 function getGoatCost() {
 	return Math.floor(10 * Math.pow(1.2, goats));
+}
+
+function upgradeGrass() {
+	var curCost = getGrassCost();
+	if(currency >= curCost) {
+		grass = grass + 1;
+		currency = currency - curCost;
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	};
+}
+
+function getGrassCost() {
+	return Math.floor(100 * Math.pow(1.5, grass));
 }

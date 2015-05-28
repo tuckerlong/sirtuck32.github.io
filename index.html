@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
-		<title id="title">Goats Galore</title>
+		<title id="title">Goats Galore v1.01 - Gods Galore</title>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
 		<link rel="stylesheet" type="text/css" href="buttons.css" />
 		
@@ -12,7 +12,7 @@
 	
 	<body onload="startup()">
 
-		<h1>Goats Galore</h1>
+		<h1>Goats Galore v1.01 - Gods Galore</h1>
 				
 		<p></p>
 
@@ -25,14 +25,13 @@
 			<br/>
 			Available Goat Space: <span id="goatSpace">0</span>
 			<br/>
-			<div id="sunGoatText">Sun Goats: <span id="sunGoats">0</span></div>
 			<div id="scienceGoatText">Science Goats: <span id="scienceGoats">0</span></div>
 			<div id="bionicGoatText">Bionic Goats: <span id="bionicGoats">0</span></div>
 		</div>
 		
 		<div id="quest">
 			<div id="questButton" class="questButton" onclick="startQuest();">Start Goat Quest!</div>
-			<div class="questBar"> <progress id="questBar" value="0" max = "10"></progress><span id="progress">0%</span> </div>
+			<div class="questBar"> <progress id="questBar" value="0" max = "200"></progress><span id="progress">0%</span> </div>
 		</div>
 		
 		<div id="tabs">
@@ -43,16 +42,14 @@
 		
 		<div id="purchase" class="rightMenu">
 			<div id="currency" class="generateButton" onclick="currencyClick(1);">Click for money!</div>
-			
 		</div>
 		
 		<div id="upgrades" class="rightMenu">
-			<div id="grass" class="purchaseButton" onclick="upgradeGrass();">Upgrade Grass - <span id="grassCost">100</span></div>
 		</div>
 		
 		<div id="god"></div>
 			<div id="goatseidon" class="rightMenu">
-				&nbsp;GOD: <span id="godName"></span>
+				&nbsp;GOD: <span id="godName"></span><br/>
 				&nbsp;Favor:<br/>
 				&nbsp;Per Second:<br/>
 				<div id="boon1">Test</div>
@@ -60,7 +57,7 @@
 			</div>
 		
 			<div id="gometer" class="rightMenu">
-				&nbsp;GOD: <span id="godName"></span>
+				&nbsp;GOD: <span id="godName"></span><br/>
 				&nbsp;Favor:<br/>
 				&nbsp;Per Second:<br/>
 				<div id="boon1">Fast</div>
@@ -68,10 +65,19 @@
 			
 			<div id="gopollo" class="rightMenu">
 				&nbsp;GOD: <span id="godName"></span><br/>
-				&nbsp;Favor:<br/>
-				&nbsp;Per Second:<br/>
-				<div id="boon1" class="purchaseButton" onclick="praiseIt();">Praise It</div>
-				<div id="boon1" class="purchaseButton" onclick="buySunGoat();">Buy Sun Goat - <span id="sunGoatCost">1 Goat Hero, 10 money</span></div>
+				&nbsp;Favor: <span id="favor">0</span><br/>
+				&nbsp;Per Second: <span id="favorInc">0</span><br/>
+				<div id="boon1" class="favorButton" onclick="praiseIt();">
+					Praise It<br/>
+					<div class="description">Increases your favor with Gopollo by 1.</div>
+				</div>
+				<div id="boon1" class="purchaseButton" onclick="buySunGoat();">
+					<div class="objName">Sun Goat</div>
+					<div class="count"><span id="sunGoats">0</span></div><br/>
+					<div class="price"><span id="sunGoatCost">1 Goat Hero, 10 favor</span></div><br/>
+					<div class="description">Provides 1 money/s and 1 favor/s.</div>
+					<div class="description">You currently have <span id="sunGoatCostOneShow">0</span> Goat Hero(es).</div>
+				</div>
 			</div>
 			
 		<div id="footer">

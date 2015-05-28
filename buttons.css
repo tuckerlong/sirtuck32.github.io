@@ -1,14 +1,21 @@
-.objName {
-  float:left;
+.favorButton {
+  font-family: 'Chewy', cursive;
+  padding: 4px;
+
+  background-color: white;
+  border: 1px solid black;
+  width: 200px;
+  height: 20px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.price {
-  float:left;
-  font-size: 80%;
-}
-.count  {
-  float:right;
-  font-size: 150%;
+.favorButton:hover {
+  height: auto;
 }
 
 .purchaseButton {
@@ -36,6 +43,24 @@
 .purchaseButton:hover {
   height: auto;
 }
+
+	/* THESE NEXT 3 ARE VISUALS ON THE PURCHASE BUTTON*/
+	.objName {
+	  float:left;
+	}
+
+	.price {
+	  float:left;
+	  font-size: 80%;
+	}
+	.count  {
+	  float:right;
+	  font-size: 150%;
+	}
+	.description {
+		font-size: 80%;
+	}
+
 
 .tab {
   font-family: 'Chewy', cursive;
