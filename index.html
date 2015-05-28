@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link href='http://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
+		<title id="title">Goats Galore</title>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
+		<link rel="stylesheet" type="text/css" href="buttons.css" />
+		
+		<script type="text/javascript" src="main.js"></script>
+		<script type="text/javascript" src="basic.js"></script>
 	</head>
 	
 	<body onload="startup()">
@@ -19,48 +25,51 @@
 			<br/>
 			Available Goat Space: <span id="goatSpace">0</span>
 			<br/>
-			<div id="plotText">Plots: <span id="plots">0</span></div>
-			<div id="goatText">Goats: <span id="goats">0</span></div>
-			<div id="goatHeroText">Goat Heroes: <span id="goatHeroes">0</span></div>
 			<div id="sunGoatText">Sun Goats: <span id="sunGoats">0</span></div>
 			<div id="scienceGoatText">Science Goats: <span id="scienceGoats">0</span></div>
 			<div id="bionicGoatText">Bionic Goats: <span id="bionicGoats">0</span></div>
 		</div>
 		
 		<div id="quest">
-			<div id="questButton" class="purchaseButton" onclick="startQuest();">Start Goat Quest!</div>
-			<progress id="questBar" value="0" max = "10"></progress><span id="progress">0%</span>
+			<div id="questButton" class="questButton" onclick="startQuest();">Start Goat Quest!</div>
+			<div class="questBar"> <progress id="questBar" value="0" max = "10"></progress><span id="progress">0%</span> </div>
 		</div>
 		
-		<div id="purchase">
-			<div id="currency" class="purchaseButton" onclick="currencyClick(1);">Click for money!</div>
-			<br/>
-			<div id="land" class="purchaseButton" onclick="buyPlot();">Buy Plot - <span id="plotCost">25</span> money</div>
-			<br/>
-			<div id="goat" class="purchaseButton" onclick="buyGoat();">Buy Goat - <span id="goatCost">10</span> money</div>
-			<br/>
-			<div id="goatHero" class="purchaseButton" onclick="buyGoatHero();">Buy Goat Hero - <span id="goatHeroCost">20</span> goats</div>
-			<br/>
-			<div id="scienceGoat" class="purchaseButton" onclick="buyScienceGoat();">Buy Science Goat - <span id="scienceGoatCost">20</span> money</div>
-			<br/>
-			<div id="bionicGoat" class="purchaseButton" onclick="buyBionicGoat();">Buy Bionic Goat - <span id="bionicGoatCost">20</span> electricity</div>
+		<div id="tabs">
+			<div id="purchaseTab" class="tab" onclick="showPurchase()">Purchase</div>
+			<div id="upgradeTab" class="tab" onclick="showUpgrades()">Upgrades</div>
+			<div id="upgradeTab" class="tab" onclick="showGod()">God</div>
 		</div>
 		
-		<div id="upgrades">
+		<div id="purchase" class="rightMenu">
+			<div id="currency" class="generateButton" onclick="currencyClick(1);">Click for money!</div>
+			
+		</div>
+		
+		<div id="upgrades" class="rightMenu">
 			<div id="grass" class="purchaseButton" onclick="upgradeGrass();">Upgrade Grass - <span id="grassCost">100</span></div>
 		</div>
 		
-		<div id="god"> GOD: <span id="godName"></span></div> 
-			<div id="goatseidon" class="godblock">
+		<div id="god"></div>
+			<div id="goatseidon" class="rightMenu">
+				&nbsp;GOD: <span id="godName"></span>
+				&nbsp;Favor:<br/>
+				&nbsp;Per Second:<br/>
 				<div id="boon1">Test</div>
 				<div id="boon2">Rest</div>
 			</div>
 		
-			<div id="gometer" class="godblock">
+			<div id="gometer" class="rightMenu">
+				&nbsp;GOD: <span id="godName"></span>
+				&nbsp;Favor:<br/>
+				&nbsp;Per Second:<br/>
 				<div id="boon1">Fast</div>
 			</div>
 			
-			<div id="gopollo" class="godblock">
+			<div id="gopollo" class="rightMenu">
+				&nbsp;GOD: <span id="godName"></span><br/>
+				&nbsp;Favor:<br/>
+				&nbsp;Per Second:<br/>
 				<div id="boon1" class="purchaseButton" onclick="praiseIt();">Praise It</div>
 				<div id="boon1" class="purchaseButton" onclick="buySunGoat();">Buy Sun Goat - <span id="sunGoatCost">1 Goat Hero, 10 money</span></div>
 			</div>
@@ -71,8 +80,9 @@
 			<div id="deleteSaveButton" class="footerDiv" onclick="deleteSave();">Delete Save</div>
 		</div>
 		
-		<script type="text/javascript" src="main.js"></script>
+		
 		<script type="text/javascript" src="gods.js"></script>
 		<script type="text/javascript" src="science.js"></script>
+		
 	</body>
 </html>

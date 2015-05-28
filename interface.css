@@ -1,14 +1,17 @@
 body {
-	background-color: lightblue;
+	background-color: white;
 }
 
 h1 {
-	color: navy;
 	text-align: center;
+	font-family: 'Chewy', cursive;
 }
 
+
 #info {
-  background-color: gray;
+  font-family: 'Chewy', cursive;
+  padding: 4px;
+  background-color: white;
   position: fixed;
   height: 50%;
   width: 20%;
@@ -18,7 +21,7 @@ h1 {
 }
 
 #quest {
-  background-color: gray;
+  background-color: white;
   position: fixed;
   height: 30px;
   width: 50%;
@@ -27,70 +30,30 @@ h1 {
   top: calc(25% - 50px);
 }
 
-#purchase {
-  background-color: gray;
-  position: fixed;
-  height: 50%;
-  width: 50%;
-  border: 1px solid black;
-  left: calc(25%);
-  top: calc(25%);
-}
-
-.purchaseButton {
+.rightMenu {
+  font-family: 'Chewy', cursive;
   background-color: white;
-  border: 1px solid black;
-  width: 200px;
-  height: 18px;
-  text-align: center;
-  margin: 5px;
-  margin-right: 0px;
-  display: inline-block;
-  cursor: pointer;
-}
-
-#god {
   position: fixed;
-  height: 3%;
-  width: 20%;
-  left: calc(1%);
-  top: calc(77%);
-}
-
-#gods {
-  background-color: gray;
-  position: fixed;
-  height: calc(10%);
-  width: 20%;
+  height: calc(100% - 120px);
+  width: 240px;
   border: 1px solid black;
-  left: calc(1%);
-  top: calc(80%);
+  left: calc(100% - 240px);
+  top: 85px;
+  overflow-y: scroll;
 }
 
-#favorDiv {
+#tabs {
   background-color: white;
-  position: absolute;
-  border: 1px solid black;
-  width: 150px;
-  height: 18px;
-  text-align: center;
-  display: inline-block;
-  cursor: pointer;
-  left: calc(99% - 150px);
-}
-
-#upgrades {
-  background-color: gray;
   position: fixed;
-  height: 50%;
-  width: 20%;
+  height: 40px;
+  width: 240px;
   border: 1px solid black;
-  left: calc(79%);
-  top: calc(25%);
+  left: calc(100% - 240px);
+  top: 40px;
 }
 
 #footer {
-  background-color: gray;
+  background-color: white;
   position: fixed;
   height: 30px;
   width: 100%;
@@ -117,33 +80,13 @@ h1 {
   margin-right: 5px;
 }
 
-.goatseidon {
-  display:none;
-  background-color: gray;
-  position: fixed;
-  height: calc(10%);
-  width: 20%;
-  border: 1px solid black;
-  left: calc(1%);
-  top: calc(80%);
-}
-
-.gometer {
-  background-color: gray;
-  position: fixed;
-  height: calc(10%);
-  width: 20%;
-  border: 1px solid black;
-  left: calc(1%);
-  top: calc(80%);
-}
-
 .godblock {
   background-color: gray;
   position: fixed;
   height: calc(10%);
-  width: 20%;
+  width: 25%;
   border: 1px solid black;
   left: calc(1%);
   top: calc(80%);
+  overflow-y: scroll;
 }

@@ -1,120 +1,70 @@
 //bower install progressbar.js
 
 
-var currency = 1000000;
+var currency = 0;
 var currencyInc = 0;
 var cursors = 0;
 var prestige = 0;
-var plots = 0;
-var plotShow = "hidden";
-
-var goats = 60;
-var goatMod = 0.4;
-var goatSpace = 0;
-
-var goatHeroes = 0;
 
 var grass = 1;
 
 var quest = "inactive";
 
+var createPlot = "false";
 
 function currencyClick(number) {
 	currency = currency + number;
 	document.getElementById("currency").innerHTML = prettify(currency);
 	
-	if(currency >= 25 && plotShow === "hidden") {
-		plotShow = "visible";
-		document.getElementById("land").style.visibility = plotShow;
-		document.getElementById("plotText").style.visibility = plotShow;
-	};
+	if(currency >= 25 && document.getElementById("plots") === null) {
+		createButton("land", buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
+		updateCost();
+	}
 }
 
-function buyPlot() {
-	var curCost = Math.floor(25 * (plots + 1));
-	if(currency >= curCost) {
-		plots = plots + 1;
-		goatSpace = goatSpace + 10;
-		currency = currency - curCost;
-		document.getElementById("currency").innerHTML = prettify(currency);
-		document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
-		document.getElementById("plots").innerHTML = prettify(plots);
-			
-		document.getElementById("goat").style.visibility = plotShow;
-		document.getElementById("goatText").style.visibility = plotShow;
-		
-		document.getElementById("goatHero").style.visibility = "visible";
-		document.getElementById("goatHeroText").style.visibility = "visible";
-		
-		document.getElementById("grass").style.visibility = "visible";
-		
-		if(plots >= 2) {
-			document.getElementById("scienceGoat").style.visibility = "visible";
-			document.getElementById("scienceGoatText").style.visibility = "visible";
-		}
-	};
+function createButton(id, onclick, text, varName, varCost, div) {
+	var button = document.createElement("div");
+	button.id = id;
+	button.className = "purchaseButton";
+	button.onclick = onclick;
 	
-	var nextCost = Math.floor(25 * (plots + 1));
-	document.getElementById("plotCost").innerHTML = prettify(nextCost);
-}
+	var name = document.createElement("div");
+	name.className = "objName";
+	name.innerHTML = text;
+	button.appendChild(name);
 
-function buyGoat() {
-	var curCost = Math.floor(10 * Math.pow(1.2, goats));
-	if(currency >= curCost && goatSpace >= 1) {
-		goats = goats + 1;
-		goatSpace = goatSpace - 1;
-		currency = currency - curCost;
-		document.getElementById("currency").innerHTML = prettify(currency);
-		document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
-		document.getElementById("goats").innerHTML = prettify(goats);
-		
-		calculateCurrency();
-		
-		img = document.createElement("img");
-		img.src = "goat.png";
-		img.style.position = "absolute";
-		img.style.left = "50px";
-		img.style.top = "50px";
-		img.style.width = "50px";  // Make these match the image...
-		img.style.height = "50px";
-		img.style.zIndex = 100;
-		
-		document.body.appendChild(img);
-		window.setTimeout(function(){wanderAround(100, img, 50)}, 200);
-	};
-	
-	var nextCost = Math.floor(10 * Math.pow(1.2, goats));
-	document.getElementById("goatCost").innerHTML = prettify(nextCost);
-}
+	var count = document.createElement("div");
+	count.className = "count";
+	count.innerHTML = "<span id=\"" + varName + "\">0</span>"
+	button.appendChild(count);
 
-function buyGoatHero() {
-	var curCost = Math.floor(20 * (goatHeroes + 1));
-	if(goats >= curCost) {
-		goatHeroes = goatHeroes + 1;
-		goatSpace = goatSpace + 10;
-		goats = goats - curCost;
-		document.getElementById("currency").innerHTML = prettify(currency);
-		document.getElementById("goatHeroes").innerHTML = prettify(goatHeroes);
-		document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
-		document.getElementById("goats").innerHTML = prettify(goats);
-		
-		var nextCost = Math.floor(10 * (goats + 1));
-		document.getElementById("goatCost").innerHTML = prettify(nextCost);
-		
-		calculateCurrency();
-		
-		document.getElementById("quest").style.visibility = "visible";
-	};
+	var br = document.createElement("br");
+	button.appendChild(br);
 	
-	var nextCost = Math.floor(20 * (goatHeroes + 1));
-	document.getElementById("goatHeroCost").innerHTML = prettify(nextCost);
+	var price = document.createElement("div");
+	price.className = "price";
+	price.innerHTML = varCost
+	button.appendChild(price);
+	
+	br = document.createElement("br");
+	div.appendChild(br);
+	div.appendChild(button);
 }
 
 function updateCost() {
-	var nextCost = Math.floor(10 * (goats + 1));
-	document.getElementById("goatCost").innerHTML = prettify(nextCost);
+	var nextCost = getPlotCost();
+	var ele = document.getElementById("plotCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
 	
-	nextCost = Math.floor(20 * (goatHeroes + 1));
+	nextCost = getGoatCost();
+	ele = document.getElementById("goatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getGoatHeroCost();
+	ele = document.getElementById("goatHeroCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	/*nextCost = Math.floor(20 * (goatHeroes + 1));
 	document.getElementById("goatHeroCost").innerHTML = prettify(nextCost);
 	
 	// SCIENCE
@@ -122,19 +72,31 @@ function updateCost() {
 	document.getElementById("scienceGoatCost").innerHTML = prettify(nextCost);
 	
 	nextCost = Math.floor(20 * (bionicGoats + 1));
-	document.getElementById("bionicGoatCost").innerHTML = prettify(nextCost);
+	document.getElementById("bionicGoatCost").innerHTML = prettify(nextCost);*/
 }
 
 function updateValues() {
 	document.getElementById("currency").innerHTML = prettify(currency);
-	document.getElementById("plots").innerHTML = prettify(plots);
-	document.getElementById("goats").innerHTML = prettify(goats);
+	
+	var ele = document.getElementById("plots");
+	if(ele !== null) ele.innerHTML = prettify(plots);
+	
+	ele = document.getElementById("goats");
+	if(ele !== null) ele.innerHTML = prettify(goats);
+	
+	ele = document.getElementById("goatHeroes");
+	if(ele !== null) ele.innerHTML = prettify(goatHeroes);
+		
+	goatSpace = plots * plotMod - goats;
+	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
+	//document.getElementById("plots").innerHTML = prettify(plots);
+	/*document.getElementById("goats").innerHTML = prettify(goats);
 	document.getElementById("goatHeroes").innerHTML = prettify(goatHeroes);
 	document.getElementById("sunGoats").innerHTML = prettify(sunGoats);
 	
 	// SCIENCE
 	document.getElementById("scienceGoats").innerHTML = prettify(scienceGoats)
-	document.getElementById("bionicGoats").innerHTML = prettify(bionicGoats)
+	document.getElementById("bionicGoats").innerHTML = prettify(bionicGoats)*/
 }
 
 function startQuest() {
@@ -182,18 +144,25 @@ function calculateCurrency() {
 }
 
 function prettify(input) {
-	var output = Math.round(input * 1000000)/1000000;
+	var output = Math.round(input * 10000000)/10000000;
 	return output;
 }
 
 
 function startup() {
-	document.getElementById("land").style.visibility = "hidden";
-	document.getElementById("plotText").style.visibility = "hidden";
+	// This doesn't work on ie?
+	//document.getElementById("").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	
-	document.getElementById("goat").style.visibility = "hidden";
-	document.getElementById("goatText").style.visibility = "hidden";
+	document.getElementById("purchase").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
+	document.getElementById("quest").style.visibility = "hidden";
 	
+	document.getElementById("purchase").style.display = "block";	
+	document.getElementById("upgrades").style.display = "none";
+	document.getElementById("gopollo").style.display = "none";
+	document.getElementById("goatseidon").style.display = "none";
+	document.getElementById("gometer").style.display = "none";	
+	// BASIC
+	/*document.getElementById("goat").style.visibility = "hidden";
 	document.getElementById("grass").style.visibility = "hidden";
 	
 	
@@ -219,7 +188,7 @@ function startup() {
 	document.getElementById("scienceGoatText").style.visibility = "hidden";
 	
 	document.getElementById("bionicGoat").style.visibility = "hidden";
-	document.getElementById("bionicGoatText").style.visibility = "hidden";
+	document.getElementById("bionicGoatText").style.visibility = "hidden";*/
 	
 	
 	load();
@@ -230,8 +199,8 @@ function save() {
 	var save = { 
 		currency: currency,
 		plots: plots,
-		goatSpace: goatSpace,
-		plotShow: plotShow
+		goats: goats,
+		goatHeroes: goatHeroes
 	}
 	localStorage.setItem("save", JSON.stringify(save));
 }
@@ -239,33 +208,57 @@ function save() {
 function load() {
 	var savegame = JSON.parse(localStorage.getItem("save"));
 	
-	if(typeof savegame.currency !== "undefined")
-		currency = savegame.currency;
-	if(typeof savegame.plots !== "undefined")
-		plots = savegame.plots;
-	if(typeof savegame.goatSpace !== "undefined")
-		goatSpace = savegame.goatSpace;
+	console.log(savegame);
+	if(savegame !== null) {
+		if(typeof savegame.currency !== "undefined")
+			currency = savegame.currency;
+		if(typeof savegame.plots !== "undefined")
+			plots = savegame.plots;
+		if(typeof savegame.goats !== "undefined")
+			goats = savegame.goats;
+		if(typeof savegame.goatHeroes !== "undefined")
+			goatHeroes = savegame.goatHeroes;
+			
+		if((currency >= 25 && plots == 0) || plots >= 1)
+			createButton("land", buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
 		
-	if(typeof savegame.plotShow !== "undefined")
-		plotShow = savegame.plotShow;
-	
-	document.getElementById("currency").innerHTML = prettify(currency);
-	document.getElementById("plots").innerHTML = prettify(plots);
-	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
-	
-	document.getElementById("land").style.visibility = plotShow;
-	document.getElementById("plotText").style.visibility = plotShow;
-	
-	if(plots >= 1) {
-		document.getElementById("goat").style.visibility = "visible";
-		document.getElementById("goatText").style.visibility = "visible";
+		if(plots >= 1) {
+			createButton("goat", buyGoat, "Goat", "goats", "<span id=\"goatCost\">0</span> money", document.getElementById("purchase"));
+			createButton("goatHero", buyGoatHero, "Goat Hero", "goatHeroes", "<span id=\"goatHeroCost\">0</span> money", document.getElementById("purchase"));
+		}
 		
-		document.getElementById("goatHero").style.visibility = "visible";
-		document.getElementById("goatHeroText").style.visibility = "visible";
-	};
-	
-	var nextCost = Math.floor(25 * (plots + 1));
-	document.getElementById("plotCost").innerHTML = prettify(nextCost);
+		if(goatHeroes == 1) {
+			document.getElementById("quest").style.visibility = "visible";
+		}
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	}
+}
+
+function showUpgrades() {
+	document.getElementById("purchase").style.display = "none";	
+	document.getElementById("upgrades").style.display = "block";
+	document.getElementById("gopollo").style.display = "none";
+	document.getElementById("goatseidon").style.display = "none";
+	document.getElementById("gometer").style.display = "none";
+}
+
+function showPurchase() {
+	document.getElementById("purchase").style.display = "block";	
+	document.getElementById("upgrades").style.display = "none";	
+	document.getElementById("gopollo").style.display = "none";
+	document.getElementById("goatseidon").style.display = "none";
+	document.getElementById("gometer").style.display = "none";
+}
+
+function showGod() {
+	document.getElementById("purchase").style.display = "none";	
+	document.getElementById("upgrades").style.display = "none";
+	document.getElementById("gopollo").style.display = "block";
+	document.getElementById("goatseidon").style.display = "none";
+	document.getElementById("gometer").style.display = "none";
 }
 
 function deleteSave() {

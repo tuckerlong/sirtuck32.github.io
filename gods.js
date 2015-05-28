@@ -1,4 +1,27 @@
+var goatHeroes = 0;
 var sunGoats = 0;
+
+function buyGoatHero() {
+	var curCost = getGoatHeroCost();
+	if(goats >= curCost) {
+		goatHeroes = goatHeroes + 1;
+		goats = goats - curCost;
+				
+		
+		
+		if(goatHeroes == 1) {
+			document.getElementById("quest").style.visibility = "visible";
+		}
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	}
+}
+
+function getGoatHeroCost() {
+	return Math.floor(2 * (goatHeroes + 1));
+}
 
 function buySunGoat() {
 	var curCost = Math.floor(1 * (sunGoats + 1));

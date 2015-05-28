@@ -1,0 +1,107 @@
+.objName {
+  float:left;
+}
+
+.price {
+  float:left;
+  font-size: 80%;
+}
+.count  {
+  float:right;
+  font-size: 150%;
+}
+
+.purchaseButton {
+  font-family: 'Chewy', cursive;
+  padding: 4px;
+
+  background-color: white;
+  border: 1px solid black;
+  width: 200px;
+  height: 38px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
+  
+  transition: height 1s;
+  -moz-transition: height 1s; /* Firefox 4 */
+  -webkit-transition: height 1s; /* Safari and Chrome */
+  -o-transition: height 1s; /* Opera */
+  -ms-transition: height 1s; /* IE9 (maybe) */
+}
+
+.purchaseButton:hover {
+  height: auto;
+}
+
+.tab {
+  font-family: 'Chewy', cursive;
+  padding: 4px;
+
+  background-color: white;
+  border: 1px solid black;
+  width: 60px;
+  height: 21px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+
+
+.questButton {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  border: 1px solid black;
+  width: 50px;
+  height: 21px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.questBar {
+  font-family: 'Chewy', cursive;
+  position: absolute;
+  padding: 7px;
+  left: 55px;
+  top: 0px;
+}
+
+#questBar {
+  width: 500px;
+}
+
+
+
+
+.generateButton {
+  font-family: 'Chewy', cursive;
+  padding: 4px;
+
+  background-color: white;
+  border: 1px solid black;
+  width: 200px;
+  height: 38px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
+  
+  transition: height 1s;
+  -moz-transition: height 1s; /* Firefox 4 */
+  -webkit-transition: height 1s; /* Safari and Chrome */
+  -o-transition: height 1s; /* Opera */
+  -ms-transition: height 1s; /* IE9 (maybe) */
+}
