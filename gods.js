@@ -19,8 +19,6 @@ function buyGoatHero() {
 	if(goats >= curCost) {
 		goatHeroes = goatHeroes + 1;
 		goats = goats - curCost;
-				
-		
 		
 		if(goatHeroes == 1) {
 			document.getElementById("quest").style.visibility = "visible";
@@ -33,7 +31,7 @@ function buyGoatHero() {
 }
 
 function getGoatHeroCost() {
-	return Math.floor(2 * (goatHeroes + 1));
+	return Math.floor(2 * Math.pow(1.1, goatHeroes));
 }
 
 function buySunGoat() {

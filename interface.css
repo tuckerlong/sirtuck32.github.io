@@ -7,27 +7,43 @@ h1 {
 	font-family: 'Chewy', cursive;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
 
 #info {
   font-family: 'Chewy', cursive;
   padding: 4px;
   background-color: white;
   position: fixed;
-  height: 50%;
-  width: 20%;
+  height: calc(100% - 128px);
+  width: 21%;
   border: 1px solid black;
-  left: calc(1%);
-  top: calc(25%);
+  left: 2px;
+  top: 85px;
 }
 
 #quest {
   background-color: white;
   position: fixed;
-  height: 30px;
-  width: 50%;
+  height: 51px;
+  width: calc(100% - 240px - 21% - 24px);
   border: 1px solid black;
-  left: calc(25%);
-  top: calc(25% - 50px);
+  left: calc(2px + 21% + 13px);
+  top: 85px;
+}
+
+#graphics {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  position: fixed;
+  padding: 4px;
+  height: calc(100% - 185px);
+  width: calc(100% - 240px - 21% - 32px);
+  border: 1px solid black;
+  left: calc(2px + 21% + 13px);
+  top: 142px;
+  overflow-y: scroll;
 }
 
 .rightMenu {
@@ -37,7 +53,7 @@ h1 {
   height: calc(100% - 120px);
   width: 240px;
   border: 1px solid black;
-  left: calc(100% - 240px);
+  left: calc(100% - 240px - 4px);
   top: 85px;
   overflow-y: scroll;
 }
@@ -48,7 +64,7 @@ h1 {
   height: 40px;
   width: 240px;
   border: 1px solid black;
-  left: calc(100% - 240px);
+  left: calc(100% - 240px - 4px);
   top: 40px;
 }
 

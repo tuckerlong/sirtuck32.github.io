@@ -8,7 +8,7 @@
   height: 20px;
   text-align: center;
   margin: 5px;
-  margin-right: 0px;
+  margin-left: 15px;
   display: inline-block;
   cursor: pointer;
   overflow: hidden;
@@ -28,7 +28,7 @@
   height: 38px;
   text-align: center;
   margin: 5px;
-  margin-right: 0px;
+  margin-left: 15px;
   display: inline-block;
   cursor: pointer;
   overflow: hidden;
@@ -58,6 +58,7 @@
 	  font-size: 150%;
 	}
 	.description {
+		font-family: 'Chewy', cursive;
 		font-size: 80%;
 	}
 
@@ -72,7 +73,7 @@
   height: 21px;
   text-align: center;
   margin: 5px;
-  margin-right: 0px;
+  margin-right: 1px;
   display: inline-block;
   cursor: pointer;
   overflow: hidden;
@@ -94,16 +95,31 @@
   overflow: hidden;
 }
 
-.questBar {
+#questBar {
   font-family: 'Chewy', cursive;
   position: absolute;
   padding: 7px;
-  left: 55px;
-  top: 0px;
+  width: 80%;
+  height: 15px;
+  left: 60px;
+  top: 10px;
 }
 
-#questBar {
-  width: 500px;
+#questDesc {
+  font-family: 'Chewy', cursive;
+  position: absolute;
+  padding: 7px;
+  width: 80%;
+  height: 15px;
+  left: 1px;
+  top: 25px;
+}
+
+#progress {
+  font-family: 'Chewy', cursive;
+  position: absolute;
+  left: calc(80% + 65px);
+  top: 6px;
 }
 
 
@@ -119,7 +135,7 @@
   height: 38px;
   text-align: center;
   margin: 5px;
-  margin-right: 0px;
+  margin-left: 15px;
   display: inline-block;
   cursor: pointer;
   overflow: hidden;

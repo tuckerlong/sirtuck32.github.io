@@ -38,6 +38,9 @@ function updateValues() {
 	
 	var ele = document.getElementById("plots");
 	if(ele !== null) ele.innerHTML = prettify(plots);
+		
+		ele = document.getElementById("plotSize");
+		if(ele !== null) ele.innerHTML = prettify(plotSize);
 	
 	ele = document.getElementById("goats");
 	if(ele !== null) ele.innerHTML = prettify(goats);
@@ -51,11 +54,9 @@ function updateValues() {
 		ele = document.getElementById("grassGoatModShow");
 		if(ele !== null) ele.innerHTML = prettify(goatMod);
 			
-	goatSpace = plots * plotMod - goats;
+	goatSpace = (plots * plotMod * plotSize) - goats;
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
-	
-	
-	
+
 	/*
 	 * 
 	 *
@@ -86,6 +87,10 @@ function updateCost() {
 	 */
 	var nextCost = getPlotCost();
 	var ele = document.getElementById("plotCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getLargerPlotCost();
+	ele = document.getElementById("plotUpgradeCost");
 	if(ele !== null) ele.innerHTML = prettify(nextCost);
 	
 	nextCost = getGoatCost();
@@ -230,6 +235,7 @@ function save() {
 	var save = { 
 		currency: currency,
 		plots: plots,
+		plotSize: plotSize,
 		goats: goats,
 		grass: grass,
 		goatHeroes: goatHeroes,
@@ -249,6 +255,8 @@ function load() {
 			currency = savegame.currency;
 		if(typeof savegame.plots !== "undefined")
 			plots = savegame.plots;
+		if(typeof savegame.plotSize !== "undefined")
+			plotSize = savegame.plotSize;
 		if(typeof savegame.goats !== "undefined")
 			goats = savegame.goats;
 		if(typeof savegame.grass !== "undefined")
@@ -270,7 +278,10 @@ function load() {
 		
 		if(goatHeroes >= 1) document.getElementById("quest").style.visibility = "visible";
 		
-		if(god !== "") document.getElementById("godName").innerHTML = god;
+		
+		if(god === "GOATSEIDON") document.getElementById("godName1").innerHTML = god;
+		else if(god === "GOMETER") document.getElementById("godName2").innerHTML = god;
+		else if(god ==="GOPOLLO") document.getElementById("godName3").innerHTML = god;
 		
 		updateValues();
 		updateCost();
@@ -358,7 +369,7 @@ window.setInterval(function() {
 					}
 				} else {
 					rndm = prettify(Math.floor(Math.random() * 100)); 
-					alert("You found " + rndm + " money.");
+					alert("You found " + rndm + " money. Keep questing and you might find something amazing!");
 					currencyClick(rndm);
 				}
 			} else {

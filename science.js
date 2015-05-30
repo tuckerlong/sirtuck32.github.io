@@ -26,9 +26,6 @@ function buyScienceGoat() {
 		updateValues();
 		updateCost();
 		calculateCurrency();
-		
-		document.getElementById("electricityText").style.visibility = "visible";
-		document.getElementById("electricityVal").style.visibility = "visible";
 	};
 }
 

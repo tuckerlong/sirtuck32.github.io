@@ -29,6 +29,14 @@ function buyPlot() {
 		goatSpace = goatSpace + 10;
 		currency = currency - curCost;
 		
+		img = document.createElement("img");
+		img.src = "basePlot.png";
+		//img.style.position = "absolute";
+		//img.style.left = "50px";
+		//img.style.top = "50px";
+		img.style.zIndex = 100;
+		document.getElementById("graphics").appendChild(img);
+		
 		if(plots == 1) plotBonusOne();
 		if(plots == 2) plotBonusTwo();
 		
@@ -48,7 +56,7 @@ function plotBonusOne() {
 	
 	var des = document.createElement("div");
 	des.className = "description";
-	des.innerHTML = "Increases money production of base goats by <span id=\"grassGoatModShow\">0.1</span> per/s for each grass."
+	des.innerHTML = "Increases money production of base goats by <span id=\"grassGoatModShow\">0.1</span> per/s for each grass.";
 	button.appendChild(des);
 	
 	des = document.createElement("div");
@@ -59,7 +67,15 @@ function plotBonusOne() {
 
 function plotBonusTwo() {
 	createButton(buyScienceGoat, "Science Goat", "scienceGoats", "<span id=\"scienceGoatCost\">0</span> money", document.getElementById("purchase"));
-	createButton(upgradeGrass, "Larger Plots", "plotSize", "<span id=\"plotUpgradeCost\">0</span> money", document.getElementById("upgrades"));
+	var button = createButton(upgradePlot, "Larger Plots", "plotSize", "<span id=\"plotUpgradeCost\">0</span> money", document.getElementById("upgrades"));
+	
+	var br = document.createElement("br");
+	button.appendChild(br);
+	
+	var des = document.createElement("div");
+	des.className = "description";
+	des.innerHTML = "Increases the amount of goat space each plot provides by 10.";
+	button.appendChild(des);
 }
 
 function getPlotCost() {
@@ -109,4 +125,20 @@ function upgradeGrass() {
 
 function getGrassCost() {
 	return Math.floor(100 * Math.pow(1.5, grass));
+}
+
+function upgradePlot() {
+	var curCost = getLargerPlotCost();
+	if(currency >= curCost) {
+		plotSize = plotSize + 1;
+		currency = currency - curCost;
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	};
+}
+
+function getLargerPlotCost() {
+	return Math.floor(500 * Math.pow(1.5, plotSize));
 }
