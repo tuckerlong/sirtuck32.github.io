@@ -31,11 +31,27 @@ function buyPlot() {
 		
 		img = document.createElement("img");
 		img.src = "basePlot.png";
+		img.className = "plotImg";
+		img.onload = "draw";
+		img.width = 200;
+		img.height = 200;
 		//img.style.position = "absolute";
 		//img.style.left = "50px";
 		//img.style.top = "50px";
-		img.style.zIndex = 100;
+		//img.style.zIndex = 100;
+		
+		/*canvas = document.createElement("canvas");
+		canvas.id = "canvas";
+		canvas.width = 200;
+		canvas.height = 200;
+		canvas.style="border:1px solid #d3d3d3;";
+		canvas.innerHTML = "Your browser does not support the HTML5 canvas tag.";*/
+		
+		
 		document.getElementById("graphics").appendChild(img);
+		//document.getElementById("graphics").appendChild(canvas);
+		//var cxt = document.getElementById("canvas").getContext("2d");
+		//cxt.drawImage(img,0,0, 200, 200);
 		
 		if(plots == 1) plotBonusOne();
 		if(plots == 2) plotBonusTwo();
@@ -89,17 +105,24 @@ function buyGoat() {
 		goatSpace = goatSpace - 1;
 		currency = currency - curCost;
 		
+		var maxGoatSpace = (plots * plotMod * plotSize);
+		var plotId = Math.max(Math.floor((maxGoatSpace - goatSpace -1)/10), 0);
+		
+		var graphics = document.getElementById("graphics").getBoundingClientRect();
+		var gPlots = Math.floor((graphics.right - graphics.left - 8)/200);
+		var rect = document.getElementsByClassName("plotImg")[plotId].getBoundingClientRect();
+
 		img = document.createElement("img");
-		img.src = "goat.png";
+		img.src = "baseGoat.png";
 		img.style.position = "absolute";
-		img.style.left = "50px";
-		img.style.top = "50px";
-		img.style.width = "50px";  // Make these match the image...
-		img.style.height = "50px";
+		img.className = "baseGoatImg";
+		var leftMod = (200 * Math.floor(plotId%gPlots)) + 40 + (50 * Math.floor((Math.floor(goats-1)%10)%3));
+		var topMod = Math.max((210 * Math.floor(plotId/gPlots)), 5) + (50 * Math.floor((Math.floor(goats-1)%10)/3)) - (5 * Math.max((Math.floor(plotId/gPlots)-1),0));
+		img.style.left = (leftMod + "px");
+		img.style.top = topMod + "px";
 		img.style.zIndex = 100;
 		
-		document.body.appendChild(img);
-		window.setTimeout(function(){wanderAround(100, img, 50)}, 200);
+		document.getElementById("graphics").appendChild(img);
 		
 		updateValues();
 		updateCost();

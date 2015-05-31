@@ -24,6 +24,13 @@ function buyGoatHero() {
 			document.getElementById("quest").style.visibility = "visible";
 		}
 		
+
+		var goatImgs = document.getElementsByClassName("baseGoatImg");
+		var len = goatImgs.length;
+		for(i = len; i > len - curCost; i--) {
+			document.getElementsByClassName("baseGoatImg")[i-1].remove();
+		}
+		
 		updateValues();
 		updateCost();
 		calculateCurrency();

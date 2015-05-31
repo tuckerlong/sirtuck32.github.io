@@ -1,4 +1,4 @@
-var currency = 0;
+var currency = 100000;
 var currencyInc = 0;
 
 var quest = "inactive";
@@ -321,6 +321,26 @@ function showGod() {
 	}
 }
 
+/*
+ * Provided by: http://stackoverflow.com/questions/3387427/remove-element-by-id
+ *
+ */
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+
+/*
+ * Provided by: http://stackoverflow.com/questions/3387427/remove-element-by-id
+ *
+ */
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = 0, len = this.length; i < len; i++) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
+}
+
 function deleteSave() {
 	localStorage.removeItem("save")
 }
@@ -381,3 +401,48 @@ window.setInterval(function() {
 	}
 }, 500);
 
+window.onresize = resize;
+
+function resize() {
+	var goatImgs = document.getElementsByClassName("baseGoatImg");
+	var graphics = document.getElementById("graphics").getBoundingClientRect();
+	
+	var gPlots = Math.floor((graphics.right - graphics.left - 8)/200);
+	var len = goatImgs.length;
+	console.log("Can hold " + gPlots + " plots. And found " + len + " goats.");
+	for(i = len; i > 0; i--) {
+		document.getElementsByClassName("baseGoatImg")[i-1].remove();
+	}
+	
+	var maxGoatSpace = (plots * plotMod * plotSize);
+	goatSpace += len;
+	goats -= len;
+	for(i = 0; i < len; i++) {
+		goats += 1;
+		goatSpace -= 1;
+		var plotId = Math.max(Math.floor((maxGoatSpace - goatSpace - 1)/10), 0);
+		var rect = document.getElementsByClassName("plotImg")[plotId].getBoundingClientRect();
+		
+		img = document.createElement("img");
+		img.src = "baseGoat.png";
+		img.style.position = "absolute";
+		img.className = "baseGoatImg";
+		var leftMod = (200 * Math.floor(plotId%gPlots)) + 40 + (50 * Math.floor((Math.floor(goats-1)%10)%3));
+		var topMod = Math.max((210 * Math.floor(plotId/gPlots)), 5) + (50 * Math.floor((Math.floor(goats-1)%10)/3)) - (5 * Math.max((Math.floor(plotId/gPlots)-1),0));
+		img.style.left = (leftMod + "px");
+		img.style.top = topMod + "px";
+		img.style.zIndex = 100;
+		
+		console.log(plotId);
+		document.getElementById("graphics").appendChild(img);
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+}
