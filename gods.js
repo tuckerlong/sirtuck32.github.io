@@ -1,4 +1,5 @@
 var god = "";
+var blessing = "inactive";
 
 var favor = 0;
 var favorInc = 0;
@@ -21,7 +22,7 @@ function buyGoatHero() {
 		goats = goats - curCost;
 		
 		if(goatHeroes == 1) {
-			document.getElementById("quest").style.visibility = "visible";
+			document.getElementById("heroTab").style.display = "block";
 		}
 		
 
@@ -69,3 +70,24 @@ function praiseIt() {
 	
 	updateValues();
 }
+
+function buyBlessing() {
+	if(favor >= 1000 && blessing === "inactive") {
+		favor -= 1000;
+		blessing = "active";
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	}
+}
+
+window.setInterval(function() {
+	if(blessing === "active") {
+		document.getElementById("blessingBar").value += 1;
+		if(document.getElementById("blessingBar").value >= document.getElementById("blessingBar").max) {
+			blessing = "inactive";
+			document.getElementById("blessingBar").value = 0;
+			calculateCurrency();
+		}
+	}
+}, 500);

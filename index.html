@@ -2,20 +2,27 @@
 <html>
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
-		<title id="title">Goats Galore v1.01 - Gods Galore</title>
+		<title id="title">Goats Galore v0.01 - Gods Galore</title>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
 		<link rel="stylesheet" type="text/css" href="buttons.css" />
+		<link rel="stylesheet" type="text/css" href="quest.css" />
 		
 		<script type="text/javascript" src="main.js"></script>
 		<script type="text/javascript" src="basic.js"></script>
 	</head>
 	
 	<body onload="startup()">
+		<div id="banner">
+			<img src="Gopollobanner.png">	
+		</div>
 
-		<h1>Goats Galore v1.01 - Gods Galore</h1>
-				
-		<p></p>
+		<div id="title" style="text-align:center">Goats Galore v0.01 - Gods Galore</div>
 
+		<div id="infoTabs">
+			<div id="statsTab" class="tab" onclick="showSpace()">Stats</div>
+			<div id="optionsTab" class="tab" onclick="showHeroic()">Options</div>
+		</div>
+		
 		<div id="info">
 			<div id="currencyText">Money: <span id="currency">0</span></div>
 			<div id="currencyVal">Per Second: <span id="currencyInc">0</span></div>
@@ -24,14 +31,23 @@
 			<div id="electricityVal">Per Second: <span id="electricityInc">0</span></div>
 			<br/>
 			Available Goat Space: <span id="goatSpace">0</span>
-			<br/>
-			<div id="bionicGoatText">Bionic Goats: <span id="bionicGoats">0</span></div>
 		</div>
 		
-		<div id="quest">
-			<div id="questButton" class="questButton" onclick="startQuest();">Start Goat Quest!</div>
-			<div class="questBar"> <progress id="questBar" value="0" max = "200"></progress><span id="progress">0%</span> </div>
-			<div id="questDesc" class="description">Go on a quest with your amazing goat heroes!</div>
+		<div id="questTabs">
+			<div id="spaceTab" class="questTab" onclick="showSpace()">Space</div>
+			<div id="heroTab" class="questTab" onclick="showHeroic()">Heroic</div>
+		</div>
+		
+		<div id="spaceQuest" class="quest">
+			<div class="questButton" onclick="startSpaceQuest()">Start Space Quest!</div>
+			<div> <progress id="spaceQuestBar" class="progressBar" value="0" max = "2000"></progress><span id="spaceProgress" class="progress">0%</span> </div>
+			<div class="questDesc">Search through space with your rockets!</div>
+		</div>
+		
+		<div id="heroicQuest", class="quest">
+			<div class="questButton" onclick="startQuest();">Start Goat Quest!</div>
+			<div> <progress id="questBar" class="progressBar" value="0" max = "200"></progress><span id="progress" class="progress">0%</span> </div>
+			<div class="questDesc">Go on a quest with your amazing goat heroes!</div>
 		</div>
 		
 		<div id="graphics">
@@ -74,12 +90,19 @@
 					Praise It<br/>
 					<div class="description">Increases your favor with Gopollo by 1.</div>
 				</div>
-				<div id="boon1" class="purchaseButton" onclick="buySunGoat();">
+				<div id="boon2" class="purchaseButton" onclick="buySunGoat();">
 					<div class="objName">Sun Goat</div>
 					<div class="count"><span id="sunGoats">0</span></div><br/>
 					<div class="price"><span id="sunGoatCost">1 Goat Hero, 10 favor</span></div><br/>
 					<div class="description">Provides 1 money/s and 1 favor/s.</div>
 					<div class="description">You currently have <span id="sunGoatCostOneShow">0</span> Goat Hero(es).</div>
+				</div>
+				
+				<div class="purchaseButton" onclick="buyBlessing()">
+					<div class="objName">Blessing</div><br/>
+					<progress id="blessingBar" class="buffBar" value="0" max="30"></progress>
+					<div class="price"><span id="blessingCost">1000 favor</span></div><br/>
+					<div class="description">Provides 2x money for 30s.</div>
 				</div>
 			</div>
 			

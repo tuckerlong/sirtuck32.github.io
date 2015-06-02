@@ -1,0 +1,83 @@
+#questTabs {
+  background-color: white;
+  position: fixed;
+  height: 40px;
+  width: calc(100% - 240px - 21% - 24px);
+  border: 1px solid black;
+  left:  calc(2px + 21% + 13px);
+  top: 40px;
+  display: none;
+}
+
+.questTab {
+  font-family: 'Chewy', cursive;
+  padding: 4px;
+  background-color: white;
+  border: 1px solid black;
+  width: 60px;
+  height: 21px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 1px;
+  cursor: pointer;
+  overflow: hidden;
+  float: left;
+  display: none;
+}
+
+.quest {
+  background-color: white;
+  position: fixed;
+  height: 51px;
+  width: calc(100% - 240px - 21% - 24px);
+  border: 1px solid black;
+  left: calc(2px + 21% + 13px);
+  top: 85px;
+  display: none;
+}
+
+.questButton {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  border: 1px solid black;
+  width: 150px;
+  height: 21px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.progressBar {
+  width: calc(80% - 100px);
+  position: absolute;
+  left: 160px;
+  top: 9px;
+}
+
+.progress {
+  font-family: 'Chewy', cursive;
+  position: absolute;
+  left: calc(87%);
+  top: 5px;
+}
+
+.questDesc {
+  font-family: 'Chewy', cursive;
+  position: absolute;
+  padding: 7px;
+  font-size: 80%;
+  height: 15px;
+  left: 0px;
+  top: 24px;
+}
+
+.buffBar {
+  width: 50%;
+  position: relative;
+  float:right;
+  left: 0px;
+  top: 0px;
+}

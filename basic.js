@@ -1,3 +1,6 @@
+var currency = 0;
+var currencyInc = 0;
+
 var plots = 0;
 var plotMod = 10;
 var plotBaseCost = 25;
@@ -16,10 +19,14 @@ function currencyClick(number) {
 	currency = currency + prettify(number);
 	document.getElementById("currency").innerHTML = prettify(currency);
 	
-	if(currency >= 25 && document.getElementById("plots") === null) {
-		createButton(buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
-		updateCost();
-	}
+	if(currency >= 25 && document.getElementById("plots") === null) currencyBonusOne()
+}
+
+function currencyBonusOne() {
+	button = createButton(buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
+		addBreak(button);
+		addDescription(button, "Increases the amount of goat space by 10 for each plot.");
+	updateCost();
 }
 
 function buyPlot() {
@@ -29,29 +36,7 @@ function buyPlot() {
 		goatSpace = goatSpace + 10;
 		currency = currency - curCost;
 		
-		img = document.createElement("img");
-		img.src = "basePlot.png";
-		img.className = "plotImg";
-		img.onload = "draw";
-		img.width = 200;
-		img.height = 200;
-		//img.style.position = "absolute";
-		//img.style.left = "50px";
-		//img.style.top = "50px";
-		//img.style.zIndex = 100;
-		
-		/*canvas = document.createElement("canvas");
-		canvas.id = "canvas";
-		canvas.width = 200;
-		canvas.height = 200;
-		canvas.style="border:1px solid #d3d3d3;";
-		canvas.innerHTML = "Your browser does not support the HTML5 canvas tag.";*/
-		
-		
-		document.getElementById("graphics").appendChild(img);
-		//document.getElementById("graphics").appendChild(canvas);
-		//var cxt = document.getElementById("canvas").getContext("2d");
-		//cxt.drawImage(img,0,0, 200, 200);
+		addPlotImg();
 		
 		if(plots == 1) plotBonusOne();
 		if(plots == 2) plotBonusTwo();
@@ -62,36 +47,34 @@ function buyPlot() {
 	}
 }
 
+function addPlotImg() {
+	img = document.createElement("img");
+	img.src = "basePlot.png";
+	img.className = "plotImg";
+	img.onload = "draw";
+	img.width = 200;
+	img.height = 200;
+	
+	document.getElementById("graphics").appendChild(img);
+}
+
 function plotBonusOne() {
-	createButton(buyGoat, "Goat", "goats", "<span id=\"goatCost\">0</span> money", document.getElementById("purchase"));
-	createButton(buyGoatHero, "Goat Hero", "goatHeroes", "<span id=\"goatHeroCost\">0</span> goats", document.getElementById("purchase"));			
-	var button = createButton(upgradeGrass, "Grass", "grass", "<span id=\"grassCost\">0</span> money", document.getElementById("upgrades"));
+	var button = createButton(buyGoat, "Goat", "goats", "<span id=\"goatCost\">0</span> money", document.getElementById("purchase"));
+		addBreak(button);
+		addDescription(button, "Increases money production base by " + goatMod + " per/s for each goat.");
 	
-	var br = document.createElement("br");
-	button.appendChild(br);
+	createButton(buyGoatHero, "Goat Hero", "goatHeroes", "<span id=\"goatHeroCost\">0</span> goats", document.getElementById("purchase"));	
 	
-	var des = document.createElement("div");
-	des.className = "description";
-	des.innerHTML = "Increases money production of base goats by <span id=\"grassGoatModShow\">0.1</span> per/s for each grass.";
-	button.appendChild(des);
-	
-	des = document.createElement("div");
-	des.className = "description";
-	des.innerHTML = "You currently have <span id=\"grassGoatShow\">0</span> base goats."
-	button.appendChild(des);
+	button = createButton(upgradeGrass, "Grass", "grass", "<span id=\"grassCost\">0</span> money", document.getElementById("upgrades"));
+		addBreak(button);
+		addDescription(button, "Increases money production of base goats by <span id=\"grassGoatModShow\">0.1</span> per/s for each grass.");
+		addDescription(button, "You currently have <span id=\"grassGoatShow\">0</span> base goats.");
 }
 
 function plotBonusTwo() {
-	createButton(buyScienceGoat, "Science Goat", "scienceGoats", "<span id=\"scienceGoatCost\">0</span> money", document.getElementById("purchase"));
-	var button = createButton(upgradePlot, "Larger Plots", "plotSize", "<span id=\"plotUpgradeCost\">0</span> money", document.getElementById("upgrades"));
-	
-	var br = document.createElement("br");
-	button.appendChild(br);
-	
-	var des = document.createElement("div");
-	des.className = "description";
-	des.innerHTML = "Increases the amount of goat space each plot provides by 10.";
-	button.appendChild(des);
+	button = createButton(buyScienceGoat, "Science Goat", "scienceGoats", "<span id=\"scienceGoatCost\">0</span> money", document.getElementById("purchase"));
+		addBreak(button);
+		addDescription(button, "Increases electricity production base by " + scienceGoatMod + " per/s for each science goat.");
 }
 
 function getPlotCost() {

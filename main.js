@@ -1,7 +1,6 @@
-var currency = 100000;
-var currencyInc = 0;
-
 var quest = "inactive";
+var spaceQuest = "inactive";
+var size = 0;
 
 function createButton(onclick, text, varName, varCost, div) {
 	var button = document.createElement("div");
@@ -33,6 +32,18 @@ function createButton(onclick, text, varName, varCost, div) {
 	return button;
 }
 
+function addBreak(button) {
+	var br = document.createElement("br");
+	button.appendChild(br);
+}
+
+function addDescription(button, description) {
+	var des = document.createElement("div");
+	des.className = "description";
+	des.innerHTML = description;
+	button.appendChild(des);
+}
+
 function updateValues() {
 	document.getElementById("currency").innerHTML = prettify(currency);
 	
@@ -53,8 +64,20 @@ function updateValues() {
 		
 		ele = document.getElementById("grassGoatModShow");
 		if(ele !== null) ele.innerHTML = prettify(goatMod);
+		
+	ele = document.getElementById("scienceGoats");
+	if(ele !== null) ele.innerHTML = prettify(scienceGoats);
+	
+	ele = document.getElementById("bionicGoats");
+	if(ele !== null) ele.innerHTML = prettify(bionicGoats);
+	
+	ele = document.getElementById("electricity");
+	if(ele !== null) ele.innerHTML = prettify(electricity);
+	
+	ele = document.getElementById("rockets");
+	if(ele !== null) ele.innerHTML = prettify(rockets);
 			
-	goatSpace = (plots * plotMod * plotSize) - goats;
+	goatSpace = (plots * plotMod * plotSize) - goats - scienceGoats - bionicGoats;
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
 
 	/*
@@ -101,6 +124,18 @@ function updateCost() {
 	ele = document.getElementById("grassCost");
 	if(ele !== null) ele.innerHTML = prettify(nextCost);
 	
+	nextCost = getScienceGoatCost();
+	ele = document.getElementById("scienceGoatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getBionicGoatCost();
+	ele = document.getElementById("bionicGoatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getRocketCost();
+	ele = document.getElementById("rocketCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
 	/*
 	 * 
 	 *
@@ -126,7 +161,8 @@ function calculateCurrency() {
 	 *
 	 *
 	 */
-	currencyInc = (goats * goatMod * grass) + (sunGoats * sunGoatCurrencyMod);
+	currencyInc = (goats * goatMod * grass) + (sunGoats * sunGoatCurrencyMod) + (bionicGoats * bionicGoatCurrencyMod);
+	if(blessing === "active") currencyInc *= 2;
 	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
 	
 	/*
@@ -139,12 +175,16 @@ function calculateCurrency() {
 	favorInc = (sunGoats * sunGoatFavorMod);
 	document.getElementById("favorInc").innerHTML = prettify(favorInc);
 	
-	electricityInc = scienceGoats * scienceGoatMod;
+	electricityInc = (scienceGoats * scienceGoatMod) + (bionicGoats * bionicGoatElectricityMod) + (rockets * rocketMod);
 	document.getElementById("electricityInc").innerHTML = prettify(electricityInc);
 }
 
 function startQuest() {
 	quest = "active";
+}
+
+function startSpaceQuest() {
+	spaceQuest = "active";
 }
 
 function wanderAround(counter, img, left) {
@@ -179,7 +219,7 @@ function startup() {
 	document.getElementById("tabs").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	document.getElementById("purchase").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	document.getElementById("upgrades").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
-	document.getElementById("quest").style.visibility = "hidden";
+	//document.getElementById("quest").style.visibility = "hidden";
 	
 	document.getElementById("purchase").style.display = "block";	
 	document.getElementById("upgrades").style.display = "none";
@@ -238,6 +278,12 @@ function save() {
 		plotSize: plotSize,
 		goats: goats,
 		grass: grass,
+		
+		scienceGoats: scienceGoats,
+		electricity: electricity,
+		bionicGoats: bionicGoats,
+		rockets: rockets,
+		
 		goatHeroes: goatHeroes,
 		god: god,
 		favor: favor,
@@ -261,6 +307,16 @@ function load() {
 			goats = savegame.goats;
 		if(typeof savegame.grass !== "undefined")
 			grass = savegame.grass;
+			
+		if(typeof savegame.scienceGoats !== "undefined")
+			scienceGoats = savegame.scienceGoats;
+		if(typeof savegame.electricity !== "undefined")
+			electricity = savegame.electricity;
+		if(typeof savegame.bionicGoats !== "undefined")
+			bionicGoats = savegame.bionicGoats;	
+		if(typeof savegame.rockets !== "undefined")
+			rockets = savegame.rockets;	
+			
 		if(typeof savegame.goatHeroes !== "undefined")
 			goatHeroes = savegame.goatHeroes;
 		if(typeof savegame.god !== "undefined")
@@ -270,23 +326,46 @@ function load() {
 		if(typeof savegame.sunGoats !== "undefined")
 			sunGoats = savegame.sunGoats;
 			
-		if((currency >= 25 && plots == 0) || plots >= 1)
-			createButton(buyPlot, "Plot", "plots", "<span id=\"plotCost\">0</span> money", document.getElementById("purchase"));
+		if((currency >= 25 && plots == 0) || plots >= 1) currencyBonusOne();
 		
 		if(plots >= 1) plotBonusOne();
 		if(plots >= 2) plotBonusTwo();
 		
-		if(goatHeroes >= 1) document.getElementById("quest").style.visibility = "visible";
+		if((electricity >= 25 && bionicGoats == 0) || bionicGoats >= 1) electricityBonusOne();
+		
+		if(rockets >= 1 || scienceGoats >= 10) scienceGoatBonusOne();
+		if(rockets >= 1) rocketBonusOne();
+		
+		if(goatHeroes >= 1) document.getElementById("heroTab").style.display = "block";
 		
 		
 		if(god === "GOATSEIDON") document.getElementById("godName1").innerHTML = god;
 		else if(god === "GOMETER") document.getElementById("godName2").innerHTML = god;
-		else if(god ==="GOPOLLO") document.getElementById("godName3").innerHTML = god;
+		else if(god ==="GOPOLLO") {
+			document.getElementById("godName3").innerHTML = god;
+			document.getElementById("banner").style.display = "block";
+		}
+		
+		for(i = 0; i < plots; i++)
+			addPlotImg();
+			
+		size = goats;
+		resize();
 		
 		updateValues();
 		updateCost();
 		calculateCurrency();
 	}
+}
+
+function showSpace() {
+	document.getElementById("spaceQuest").style.display = "block";
+	document.getElementById("heroicQuest").style.display = "none";
+}
+
+function showHeroic() {
+	document.getElementById("spaceQuest").style.display = "none";
+	document.getElementById("heroicQuest").style.display = "block";
 }
 
 function showUpgrades() {
@@ -363,26 +442,27 @@ window.setInterval(function() {
 			
 			rndm = Math.random();
 			if(god === "") {
-				if(rndm < 0.25) {
+				if(rndm < 1) {
 					rndm = Math.random();
-					if(rndm < 0.33) {
+					if(rndm < 0) {
 						if(confirm("You found the statue of the Ancient God Goatseidon. Will you worship it?") == true) {
 							god = "GOATSEIDON";
-							document.getElementById("godName").innerHTML = god;
+							document.getElementById("godName1").innerHTML = "GOATSEIDON";
 							document.getElementById("god").style.display = "block";
 							document.getElementById("goatseidon").style.display = "block";	
 						}
-					} else if(rndm >= 0.33 && rndm < 0.66) {
+					} else if(rndm < 0) {
 						if(confirm("You found the statue of the Ancient God Gometer. Will you worship it?") == true) {
 							god = "GOMETER";
-							document.getElementById("godName").innerHTML = god;
+							document.getElementById("godName2").innerHTML = "GOMETER";
 							document.getElementById("god").style.display = "block";
 							document.getElementById("gometer").style.display = "block";
 						}
 					} else {
 						if(confirm("You found the statue of the Ancient God Gopollo. Will you worship it?") == true) {
 							god = "GOPOLLO";
-							document.getElementById("godName").innerHTML = god;
+							document.getElementById("banner").style.display = "block";
+							document.getElementById("godName3").innerHTML = "GOPOLLO";
 							document.getElementById("god").style.display = "block";
 							document.getElementById("gopollo").style.display = "block";
 						}
@@ -401,6 +481,21 @@ window.setInterval(function() {
 	}
 }, 500);
 
+window.setInterval(function() {
+	if(spaceQuest === "active") {
+		document.getElementById("spaceQuestBar").value += (1 * rockets);
+		document.getElementById("spaceProgress").innerHTML = prettify(document.getElementById("spaceQuestBar").value/document.getElementById("spaceQuestBar").max * 100) + "%";
+		if(document.getElementById("spaceQuestBar").value >= document.getElementById("spaceQuestBar").max) {
+			spaceQuest = "inactive";
+			document.getElementById("spaceQuestBar").value = 0;
+			document.getElementById("spaceProgress").innerHTML = "Finished"
+			
+			
+			rndm = Math.random();
+		}
+	}
+}, 500);
+
 window.onresize = resize;
 
 function resize() {
@@ -409,15 +504,15 @@ function resize() {
 	
 	var gPlots = Math.floor((graphics.right - graphics.left - 8)/200);
 	var len = goatImgs.length;
-	console.log("Can hold " + gPlots + " plots. And found " + len + " goats.");
+	//console.log("Can hold " + gPlots + " plots. And found " + len + " goats.");
 	for(i = len; i > 0; i--) {
 		document.getElementsByClassName("baseGoatImg")[i-1].remove();
 	}
 	
 	var maxGoatSpace = (plots * plotMod * plotSize);
-	goatSpace += len;
-	goats -= len;
-	for(i = 0; i < len; i++) {
+	goatSpace = maxGoatSpace;
+	goats = 0;
+	for(i = 0; i < Math.max(len, size); i++) {
 		goats += 1;
 		goatSpace -= 1;
 		var plotId = Math.max(Math.floor((maxGoatSpace - goatSpace - 1)/10), 0);
@@ -433,16 +528,7 @@ function resize() {
 		img.style.top = topMod + "px";
 		img.style.zIndex = 100;
 		
-		console.log(plotId);
+		//console.log(plotId + " " + maxGoatSpace + " " + goatSpace);
 		document.getElementById("graphics").appendChild(img);
-	}
-
-
-	
-	
-	
-	
-	
-	
-	
+	}	
 }
