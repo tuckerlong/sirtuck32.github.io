@@ -10,6 +10,9 @@ var sunGoats = 0;
 var sunGoatCurrencyMod = 1.0;
 var sunGoatFavorMod = 1.0;
 
+var soothyGoats = 0;
+var unlockSoothy = 0;
+
 function favorClick(number) {
 	favor += prettify(number);
 	document.getElementById("favor").innerHTML = prettify(favor);
@@ -81,6 +84,39 @@ function buyBlessing() {
 		updateCost();
 		calculateCurrency();
 	}
+}
+
+function buySoothyGoat() {
+	var curCost = getSoothyGoatCost();
+	if(currency >= curCost) {
+		soothyGoats += 1;
+		currency -= curCost;
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	}
+}
+
+function unlockSoothyGoat() {
+	if(favor >= 10000) {
+		unlockSoothy = 1;
+		favor -= 10;
+		
+		var button = createButton(buySoothyGoat, "Soothy Goat", "soothyGoats", "<span id=\"soothyGoatCost\">0</span> money", document.getElementById("purchase"));
+		addBreak(button);
+		addDescription(button, "Increases the amount found during quest.");
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+		
+		document.getElementById("soothyUnlock").remove();
+	}
+}
+
+function getSoothyGoatCost() {
+	return Math.floor(2000 * Math.pow(1.2, soothyGoats));
 }
 
 window.setInterval(function() {

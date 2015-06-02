@@ -2,6 +2,8 @@ var quest = "inactive";
 var spaceQuest = "inactive";
 var size = 0;
 
+var scienceGoatUpgradeOne = 0;
+
 function createButton(onclick, text, varName, varCost, div) {
 	var button = document.createElement("div");
 	button.className = "purchaseButton";
@@ -26,6 +28,33 @@ function createButton(onclick, text, varName, varCost, div) {
 	button.appendChild(price);
 	
 	br = document.createElement("br");
+	div.appendChild(br);
+	div.appendChild(button);
+	
+	return button;
+}
+
+function createOneTimeButton(onclick, text, idName, varCost, div) {
+	var button = document.createElement("div");
+	button.className = "purchaseButton";
+	button.id = idName;
+	button.onclick = onclick;
+	
+	var name = document.createElement("div");
+	name.className = "objName";
+	name.innerHTML = text;
+	button.appendChild(name);
+
+	var br = document.createElement("br");
+	button.appendChild(br);
+	
+	var price = document.createElement("div");
+	price.className = "price";
+	price.innerHTML = varCost
+	button.appendChild(price);
+	
+	br = document.createElement("br");
+	br.id = idName + "br";
 	div.appendChild(br);
 	div.appendChild(button);
 	
@@ -98,6 +127,9 @@ function updateValues() {
 
 		ele = document.getElementById("sunGoatCostOneShow");
 		if(ele !== null) ele.innerHTML = prettify(goatHeroes);
+	
+	ele = document.getElementById("soothyGoats");
+	if(ele !== null) ele.innerHTML = prettify(soothyGoats);
 }
 
 function updateCost() {
@@ -151,6 +183,10 @@ function updateCost() {
 	var nextSecCost = getSunGoatCostTwo()
 	ele = document.getElementById("sunGoatCost");
 	if(ele !== null) ele.innerHTML = prettify(nextCost) + " Goat Hero(es), " + prettify(nextSecCost) + " favor";
+	
+	nextCost = getSoothyGoatCost();
+	ele = document.getElementById("soothyGoatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
 }
 
 function calculateCurrency() {
@@ -283,11 +319,14 @@ function save() {
 		electricity: electricity,
 		bionicGoats: bionicGoats,
 		rockets: rockets,
+		scienceGoatUpgradeOne: scienceGoatUpgradeOne,
 		
 		goatHeroes: goatHeroes,
 		god: god,
 		favor: favor,
-		sunGoats: sunGoats
+		sunGoats: sunGoats,
+		soothyGoats: soothyGoats,
+		unlockSoothy: unlockSoothy
 	}
 	localStorage.setItem("save", JSON.stringify(save));
 }
@@ -316,6 +355,8 @@ function load() {
 			bionicGoats = savegame.bionicGoats;	
 		if(typeof savegame.rockets !== "undefined")
 			rockets = savegame.rockets;	
+		if(typeof savegame.scienceGoatUpgradeOne !== "undefined")
+			scienceGoatUpgradeOne = savegame.scienceGoatUpgradeOne;	
 			
 		if(typeof savegame.goatHeroes !== "undefined")
 			goatHeroes = savegame.goatHeroes;
@@ -325,6 +366,10 @@ function load() {
 			favor = savegame.favor;
 		if(typeof savegame.sunGoats !== "undefined")
 			sunGoats = savegame.sunGoats;
+		if(typeof savegame.soothyGoats !== "undefined")
+			soothyGoats = savegame.soothyGoats;
+		if(typeof savegame.unlockSoothy !== "undefined")
+			unlockSoothy = savegame.unlockSoothy;
 			
 		if((currency >= 25 && plots == 0) || plots >= 1) currencyBonusOne();
 		
@@ -334,7 +379,10 @@ function load() {
 		if((electricity >= 25 && bionicGoats == 0) || bionicGoats >= 1) electricityBonusOne();
 		
 		if(rockets >= 1 || scienceGoats >= 10) scienceGoatBonusOne();
+		if(scienceGoats >= 20 && scienceGoatUpgradeOne == 0) scienceGoatBonusTwo();
 		if(rockets >= 1) rocketBonusOne();
+		
+		scienceGoatMod = 0.1 + (0.1 * scienceGoatUpgradeOne); 
 		
 		if(goatHeroes >= 1) goatHeroBonusOne();
 		
@@ -344,6 +392,14 @@ function load() {
 		else if(god ==="GOPOLLO") {
 			document.getElementById("godName3").innerHTML = god;
 			document.getElementById("banner").style.display = "block";
+		}
+		
+		if(unlockSoothy === 1) {
+			document.getElementById("soothyUnlock").remove();
+		
+			var button = createButton(buySoothyGoat, "Soothy Goat", "soothyGoats", "<span id=\"soothyGoatCost\">0</span> money", document.getElementById("purchase"));
+			addBreak(button);
+			addDescription(button, "Increases the amount found during quest.");
 		}
 		
 		for(i = 0; i < plots; i++)
@@ -442,7 +498,7 @@ window.setInterval(function() {
 			
 			rndm = Math.random();
 			if(god === "") {
-				if(rndm < 1) {
+				if(rndm < 0.15) {
 					rndm = Math.random();
 					if(rndm < 0) {
 						if(confirm("You found the statue of the Ancient God Goatseidon. Will you worship it?") == true) {
@@ -468,12 +524,12 @@ window.setInterval(function() {
 						}
 					}
 				} else {
-					rndm = prettify(Math.floor(Math.random() * 100)); 
+					rndm = prettify(Math.floor(Math.random() * (100 + (100 * soothyGoats))) + 1 + (50 * soothyGoats)); 
 					alert("You found " + rndm + " money. Keep questing and you might find something amazing!");
 					currencyClick(rndm);
 				}
 			} else {
-				rndm = prettify(Math.floor(Math.random() * 100)); 
+				rndm = prettify(Math.floor(Math.random() * (100 + (100 * soothyGoats))) + 1 + (50 * soothyGoats)); 
 				alert("You found " + rndm + " money. Keep questing and you might find something amazing!");
 				currencyClick(rndm);
 			}

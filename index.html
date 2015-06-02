@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
-		<title id="title">Goats Galore v0.02 - Gods Galore</title>
+		<title id="title">Goats Galore v0.021 - Gods Galore</title>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
 		<link rel="stylesheet" type="text/css" href="buttons.css" />
 		<link rel="stylesheet" type="text/css" href="quest.css" />
@@ -16,11 +16,11 @@
 			<img src="Gopollobanner.png">	
 		</div>
 
-		<div id="title" style="text-align:center">Goats Galore v0.02 - Gods Galore</div>
+		<div id="title" style="text-align:center">Goats Galore v0.021 - Gods Galore</div>
 
 		<div id="infoTabs">
-			<div id="statsTab" class="tab" onclick="showSpace()">Stats</div>
-			<div id="optionsTab" class="tab" onclick="showHeroic()">Options</div>
+			<div id="statsTab" class="tab">Stats</div>
+			<div id="optionsTab" class="tab">Options</div>
 		</div>
 		
 		<div id="info">
@@ -101,8 +101,14 @@
 				<div class="purchaseButton" onclick="buyBlessing()">
 					<div class="objName">Blessing</div><br/>
 					<progress id="blessingBar" class="buffBar" value="0" max="30"></progress>
-					<div class="price"><span id="blessingCost">1000 favor</span></div><br/>
+					<div class="price">1000 favor</div><br/>
 					<div class="description">Provides 2x money for 30s.</div>
+				</div>
+				
+				<div id="soothyUnlock" class="purchaseButton" onclick="unlockSoothyGoat()">
+					<div class="objName">Unlock Soothy Goats</div><br/>
+					<div class="price">10000 favor</span></div><br/>
+					<div class="description">Gives you the ability to purchase Soothy Goats even after ascending.</div>
 				</div>
 			</div>
 			

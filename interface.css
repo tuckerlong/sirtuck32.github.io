@@ -80,7 +80,7 @@ h1 {
   background-color: white;
   position: fixed;
   height: 40px;
-  width: 21%;
+  width: calc(21% + 8px);
   border: 1px solid black;
   left: 2px;
   top: 40px;
