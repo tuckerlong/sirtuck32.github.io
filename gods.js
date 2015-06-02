@@ -21,10 +21,7 @@ function buyGoatHero() {
 		goatHeroes = goatHeroes + 1;
 		goats = goats - curCost;
 		
-		if(goatHeroes == 1) {
-			document.getElementById("heroTab").style.display = "block";
-		}
-		
+		if(goatHeroes == 1) goatHeroBonusOne();		
 
 		var goatImgs = document.getElementsByClassName("baseGoatImg");
 		var len = goatImgs.length;
@@ -36,6 +33,11 @@ function buyGoatHero() {
 		updateCost();
 		calculateCurrency();
 	}
+}
+
+function goatHeroBonusOne() {
+	document.getElementById("questTabs").style.display = "block";
+	document.getElementById("heroTab").style.display = "block";
 }
 
 function getGoatHeroCost() {

@@ -336,7 +336,7 @@ function load() {
 		if(rockets >= 1 || scienceGoats >= 10) scienceGoatBonusOne();
 		if(rockets >= 1) rocketBonusOne();
 		
-		if(goatHeroes >= 1) document.getElementById("heroTab").style.display = "block";
+		if(goatHeroes >= 1) goatHeroBonusOne();
 		
 		
 		if(god === "GOATSEIDON") document.getElementById("godName1").innerHTML = god;
