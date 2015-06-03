@@ -4,6 +4,7 @@ var blessing = "inactive";
 var favor = 0;
 var favorInc = 0;
 
+var goatHeroesUnlock = 0;
 var goatHeroes = 0;
 
 var sunGoats = 0;
@@ -18,11 +19,19 @@ function favorClick(number) {
 	document.getElementById("favor").innerHTML = prettify(favor);
 }
 
+function unlockGoatHeroes() {
+	goatHeroesUnlock = 1;
+	button = createButton(buyGoatHero, "Goat Hero", "goatHeroes", "<span id=\"goatHeroCost\">0</span> goats", document.getElementById("purchase"));
+	addBreak(button);
+	addDescription(button, "Allows you to go on heroic goat quest. Each goat hero increases quest completion speed.");
+}
+
 function buyGoatHero() {
 	var curCost = getGoatHeroCost();
 	if(goats >= curCost) {
 		goatHeroes = goatHeroes + 1;
 		goats = goats - curCost;
+		goatSpace += curCost - 1;
 		
 		if(goatHeroes == 1) goatHeroBonusOne();		
 

@@ -85,14 +85,27 @@ function updateValues() {
 	ele = document.getElementById("goats");
 	if(ele !== null) ele.innerHTML = prettify(goats);
 	
+		ele = document.getElementById("goatModDescription");
+		if(ele !== null) ele.innerHTML = prettify((goatMod + (0.1 * grass)));
+	
 	ele = document.getElementById("grass");
 	if(ele !== null) ele.innerHTML = prettify(grass);
 
 		ele = document.getElementById("grassGoatShow");
 		if(ele !== null) ele.innerHTML = prettify(goats);
 		
-		ele = document.getElementById("grassGoatModShow");
-		if(ele !== null) ele.innerHTML = prettify(goatMod);
+	ele = document.getElementById("bronzeGoats");
+	if(ele !== null) ele.innerHTML = prettify(bronzeGoats);
+	
+		ele = document.getElementById("bronzeGoatModDescription");
+		if(ele !== null) ele.innerHTML = prettify(bronzeGoatMod);
+		
+	ele = document.getElementById("silverGoats");
+	if(ele !== null) ele.innerHTML = prettify(silverGoats);
+	
+		ele = document.getElementById("silverGoatModDescription");
+		if(ele !== null) ele.innerHTML = prettify(silverGoatMod);	
+		
 		
 	ele = document.getElementById("scienceGoats");
 	if(ele !== null) ele.innerHTML = prettify(scienceGoats);
@@ -106,7 +119,7 @@ function updateValues() {
 	ele = document.getElementById("rockets");
 	if(ele !== null) ele.innerHTML = prettify(rockets);
 			
-	goatSpace = (plots * plotMod * plotSize) - goats - scienceGoats - bionicGoats;
+	//goatSpace = (plots * plotMod * plotSize) - goats - scienceGoats - bionicGoats;
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
 
 	/*
@@ -156,6 +169,14 @@ function updateCost() {
 	ele = document.getElementById("grassCost");
 	if(ele !== null) ele.innerHTML = prettify(nextCost);
 	
+	nextCost = getBronzeGoatCost();
+	ele = document.getElementById("bronzeGoatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
+	nextCost = getSilverGoatCost();
+	ele = document.getElementById("silverGoatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
 	nextCost = getScienceGoatCost();
 	ele = document.getElementById("scienceGoatCost");
 	if(ele !== null) ele.innerHTML = prettify(nextCost);
@@ -197,7 +218,8 @@ function calculateCurrency() {
 	 *
 	 *
 	 */
-	currencyInc = (goats * goatMod * grass) + (sunGoats * sunGoatCurrencyMod) + (bionicGoats * bionicGoatCurrencyMod);
+	currencyInc = (goats * (goatMod + (0.1 * grass))) + (bronzeGoats * bronzeGoatMod) + (silverGoats * silverGoatMod) +
+		(sunGoats * sunGoatCurrencyMod) + (bionicGoats * bionicGoatCurrencyMod);
 	if(blessing === "active") currencyInc *= 2;
 	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
 	
@@ -308,12 +330,19 @@ function startup() {
 
 
 function save() {
+	var unlocks = {
+		upgradeClickOne: upgradeClickOne,
+		unlockBronzeGoats: unlockBronzeGoats,
+		unlockSoothy: unlockSoothy
+	}
 	var save = { 
 		currency: currency,
 		plots: plots,
 		plotSize: plotSize,
 		goats: goats,
 		grass: grass,
+		bronzeGoats: bronzeGoats,
+		silverGoats: silverGoats,
 		
 		scienceGoats: scienceGoats,
 		electricity: electricity,
@@ -326,7 +355,14 @@ function save() {
 		favor: favor,
 		sunGoats: sunGoats,
 		soothyGoats: soothyGoats,
-		unlockSoothy: unlockSoothy
+		
+		unlockBronzeGoats: unlockBronzeGoats,
+		silverGoatUnlock: silverGoatUnlock,
+		goatHeroesUnlock: goatHeroesUnlock,
+		
+		upgradeClickOne: upgradeClickOne,
+		upgradeBronzeMedal: upgradeBronzeMedal,
+		silverMedalUnlock: silverMedalUnlock
 	}
 	localStorage.setItem("save", JSON.stringify(save));
 }
@@ -346,6 +382,11 @@ function load() {
 			goats = savegame.goats;
 		if(typeof savegame.grass !== "undefined")
 			grass = savegame.grass;
+		if(typeof savegame.bronzeGoats !== "undefined")
+			bronzeGoats = savegame.bronzeGoats;	
+		if(typeof savegame.silverGoats !== "undefined")
+			silverGoats = savegame.silverGoats;	
+			
 			
 		if(typeof savegame.scienceGoats !== "undefined")
 			scienceGoats = savegame.scienceGoats;
@@ -371,9 +412,34 @@ function load() {
 		if(typeof savegame.unlockSoothy !== "undefined")
 			unlockSoothy = savegame.unlockSoothy;
 			
+		if(typeof savegame.unlockBronzeGoats !== "undefined")
+			unlockBronzeGoats = savegame.unlockBronzeGoats;
+		if(typeof savegame.silverGoatUnlock !== "undefined")
+			silverGoatUnlock = savegame.silverGoatUnlock;
+		if(typeof savegame.goatHeroesUnlock !== "undefined")
+			goatHeroesUnlock = savegame.goatHeroesUnlock;
+			
+		if(typeof savegame.upgradeClickOne !== "undefined")
+			upgradeClickOne = savegame.upgradeClickOne;
+		if(typeof savegame.upgradeBronzeMedal !== "undefined")
+			upgradeBronzeMedal = savegame.upgradeBronzeMedal;
+		if(typeof savegame.silverMedalUnlock !== "undefined")
+			silverMedalUnlock = savegame.silverMedalUnlock;
+			
+		if(upgradeClickOne === 0) {
+			button = createOneTimeButton(upgradeClick, "Upgrade Clicks!", "upgradeClicks", "100 money", document.getElementById("upgrades"));
+			addBreak(button);
+			addDescription(button, "A one time purchase that doubles the base rate of clicking production.");
+		} else {
+			clickMod *= 2;
+		}	
+			
 		if((currency >= 25 && plots == 0) || plots >= 1) currencyBonusOne();
 		
 		if(plots >= 1) plotBonusOne();
+		if(unlockBronzeGoats === 1 || (unlockBronzeGoats === 0 && goats >= 5)) goatBonusOne();
+		if(silverGoatUnlock === 1 || (silverGoatUnlock === 0 && bronzeGoats >= 10)) unlockSilverGoats();
+		if(goatHeroesUnlock === 1 || (goatHeroesUnlock === 0 && goats >= 10)) unlockGoatHeroes();
 		if(plots >= 2) plotBonusTwo();
 		
 		if((electricity >= 25 && bionicGoats == 0) || bionicGoats >= 1) electricityBonusOne();
@@ -404,13 +470,23 @@ function load() {
 		
 		for(i = 0; i < plots; i++)
 			addPlotImg();
-			
+
+		if(upgradeBronzeMedal == 1) bronzeGoatMod *= 2;
+		else if(upgradeBronzeMedal == 0 && bronzeGoats >= 5) bronzeGoatBonusOne();
+		
+		if(silverMedalUnlock === 1) silverGoatMod *= 2;
+		else if(silverMedalUnlock === 0 && silverGoats >= 5) unlockSilverMedal();
+		
 		size = goats;
 		resize();
 		
 		updateValues();
 		updateCost();
 		calculateCurrency();
+	} else {
+		button = createOneTimeButton(upgradeClick, "Upgrade Clicks!", "upgradeClicks", "100 money", document.getElementById("upgrades"));
+		addBreak(button);
+		addDescription(button, "A one time purchase that doubles the base rate of clicking production.");
 	}
 }
 
