@@ -106,6 +106,12 @@ function updateValues() {
 		ele = document.getElementById("silverGoatModDescription");
 		if(ele !== null) ele.innerHTML = prettify(silverGoatMod);	
 		
+	ele = document.getElementById("goldGoats");
+	if(ele !== null) ele.innerHTML = prettify(goldGoats);
+	
+		ele = document.getElementById("goldGoatModDescription");
+		if(ele !== null) ele.innerHTML = prettify(goldGoatMod);	
+		
 		
 	ele = document.getElementById("scienceGoats");
 	if(ele !== null) ele.innerHTML = prettify(scienceGoats);
@@ -177,6 +183,10 @@ function updateCost() {
 	ele = document.getElementById("silverGoatCost");
 	if(ele !== null) ele.innerHTML = prettify(nextCost);
 	
+	nextCost = getGoldGoatCost();
+	ele = document.getElementById("goldGoatCost");
+	if(ele !== null) ele.innerHTML = prettify(nextCost);
+	
 	nextCost = getScienceGoatCost();
 	ele = document.getElementById("scienceGoatCost");
 	if(ele !== null) ele.innerHTML = prettify(nextCost);
@@ -218,7 +228,7 @@ function calculateCurrency() {
 	 *
 	 *
 	 */
-	currencyInc = (goats * (goatMod + (0.1 * grass))) + (bronzeGoats * bronzeGoatMod) + (silverGoats * silverGoatMod) +
+	currencyInc = (goats * (goatMod + (0.1 * grass))) + (bronzeGoats * bronzeGoatMod) + (silverGoats * silverGoatMod) + (goldGoats * goldGoatMod) +
 		(sunGoats * sunGoatCurrencyMod) + (bionicGoats * bionicGoatCurrencyMod);
 	if(blessing === "active") currencyInc *= 2;
 	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
@@ -343,6 +353,7 @@ function save() {
 		grass: grass,
 		bronzeGoats: bronzeGoats,
 		silverGoats: silverGoats,
+		goldGoats: goldGoats,
 		
 		scienceGoats: scienceGoats,
 		electricity: electricity,
@@ -358,11 +369,15 @@ function save() {
 		
 		unlockBronzeGoats: unlockBronzeGoats,
 		silverGoatUnlock: silverGoatUnlock,
+		goldGoatUnlock: goldGoatUnlock,
 		goatHeroesUnlock: goatHeroesUnlock,
 		
 		upgradeClickOne: upgradeClickOne,
 		upgradeBronzeMedal: upgradeBronzeMedal,
-		silverMedalUnlock: silverMedalUnlock
+		silverMedalUnlock: silverMedalUnlock,
+		upgradeSilverMedal: upgradeSilverMedal,
+		goldMedalUnlock: goldMedalUnlock,
+		upgradeGoldMedal: upgradeGoldMedal
 	}
 	localStorage.setItem("save", JSON.stringify(save));
 }
@@ -386,7 +401,8 @@ function load() {
 			bronzeGoats = savegame.bronzeGoats;	
 		if(typeof savegame.silverGoats !== "undefined")
 			silverGoats = savegame.silverGoats;	
-			
+		if(typeof savegame.goldGoats !== "undefined")
+			goldGoats = savegame.goldGoats;	
 			
 		if(typeof savegame.scienceGoats !== "undefined")
 			scienceGoats = savegame.scienceGoats;
@@ -416,6 +432,8 @@ function load() {
 			unlockBronzeGoats = savegame.unlockBronzeGoats;
 		if(typeof savegame.silverGoatUnlock !== "undefined")
 			silverGoatUnlock = savegame.silverGoatUnlock;
+		if(typeof savegame.goldGoatUnlock !== "undefined")
+			goldGoatUnlock = savegame.goldGoatUnlock;
 		if(typeof savegame.goatHeroesUnlock !== "undefined")
 			goatHeroesUnlock = savegame.goatHeroesUnlock;
 			
@@ -425,6 +443,12 @@ function load() {
 			upgradeBronzeMedal = savegame.upgradeBronzeMedal;
 		if(typeof savegame.silverMedalUnlock !== "undefined")
 			silverMedalUnlock = savegame.silverMedalUnlock;
+		if(typeof savegame.upgradeSilverMedal !== "undefined")
+			upgradeSilverMedal = savegame.upgradeSilverMedal;
+		if(typeof savegame.goldMedalUnlock !== "undefined")
+			goldMedalUnlock = savegame.goldMedalUnlock;
+		if(typeof savegame.upgradeGoldMedal !== "undefined")
+			upgradeGoldMedal = savegame.upgradeGoldMedal;
 			
 		if(upgradeClickOne === 0) {
 			button = createOneTimeButton(upgradeClick, "Upgrade Clicks!", "upgradeClicks", "100 money", document.getElementById("upgrades"));
@@ -439,6 +463,7 @@ function load() {
 		if(plots >= 1) plotBonusOne();
 		if(unlockBronzeGoats === 1 || (unlockBronzeGoats === 0 && goats >= 5)) goatBonusOne();
 		if(silverGoatUnlock === 1 || (silverGoatUnlock === 0 && bronzeGoats >= 10)) unlockSilverGoats();
+		if(goldGoatUnlock === 1 || (goldGoatUnlock === 0 && silverGoats >= 10)) unlockGoldGoats();
 		if(goatHeroesUnlock === 1 || (goatHeroesUnlock === 0 && goats >= 10)) unlockGoatHeroes();
 		if(plots >= 2) plotBonusTwo();
 		
@@ -474,8 +499,11 @@ function load() {
 		if(upgradeBronzeMedal == 1) bronzeGoatMod *= 2;
 		else if(upgradeBronzeMedal == 0 && bronzeGoats >= 5) bronzeGoatBonusOne();
 		
-		if(silverMedalUnlock === 1) silverGoatMod *= 2;
-		else if(silverMedalUnlock === 0 && silverGoats >= 5) unlockSilverMedal();
+		if(upgradeSilverMedal === 1) silverGoatMod *= 2;
+		else if(silverMedalUnlock === 1 || (silverMedalUnlock === 0 && silverGoats >= 5)) unlockSilverMedal();
+		
+		if(upgradeGoldMedal === 1) goldGoatMod *= 2;
+		else if(goldMedalUnlock === 1 || (goldMedalUnlock === 0 && goldGoats >= 5)) unlockGoldMedal();
 		
 		size = goats;
 		resize();
@@ -553,7 +581,10 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 }
 
 function deleteSave() {
-	localStorage.removeItem("save")
+	if(confirm("Are you sure you want to delete your save? You cannot get it back after this.") == true) {
+		localStorage.removeItem("save");
+	}
+	
 }
 
 window.setInterval(function() {

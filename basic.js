@@ -26,6 +26,14 @@ var silverGoats = 0;
 var silverGoatMod = 4.8;
 
 var silverMedalUnlock = 0;
+var upgradeSilverMedal = 0;
+
+var goldGoatUnlock = 0;
+var goldGoats = 0;
+var goldGoatMod = 10;
+
+var goldMedalUnlock = 0;
+var upgradeGoldMedal = 0;
 
 var grass = 0;
 var plotSize = 1;
@@ -246,16 +254,18 @@ function unlockSilverGoats() {
 
 function buySilverGoat() {
 	var curCost = getSilverGoatCost();
-	if(currency >= curCost) {
+	if(currency >= curCost && goatSpace >= 1) {
 		silverGoats += 1;
+		goatSpace -= 1;
 		currency -= curCost;
 		
 		if(silverGoats == 5 && document.getElementById("silverMedal") === null && silverMedalUnlock === 0) unlockSilverMedal();
+		if(silverGoats == 10 && document.getElementById("goldGoats") === null && goldGoatUnlock === 0) unlockGoldGoats();
 		
 		updateValues();
 		updateCost();
 		calculateCurrency();
-	};
+	}
 }
 
 function getSilverGoatCost() {
@@ -278,7 +288,7 @@ function unlockSilverMedal() {
 function buySilverMedal() {
 	if(currency >= 10000) {
 		currency -= 10000;
-		upgradeBronzeMedal = 1;
+		upgradeSilverMedal = 1;
 		silverGoatMod *= 2;
 		
 		updateValues();
@@ -287,5 +297,65 @@ function buySilverMedal() {
 		
 		document.getElementById("silverMedal").remove();
 		document.getElementById("silverMedalbr").remove();
+	}
+}
+
+/*  Gold Goats
+ *
+ *
+ *
+ */
+ function unlockGoldGoats() {
+ 	goldGoatUnlock = 1;
+	button = createButton(buyGoldGoat, "Gold Goat", "goldGoats", "<span id=\"goldGoatCost\">0</span> money", document.getElementById("purchase"));
+	addBreak(button);
+	addDescription(button, "Increases money production by <span id=\"goldGoatModDescription\">0</span> per/s for each gold goat.");
+ }
+ 
+ function buyGoldGoat() {
+ 	var curCost = getGoldGoatCost();
+	if(currency >= curCost && goatSpace >= 1) {
+		goldGoats += 1;
+		goatSpace -= 1;
+		currency -= curCost;
+		
+		if(goldGoats == 5 && document.getElementById("goldMedal") === null && goldMedalUnlock === 0) unlockGoldMedal();
+		//if(silverGoats == 10 && document.getElementById("goldGoats") === null && goldGoatUnlock === 0) unlockGoldGoats();
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	};
+ }
+ 
+ function getGoldGoatCost() {
+ 	return Math.floor(10000 * Math.pow(1.2, goldGoats));
+ }
+ 
+ /*  Gold Medal
+ *
+ *
+ *
+ */
+function unlockGoldMedal() {
+	goldMedalUnlock = 1;
+	
+	button = createOneTimeButton(buyGoldMedal, "Gold Medal", "goldMedal", "100000 money", document.getElementById("upgrades"));
+	addBreak(button);
+	addDescription(button, "A one time purchase that doubles the base rate of gold goats money production.");
+}
+
+function buyGoldMedal() {
+	if(currency >= 100000) {
+		currency -= 100000;
+		upgradeGoldMedal = 1;
+		goldGoatMod *= 2;
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+		
+		document.getElementById("goldMedal").remove();
+		document.getElementById("goldMedalbr").remove();
 	}
 }
