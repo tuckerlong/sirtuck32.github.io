@@ -108,6 +108,17 @@ h1 {
   cursor: pointer;
 }
 
+#autoSaveIndicator {
+  background-color: white;
+  width: 150px;
+  height: 18px;
+  text-align: center;
+  margin: 5px;
+  margin-right: 0px;
+  display: none;
+  cursor: pointer;
+}
+
 #deleteSaveButton {
   width: 100px;
   float: right;
@@ -123,4 +134,35 @@ h1 {
   left: calc(1%);
   top: calc(80%);
   overflow-y: scroll;
+}
+
+.purchasedUpgrade {
+  font-family: 'Chewy', cursive;
+  color: grey;
+  padding: 4px;
+
+  background-color: white;
+  border: 1px solid grey;
+  width: 200px;
+  height: auto;
+  text-align: center;
+  margin: 5px;
+  margin-left: 15px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.nextUpgrade {
+  font-family: 'Chewy', cursive;
+  color: red;
+  padding: 4px;
+
+  background-color: white;
+  border: 1px solid red;
+  width: 200px;
+  height: auto;
+  text-align: center;
+  margin: 5px;
+  margin-left: 15px;
+  display: inline-block;
 }

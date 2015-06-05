@@ -1,0 +1,39 @@
+		
+		/*if(goats == 5 && document.getElementById("bronzeGoats") === null) goatBonusOne();
+		if(goats == 10 && document.getElementById("goatHeroes") === null) unlockGoatHeroes();
+		
+		var maxGoatSpace = (plots * plotMod * plotSize);
+		var plotId = Math.max(Math.floor((maxGoatSpace - goatSpace -1)/10), 0);
+		
+		var graphics = document.getElementById("graphics").getBoundingClientRect();
+		var gPlots = Math.floor((graphics.right - graphics.left - 8)/200);
+		var rect = document.getElementsByClassName("plotImg")[plotId].getBoundingClientRect();
+
+		img = document.createElement("img");
+		img.src = "baseGoat.png";
+		img.style.position = "absolute";
+		img.className = "baseGoatImg";
+		var leftMod = (200 * Math.floor(plotId%gPlots)) + 40 + (50 * Math.floor((Math.floor(goats-1)%10)%3));
+		var topMod = Math.max((210 * Math.floor(plotId/gPlots)), 5) + (50 * Math.floor((Math.floor(goats-1)%10)/3)) - (5 * Math.max((Math.floor(plotId/gPlots)-1),0));
+		img.style.left = (leftMod + "px");
+		img.style.top = topMod + "px";
+		img.style.zIndex = 100;
+		
+		document.getElementById("graphics").appendChild(img);*/
+		
+		
+		
+		
+		|| (eval(purchases[goatHero.index].updateFormula) <= 0 && purchases[goatHero.index].unlocked === false)
+		
+		
+		
+		
+		
+		
+		
+			for(i = 0; i < purchases.length; i++)
+		if(purchases.length < purchases_updated[i].index + 1) purchases[purchases_updated[i].index] = purchases_updated[i];
+		else {
+			purchases_update[i].count = purchases[i].count;
+		}
