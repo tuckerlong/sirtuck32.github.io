@@ -16,49 +16,17 @@ function electricityClick(number) {
 	electricity = Math.max(electricity, 0);
 	document.getElementById("electricity").innerHTML = prettify(electricity);
 	
-	if(electricity >= 25 && document.getElementById("bionicGoats") === null) electricityBonusOne();
-}
-
-function electricityBonusOne() {
-	var button = createButton(buyBionicGoat, "Bionic Goat", "bionicGoats", "<span id=\"bionicGoatCost\">0</span> electricity", document.getElementById("purchase"));
-		addBreak(button);
-		addDescription(button, "Increases money production base by " + bionicGoatCurrencyMod + " per/s and electricity base production by  " + 
-			bionicGoatElectricityMod + " per/s for each bionic goat.");
 }
 
 function buyScienceGoat() {
-	var curCost = getScienceGoatCost();
-	
+	var curCost = getPurchase(scienceGoat).getCost();
 	if(currency >= curCost && goatSpace >= 1) {
-		scienceGoats += 1;
-		goatSpace -= 1;
+		getPurchase(scienceGoat).count += 1;
+		goatSpace = goatSpace - 1;
 		currency -= curCost;
-		
-		if(scienceGoats == 10) scienceGoatBonusOne();
-		if(scienceGoats == 20) scienceGoatBonusTwo();
-		
-		updateValues();
-		updateCost();
-		calculateCurrency();
-	};
-}
 
-function scienceGoatBonusOne() {
-	button = createButton(buyRocket, "Rockets", "rockets", "<span id=\"rocketCost\">0</span> electricity", document.getElementById("purchase"));
-		addBreak(button);
-		addDescription(button, "Increases the amount of rockets you have by 1.");
-		addDescription(button, "Rockets allow for space travel but drain electricity by 1 per/s for each rocket.");
-}
-
-function scienceGoatBonusTwo() {
-	button = createOneTimeButton(buyScienceGoatUpgradeOne, "Smarter Goats", "smarterGoats", "5000 money", document.getElementById("upgrades"));
-		addBreak(button);
-		addDescription(button, "A one time purchase that doubles the base rate of science goats electricity production.");
-}
-
-
-function getScienceGoatCost() {
-	return Math.floor(20 * (scienceGoats + 1));
+		updateAll();
+	}
 }
 
 function buyScienceGoatUpgradeOne() {

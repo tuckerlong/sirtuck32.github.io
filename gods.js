@@ -28,23 +28,15 @@ function unlockGoatHeroes() {
 }
 
 function buyGoatHero() {
-	var curCost = getGoatHeroCost();
-	if(goats >= curCost) {
-		goatHeroes = goatHeroes + 1;
-		goats = goats - curCost;
-		goatSpace += curCost - 1;
+	var curCost = getPurchase(goatHero).getCost();
+	if(getPurchase(goat).count >= curCost && goatSpace >= 1) {
+		getPurchase(goatHero).count += 1;
+		goatSpace = goatSpace - 1;
+		getPurchase(goat).count -= curCost;
 		
-		if(goatHeroes == 1) goatHeroBonusOne();		
+		if(getPurchase(goatHero).count == 1) goatHeroBonusOne();
 
-		var goatImgs = document.getElementsByClassName("baseGoatImg");
-		var len = goatImgs.length;
-		for(i = len; i > len - curCost; i--) {
-			document.getElementsByClassName("baseGoatImg")[i-1].remove();
-		}
-		
-		updateValues();
-		updateCost();
-		calculateCurrency();
+		updateAll();
 	}
 }
 

@@ -15,6 +15,10 @@ var enemyLevel = 1;
 var end = false;
 var dead = false;
 var inBattle = false;
+var lastCleared = 1;
+
+var refresh = false;
+var advance = false;
 
 function createButton(onclick, text, varName, varCost, div) {
 	var button = document.createElement("div");
@@ -87,6 +91,7 @@ function addDescription(button, description) {
 
 function updateAll() {
 	checkPurchases();
+	checkUpgrades();
 	updateValues();
 	updateCost();
 	calculateCurrency();
@@ -94,6 +99,7 @@ function updateAll() {
 
 function updateValues() {
 	document.getElementById("currency").innerHTML = prettify(currency);
+	document.getElementById("electricity").innerHTML = prettify(electricity);
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
 	document.getElementById("armyStrength").innerHTML = prettify(armyStrength);
 	
@@ -185,7 +191,7 @@ function calculateCurrency() {
 	 *
 	 *
 	 */
-	currencyInc = (getPurchase(goat).count * (goatMod + (0.1 * grass))) + (getPurchase(bronzeGoat).count * bronzeGoatMod);// + (silverGoats * silverGoatMod) + (goldGoats * goldGoatMod) +
+	currencyInc = (getPurchase(goat).count * (goatMod + (0.1 * grass))) + (getPurchase(bronzeGoat).count * bronzeGoatMod) + (getPurchase(silverGoat).count * silverGoatMod) + (getPurchase(goldGoat).count * goldGoatMod); // +
 		//(sunGoats * sunGoatCurrencyMod) + (bionicGoats * bionicGoatCurrencyMod);
 	if(blessing === "active") currencyInc *= 2;
 	document.getElementById("currencyInc").innerHTML = prettify(currencyInc);
@@ -200,7 +206,7 @@ function calculateCurrency() {
 	favorInc = (sunGoats * sunGoatFavorMod);
 	document.getElementById("favorInc").innerHTML = prettify(favorInc);
 	
-	electricityInc = (scienceGoats * scienceGoatMod) + (bionicGoats * bionicGoatElectricityMod) + (rockets * rocketMod);
+	electricityInc = (getPurchase(scienceGoat).count * scienceGoatMod);// + (bionicGoats * bionicGoatElectricityMod) + (rockets * rocketMod);
 	document.getElementById("electricityInc").innerHTML = prettify(electricityInc);
 }
 
@@ -269,9 +275,11 @@ function startup() {
 function save() {
 	var save = { 
 		currency: currency,
+		electricity: electricity,
 		purchases: purchases,
 		upgrades: upgrades,
-		clickCount: clickCount
+		clickCount: clickCount,
+		lastCleared: lastCleared
 	}
 	localStorage.setItem("save", JSON.stringify(save));
 }
@@ -281,7 +289,9 @@ function load() {
 
 	if(savegame !== null) {
 		if(typeof savegame.currency !== "undefined")
-			currency = savegame.currency;			
+			currency = savegame.currency;		
+		if(typeof savegame.electricity !== "undefined")
+			electricity = savegame.electricity;	
 			
 		if(typeof savegame.purchases !== "undefined")
 			purchases = savegame.purchases;
@@ -299,6 +309,9 @@ function load() {
 		if(typeof savegame.clickCount !== "undefined")
 			clickCount = savegame.clickCount;
 			
+		updateUpgrades();
+		checkUpgrades();
+			
 		for(i = 0; i < upgrades.length; i++) {
 			if(upgrades[i].purchased === true) window[upgrades[i].onload]();
 			else if(upgrades[i].unlocked === true) addUpgrade(i);
@@ -307,17 +320,27 @@ function load() {
 		
 		goatSpace = (getPurchase(plot).count * plotMod) - getPurchase(goat).count - getPurchase(bronzeGoat).count;
 		armyStrength = (getPurchase(goatInfantry).count * goatInfantryMod);
+		
+		if(typeof savegame.lastCleared !== "undefined")
+			lastCleared = savegame.lastCleared;	
+		
+		enemyLevel = lastCleared;
 	}
 	
 	updatePurchases();
+	updateUpgrades();
 	updateAll();
 	setupBattle();
-	//console.log(purchases);
 	updateEnemy();
+	
+	if(refresh) {
+		save();
+		window.location.reload();
+	}
 }
 
 function setupBattle() {
-	
+	document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
 }
 
 function autoBattle() {
@@ -329,18 +352,39 @@ function autoBattle() {
 		document.getElementById("autoBattleButton").style.backgroundColor = "white";
 }
 
+function autoAdvance() {
+	advance = !advance;
+	if(advance) {
+		document.getElementById("autoAdvanceButton").style.backgroundColor = "DeepSkyBlue";
+	} else
+		document.getElementById("autoAdvanceButton").style.backgroundColor = "white";
+}
+
+function backLevel() {
+	inBattle = false;
+	enemyLevel = Math.max(1, enemyLevel - 1);
+	updateEnemy();
+}
+
+function advanceLevel() {
+	inBattle = false;
+	enemyLevel = Math.min(lastCleared, enemyLevel + 1);
+	updateEnemy();
+}
+
 function updateEnemy() {
 	enemyLevel = Math.max(enemyLevel, 1);
 	enemyHealth = (100 + 20 * enemyLevel);
 	enemyMaxHealth = enemyHealth;
 	enemyDefense = enemyLevel;
-	enemyStrength = 100 + (5 * enemyLevel);
+	enemyStrength = 10 + (5 * enemyLevel);
 
 	document.getElementById("enemyName").innerHTML = "Enemy Level " + enemyLevel;
 	document.getElementById("enemyDefense").innerHTML = enemyDefense;
 	document.getElementById("enemyStrength").innerHTML = enemyStrength;
 	
 	document.getElementById("enemyHealth").style.width = "calc((50% - 9px))";
+	document.getElementById("enemyHp").innerHTML = enemyHealth + "/" + enemyMaxHealth;
 }
 
 function recharge() {
@@ -358,22 +402,32 @@ function recharge() {
 			inBattle = false;
 		}
 		document.getElementById("recharge").style.width = "calc((100% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
+		document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
 	}, 500);
 }
 
 function battle() {
 	if(!inBattle) {
 		inBattle = true;
+		armyHealth = Math.min(armyMaxHealth, armyHealth + (getPurchase(goatMedic).count * goatMedicMod));
+		document.getElementById("playerHealth").style.width = "calc((50% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
+		document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
 		//document.getElementById("playerHealth").style.width =  (document.getElementById("playerOverlay").clientWidth/2) + "px";
 		
 		end = false;
 		dead = false;
 
 		var fight = setInterval(function () {
-			if(end) {
-				enemyLevel += 1;
-				updateEnemy();
+			if(!inBattle) {
+				clearInterval(fight);
+				return;
+			}
+			
+			if(end && !dead) {
 				inBattle = false;
+				lastCleared = Math.max(enemyLevel, lastCleared);
+				if(advance) enemyLevel += 1;
+				updateEnemy();
 				if(auto) setTimeout( function() {battle()}, 3000);
 				clearInterval(fight);
 				return;
@@ -393,17 +447,23 @@ function battle() {
 			
 			if(enemyHealth <= 0) {
 				enemyHealth = 0;
+				var amount = (100 * enemyLevel);
+				currency += amount;
+				document.getElementById("battleRewards").innerHTML = amount + " money";
 				end = true;
 			}
 			document.getElementById("enemyHealth").style.width = "calc((50% - 9px) * " + (enemyHealth/enemyMaxHealth) + ")";
+			document.getElementById("enemyHp").innerHTML = enemyHealth + "/" + enemyMaxHealth;
 			
 			armyHealth -= Math.max((enemyStrength - armyDefense), 0);
 			
 			if(armyHealth <= 0) {
 				armyHealth = 0;
+				document.getElementById("battleRewards").innerHTML = "-";
 				dead = true;
 			}
 			document.getElementById("playerHealth").style.width = "calc((50% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
+			document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
 		}, 1000);
 	}
 }
@@ -473,6 +533,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 function deleteSave() {
 	if(confirm("Are you sure you want to delete your save? You cannot get it back after this.") == true) {
 		localStorage.removeItem("save");
+		window.location.reload();
 	}
 	
 }
@@ -485,7 +546,7 @@ window.setInterval(function() {
 
 window.setInterval(function() {
 	if(quest === "active") {
-		document.getElementById("questBar").value += (1 * goatHeroes);
+		document.getElementById("questBar").value += (1 * getPurchase(goatHero).count);
 		document.getElementById("progress").innerHTML = prettify(document.getElementById("questBar").value/document.getElementById("questBar").max * 100) + "%";
 		if(document.getElementById("questBar").value >= document.getElementById("questBar").max) {
 			quest = "inactive";
@@ -577,7 +638,7 @@ window.setInterval(function() {
 window.onresize = resize;
 
 function resize() {
-	var goatImgs = document.getElementsByClassName("baseGoatImg");
+	/*var goatImgs = document.getElementsByClassName("baseGoatImg");
 	var graphics = document.getElementById("graphics").getBoundingClientRect();
 	
 	var gPlots = Math.floor((graphics.right - graphics.left - 8)/200);
@@ -608,5 +669,5 @@ function resize() {
 		
 		//console.log(plotId + " " + maxGoatSpace + " " + goatSpace);
 		document.getElementById("graphics").appendChild(img);
-	}	
+	}	*/
 }

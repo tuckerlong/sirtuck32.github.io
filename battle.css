@@ -2,46 +2,76 @@
   font-family: 'Chewy', cursive;
   background-color: white;
   position: fixed;
-  height: calc(100% - 185px);
-  width: calc(100% - 240px - 21% - 32px);
+  height: calc(100% - 177px);
+  width: calc(100% - 240px - 21% - 24px);
   border: 1px solid black;
   left: calc(2px + 21% + 13px);
   top: 142px;
   overflow-y: scroll;
 }
 
-.battleButton {
-    font-family: 'Chewy', cursive;
-  padding: 4px;
+#battleButtons {
+  position: absolute;
+  width: calc(100% - 10px);
+  height: 30px;
+  left: 4px;
+  top: 4px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
 
+.battleButton {
+  font-family: 'Chewy', cursive;
   background-color: white;
+  position: relative;
   border: 1px solid black;
   width: auto;
   height: auto;
   text-align: center;
-  margin: 5px;
-  margin-right: 1px;
   display: inline-block;
   cursor: pointer;
-  overflow: hidden;
+  margin-top: 5px;
+  margin-bottom: 3px;
 }
 
-#enemyName {
-  font-family: 'Chewy', cursive;
-  padding: 4px;
+#armyStats {
   background-color: opaque;
   position: absolute;
-  width: 175px;
-  height: auto;
+  width: calc(50% - 10px);
+  height: 100px;
   text-align: right;
-  margin: 5px;
-  margin-right: 1px;
   overflow: hidden;
-  color: green;
-  float: right;
-  left: calc(100% - 195px);
-  top: 4px;
+  overflow-y: scroll;
+  top: 40px;
+  left: 4px;
 }
+
+.battleItem {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  text-align: left;
+}
+
+#enemyStats {
+  background-color: opaque;
+  position: absolute;
+  width: calc(50% - 10px);
+  height: 100px;
+  text-align: right;
+  overflow: hidden;
+  overflow-y: scroll;
+  top: 40px;
+  left: calc(50% + 4px);
+}
+
+.enemyBattleItem {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  position: relative;
+  text-align: left;
+  color: green;
+}
+
 
 #playerHealth {
   font-family: 'Chewy', cursive;
@@ -51,7 +81,7 @@
   height: 16px;
   text-align: right;
   overflow: hidden;
-  top: 150px;
+  top: 166px;
   left: 4px;
   
   transition: width 1s;
@@ -71,21 +101,11 @@
   height: 15px;
   text-align: right;
   overflow: hidden;
-  top: 150px;
+  top: 166px;
   left: 4px;
 }
 
-#battleItem {
-  font-family: 'Chewy', cursive;
-  background-color: white;
-  position: fixed;
-  padding: 4px;
-  border: 1px solid black;
-  height: auto;
-  width: auto;
-  color: green;
-  cursor: pointer;
-}
+
 
 #enemyHealth {
   font-family: 'Chewy', cursive;
@@ -94,7 +114,7 @@
   width: calc(50% - 9px);
   height: 16px;
   left: calc(50% + 4px);
-  top: 150px;
+  top: 166px;
   
   transition: width 1s;
   -moz-transition: width 1s; /* Firefox 4 */
@@ -111,19 +131,7 @@
   width: calc(50% - 10px);
   height: 15px;
   left: calc(50% + 4px);
-  top: 150px;
-}
-
-.enemyBattleItem {
-  font-family: 'Chewy', cursive;
-  background-color: white;
-  position: relative;
-  text-align: right;
-  height: auto;
-  width: 200px;
-  color: green;
-  left: calc(100% - 216px);
-  top: -50px;
+  top: 166px;
 }
 
 #recharge {
@@ -135,7 +143,7 @@
   text-align: right;
   overflow: hidden;
   visibility: visible;
-  top: 130px;
+  top: 146px;
   left: 4px;
   
   transition: width 1s;
@@ -154,7 +162,23 @@
   height: 15px;
   text-align: right;
   overflow: hidden;
-  top: 130px;
+  top: 146px;
   left: 4px;
   visibility: visible;
+}
+
+#rewards {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  position: absolute;
+  width: calc(100% - 10px);
+  height: auto;
+  left: 4px;
+  top: 186px;
+  
+  transition: width 1s;
+  -moz-transition: width 1s; /* Firefox 4 */
+  -webkit-transition: width 1s; /* Safari and Chrome */
+  -o-transition: width 1s; /* Opera */
+  -ms-transition: width 1s; /* IE9 (maybe) */
 }

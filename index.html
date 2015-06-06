@@ -10,6 +10,8 @@
 		
 		<script type="text/javascript" src="main.js"></script>
 		<script type="text/javascript" src="basic.js"></script>
+		<script type="text/javascript" src="gods.js"></script>
+		<script type="text/javascript" src="science.js"></script>
 		<script type="text/javascript" src="battle.js"></script>
 		<script type="text/javascript" src="upgrades.js"></script>
 		<script type="text/javascript" src="purchases.js"></script>
@@ -67,16 +69,31 @@
 		</div>
 		
 		<div id="battle">
-			<div id="autoBattleButton" class="battleButton" onclick ="autoBattle()">Auto Battle</div>
-			<div class="battleButton" onclick ="battle()">Fight</div></br>
-			<div id="enemyName">Enemy Level 1</div>
-			<div class="battleItem">&nbsp;Army Defense: <span id="armyDefense">0</span> </div>
-			<div class="battleItem">&nbsp;Army Strength: <span id="armyStrength">0</span></div>
-			<div class="enemyBattleItem">&nbsp;Enemy Defense: <span id="enemyDefense">0</span> </div>
-			<div class="enemyBattleItem">&nbsp;Enemy Strength: <span id="enemyStrength">0</span></div>
+			<div id="battleButtons">
+				<div id="autoBattleButton" class="battleButton" onclick ="autoBattle()">Auto Battle</div>
+				<div id="autoAdvanceButton" class="battleButton" onclick ="autoAdvance()">Auto Advance</div>
+				<div class="battleButton" onclick ="battle()">Fight</div>
+				<div class="battleButton" onclick ="backLevel()">Back One Zone</div>
+				<div class="battleButton" onclick ="advanceLevel()">Advance One Zone</div>
+			</div>
+			
+			<div id="armyStats">
+				<div class="battleItem">Army Defense: <span id="armyDefense">0</span> </div>
+				<div class="battleItem">Army Strength: <span id="armyStrength">0</span></div>
+				<div class="battleItem">Army Health: <span id="armyHealth">0</span></div>
+			</div>
+			
+			<div id="enemyStats">
+				<div id="enemyName" class="enemyBattleItem">Enemy Level 1</div>
+				<div class="enemyBattleItem">Enemy Defense: <span id="enemyDefense">0</span> </div>
+				<div class="enemyBattleItem">Enemy Strength: <span id="enemyStrength">0</span></div>
+				<div class="enemyBattleItem">Enemy Health: <span id="enemyHp">0</span></div>
+			</div>
+			
 			<div id="recharge"></div><div id="rechargeOverlay"></div>
 			<div id="playerHealth"></div> <div id="playerOverlay"></div>
 			<div id="enemyHealth"></div> <div id="enemyOverlay"></div>
+			<div id="rewards">Reward from last fight: <span id="battleRewards">-</span></div>
 		</div>
 		
 		<div id="tabs">
@@ -150,10 +167,6 @@
 			<div id="autoSaveIndicator" >Auto Saved</div>
 			<div id="deleteSaveButton" class="footerDiv" onclick="deleteSave();">Delete Save</div>
 		</div>
-		
-		
-		<script type="text/javascript" src="gods.js"></script>
-		<script type="text/javascript" src="science.js"></script>
 		
 	</body>
 </html>

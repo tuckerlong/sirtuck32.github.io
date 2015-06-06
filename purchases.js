@@ -9,7 +9,7 @@ var plot = {
 	unlock: "Click a total of 10 times to unlock. <span id=\"Plot Clicks Count\">0</span> left to go.",
 	unlockFormula: "10 - clickCount",
 	unlocked: false,
-	showFormula: "clickCount == 0",
+	showFormula: "clickCount >= 0",
 	show: false,
 	costId: "plotCost",
 	getCost: function() { return Math.floor(25 * (getPurchase(plot).count + 1)); },
@@ -74,8 +74,27 @@ var silverGoat = {
 	count: 0
 }
 
+var goldGoat = {
+	onclick: buyGoldGoat,
+	name: "Gold Goat",
+	val: "goldGoats",
+	descriptionId: "goldGoatModDescription",
+	description: "Increases money production by <span id=\"goldGoatModDescription\">0.0</span> per/s for each goat.",
+	descriptionFormula: "goldGoatMod",
+	unlockId: "Gold Goat Silver Goats Count",
+	unlock: "Buy 10 silver goats to unlock. <span id=\"Gold Goat Silver Goats Count\">0</span> left to go.",
+	unlockFormula: "10 - getPurchase(silverGoat).count",
+	unlocked: false,
+	showFormula: "getPurchase(silverGoat).unlocked === true",
+	show: false,
+	costId: "goldGoatCost",
+	getCost: function() { return Math.floor(10000 * (getPurchase(goldGoat).count + 1)); },
+	cost: "<span id=\"goldGoatCost\">0</span> money",
+	count: 0
+}
+
 var goatHero = {
-	onclick: buySilverGoat,
+	onclick: buyGoatHero,
 	name: "Goat Hero",
 	val: "goatHeroes",
 	descriptionId: "goatHeroModDescription",
@@ -104,7 +123,7 @@ var goatInfantry = {
 	unlock: "Buy 30 goats to unlock. <span id=\"Goat Infantry Goats Count\">0</span> left to go.",
 	unlockFormula: "30 - getPurchase(goat).count",
 	unlocked: false,
-	showFormula: "getPurchase(goatHero).unlocked === true",
+	showFormula: "getPurchase(bronzeGoat).unlocked === true",
 	show: false,
 	costId: "goatInfantryCost",
 	getCost: function() { return Math.floor(20 * (getPurchase(goatInfantry).count + 1)); },
@@ -112,8 +131,46 @@ var goatInfantry = {
 	count: 0
 }
 
+var goatMedic = {
+	onclick: buyGoatMedic,
+	name: "Goat Medic",
+	val: "goatMedic",
+	descriptionId: "goatMedicModDescription",
+	description: "Heals army for <span id=\"goatMedicModDescription\">0.0</span> per goat medic inbetween battles.",
+	descriptionFormula: "goatMedicMod",
+	unlockId: "Goat Medic Infantry Goats Count",
+	unlock: "Buy 10 goat infantry to unlock. <span id=\"Goat Medic Infantry Goats Count\">0</span> left to go.",
+	unlockFormula: "10 - getPurchase(goatInfantry).count",
+	unlocked: false,
+	showFormula: "getPurchase(goatInfantry).unlocked === true",
+	show: false,
+	costId: "goatMedicCost",
+	getCost: function() { return Math.floor(20 * (getPurchase(goatMedic).count + 1)); },
+	cost: "<span id=\"goatMedicCost\">0</span> money",
+	count: 0
+}
 
-var purchases = [plot, goat, bronzeGoat, silverGoat, goatHero, goatInfantry]
+var scienceGoat = {
+	onclick: buyScienceGoat,
+	name: "Science Goat",
+	val: "scienceGoats",
+	descriptionId: "scienceGoatModDescription",
+	description: "Increases army strength by <span id=\"scienceGoatModDescription\">0.0</span> for each goat infantry.",
+	descriptionFormula: "scienceGoatMod",
+	unlockId: "Science Goat Plots Count",
+	unlock: "Buy 10 plots to unlock. <span id=\"Science Goat Plots Count\">0</span> left to go.",
+	unlockFormula: "10 - getPurchase(plot).count",
+	unlocked: false,
+	showFormula: "getPurchase(plot).unlocked === true",
+	show: false,
+	costId: "scienceGoatCost",
+	getCost: function() { return Math.floor(20 * (getPurchase(scienceGoat).count + 1)); },
+	cost: "<span id=\"scienceGoatCost\">0</span> money",
+	count: 0
+}
+
+
+var purchases = [plot, goat, bronzeGoat, silverGoat, goldGoat, scienceGoat, goatHero, goatInfantry, goatMedic]
 var purchases_updated = purchases;
 
 function addPurchase(purchase) {
@@ -141,10 +198,16 @@ function addNextPurchase(purchase) {
 
 function updatePurchases() {
 	for(i = 0; i < purchases.length; i++) {
-		purchases_updated[i].count = purchases[i].count;
-		purchases_updated[i].unlocked = purchases[i].unlocked;
-		purchases_updated[i].show = purchases[i].show;
+		if(typeof purchases_updated[i] !== "undefined") {
+			purchases_updated[i].count = purchases[i].count;
+			purchases_updated[i].unlocked = purchases[i].unlocked;
+			purchases_updated[i].show = purchases[i].show;
+		}
 	}
+	
+	if(purchases.length != purchases_updated.length)
+		refresh = true;
+		
 	purchases = purchases_updated;
 }
 

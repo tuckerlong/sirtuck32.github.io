@@ -37,3 +37,44 @@
 		else {
 			purchases_update[i].count = purchases[i].count;
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+function addPlotImg() {
+	img = document.createElement("img");
+	img.src = "basePlot.png";
+	img.className = "plotImg";
+	img.onload = "draw";
+	img.width = 200;
+	img.height = 200;
+	
+	document.getElementById("graphics").appendChild(img);
+}
+
+
+
+
+function upgradeGrass() {
+	var curCost = getGrassCost();
+	if(currency >= curCost) {
+		grass = grass + 1;
+		currency = currency - curCost;
+		
+		updateValues();
+		updateCost();
+		calculateCurrency();
+	};
+}
+
+function getGrassCost() {
+	return Math.floor(100 * Math.pow(1.5, grass));
+}

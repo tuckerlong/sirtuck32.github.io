@@ -3,9 +3,7 @@ var currencyInc = 0;
 
 var clickCount = 0;
 var clickMod = 1;
-var upgradeClickOne = 0;
 
-var plots = 0;
 var plotMod = 10;
 var plotBaseCost = 25;
 var plotRate = 1.1;
@@ -16,25 +14,9 @@ var goatBaseCost = 25;
 var goatRate = 1.1;
 var goatSpace = 0;
 
-var unlockBronzeGoats = 0;
-var bronzeGoats = 0;
 var bronzeGoatMod = 1.2;
-
-var upgradeBronzeMedal = 0;
-
-var silverGoatUnlock = 0;
-var silverGoats = 0;
 var silverGoatMod = 4.8;
-
-var silverMedalUnlock = 0;
-var upgradeSilverMedal = 0;
-
-var goldGoatUnlock = 0;
-var goldGoats = 0;
 var goldGoatMod = 10;
-
-var goldMedalUnlock = 0;
-var upgradeGoldMedal = 0;
 
 var grass = 0;
 var plotSize = 1;
@@ -57,10 +39,10 @@ function currencyClick(number) {
 }
 
 function buyClickOne() {
-	if(currency >= clickOne.cost) {
+	if(currency >= getUpgrade(clickOne).cost) {
 		applyClickOne();
-		currency -= clickOne.cost;
-		addPurchasedUpgrade(clickOne.index);
+		currency -= getUpgrade(clickOne).cost;
+		addPurchasedUpgrade(clickOne);
 		
 		updateAll();
 	}
@@ -71,10 +53,10 @@ function applyClickOne() {
 }
 
 function buyClickTwo() {
-	if(currency >= clickTwo.cost) {
+	if(currency >= getUpgrade(clickTwo).cost) {
 		applyClickTwo();
-		currency -= clickTwo.cost;
-		addPurchasedUpgrade(clickTwo.index);
+		currency -= getUpgrade(clickTwo).cost;
+		addPurchasedUpgrade(clickTwo);
 		
 		updateAll();
 	}
@@ -85,10 +67,10 @@ function applyClickTwo() {
 }
 
 function buyClickThree() {
-	if(currency >= clickThree.cost) {
+	if(currency >= getUpgrade(clickThree).cost) {
 		applyClickThree();
-		currency -= clickThree.cost;
-		addPurchasedUpgrade(clickThree.index);
+		currency -= getUpgrade(clickThree).cost;
+		addPurchasedUpgrade(clickThree);
 		
 		updateAll();
 	}
@@ -146,6 +128,25 @@ function buyBronzeGoat() {
 	}
 }
 
+/*  Bronze Medal
+ *
+ *
+ *
+ */
+function buyBronzeMedal() {
+	if(currency >= getUpgrade(bronzeMedal).cost) {
+		applyBronzeMedal();
+		currency -= getUpgrade(bronzeMedal).cost;
+		addPurchasedUpgrade(bronzeMedal);
+		
+		updateAll();
+	}
+}
+
+function applyBronzeMedal() {
+	bronzeGoatMod *= 2;
+}
+
 /*  Silver Goats
  *
  *
@@ -162,162 +163,64 @@ function buySilverGoat() {
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-function addPlotImg() {
-	img = document.createElement("img");
-	img.src = "basePlot.png";
-	img.className = "plotImg";
-	img.onload = "draw";
-	img.width = 200;
-	img.height = 200;
-	
-	document.getElementById("graphics").appendChild(img);
-}
-
-
-function buyBronzeMedal() {
-	if(currency >= 2000) {
-		currency -= 2000;
-		upgradeBronzeMedal = 1;
-		bronzeGoatMod *= 2;
-		
-		updateValues();
-		updateCost();
-		calculateCurrency();
-		
-		document.getElementById("bronzeMedal").remove();
-		document.getElementById("bronzeMedalbr").remove();
-	}
-}
-
-function upgradeGrass() {
-	var curCost = getGrassCost();
-	if(currency >= curCost) {
-		grass = grass + 1;
-		currency = currency - curCost;
-		
-		updateValues();
-		updateCost();
-		calculateCurrency();
-	};
-}
-
-function getGrassCost() {
-	return Math.floor(100 * Math.pow(1.5, grass));
-}
-
-function upgradePlot() {
-	var curCost = getLargerPlotCost();
-	if(currency >= curCost) {
-		plotSize = plotSize + 1;
-		currency = currency - curCost;
-		
-		updateValues();
-		updateCost();
-		calculateCurrency();
-	};
-}
-
-function getLargerPlotCost() {
-	return Math.floor(500 * Math.pow(1.5, plotSize));
-}
-
-
 /*  Silver Medal
  *
  *
  *
  */
-function unlockSilverMedal() {
-	silverMedalUnlock = 1;
-	
-	button = createOneTimeButton(buySilverMedal, "Silver Medal", "silverMedal", "10000 money", document.getElementById("upgrades"));
-	addBreak(button);
-	addDescription(button, "A one time purchase that doubles the base rate of silver goats money production.");
+function buySilverMedal() {
+	if(currency >= getUpgrade(silverMedal).cost) {
+		applySilverMedal();
+		currency -= getUpgrade(silverMedal).cost;
+		addPurchasedUpgrade(silverMedal);
+		
+		updateAll();
+	}
 }
 
-function buySilverMedal() {
-	if(currency >= 10000) {
-		currency -= 10000;
-		upgradeSilverMedal = 1;
-		silverGoatMod *= 2;
-		
-		updateValues();
-		updateCost();
-		calculateCurrency();
-		
-		document.getElementById("silverMedal").remove();
-		document.getElementById("silverMedalbr").remove();
-	}
+function applySilverMedal() {
+	silverGoatMod *= 2;
 }
 
 /*  Gold Goats
  *
  *
  *
- */
- function unlockGoldGoats() {
- 	goldGoatUnlock = 1;
-	button = createButton(buyGoldGoat, "Gold Goat", "goldGoats", "<span id=\"goldGoatCost\">0</span> money", document.getElementById("purchase"));
-	addBreak(button);
-	addDescription(button, "Increases money production by <span id=\"goldGoatModDescription\">0</span> per/s for each gold goat.");
- }
- 
- function buyGoldGoat() {
- 	var curCost = getGoldGoatCost();
+ */ 
+function buyGoldGoat() {
+	var curCost = getPurchase(goldGoat).getCost();
 	if(currency >= curCost && goatSpace >= 1) {
-		goldGoats += 1;
+		getPurchase(goldGoat).count += 1;
 		goatSpace -= 1;
 		currency -= curCost;
 		
-		if(goldGoats == 5 && document.getElementById("goldMedal") === null && goldMedalUnlock === 0) unlockGoldMedal();
-		//if(silverGoats == 10 && document.getElementById("goldGoats") === null && goldGoatUnlock === 0) unlockGoldGoats();
-		
-		updateValues();
-		updateCost();
-		calculateCurrency();
-	};
- }
- 
- function getGoldGoatCost() {
- 	return Math.floor(10000 * Math.pow(1.2, goldGoats));
- }
- 
- /*  Gold Medal
+		updateAll();
+	}
+}
+
+/*  Gold Medal
  *
  *
  *
  */
-function unlockGoldMedal() {
-	goldMedalUnlock = 1;
-	
-	button = createOneTimeButton(buyGoldMedal, "Gold Medal", "goldMedal", "100000 money", document.getElementById("upgrades"));
-	addBreak(button);
-	addDescription(button, "A one time purchase that doubles the base rate of gold goats money production.");
-}
-
 function buyGoldMedal() {
-	if(currency >= 100000) {
-		currency -= 100000;
-		upgradeGoldMedal = 1;
-		goldGoatMod *= 2;
+	if(currency >= getUpgrade(goldMedal).cost) {
+		applyGoldMedal();
+		currency -= getUpgrade(goldMedal).cost;
+		addPurchasedUpgrade(goldMedal);
 		
-		updateValues();
-		updateCost();
-		calculateCurrency();
-		
-		document.getElementById("goldMedal").remove();
-		document.getElementById("goldMedalbr").remove();
+		updateAll();
 	}
 }
+
+function applyGoldMedal() {
+	goldGoatMod *= 2;
+}
+
+
+
+
+
+
+ 
+

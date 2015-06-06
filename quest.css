@@ -6,7 +6,7 @@
   border: 1px solid black;
   left:  calc(2px + 21% + 13px);
   top: 40px;
-  display: none;
+
 }
 
 .questTab {
@@ -33,7 +33,7 @@
   border: 1px solid black;
   left: calc(2px + 21% + 13px);
   top: 85px;
-  display: none;
+
 }
 
 .questButton {

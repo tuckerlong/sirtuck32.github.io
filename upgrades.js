@@ -8,11 +8,11 @@ var clickOne = {
 	unlockFormula: "10 - clickCount",
 	purchased: false,
 	unlocked: false,
+	showFormula: "clickCount >= 0",
 	show: false,
 	oneTime: true,
 	cost: 20,
-	costDescription: "20 money",
-	index: 0
+	costDescription: "20 money"
 }
 
 var clickTwo = {
@@ -25,11 +25,11 @@ var clickTwo = {
 	unlockFormula: "100 - clickCount",
 	purchased: false,
 	unlocked: false,
+	showFormula: "getUpgrade(clickOne).unlocked === true",
 	show: false,
 	oneTime: true,
 	cost: 200,
-	costDescription: "200 money",
-	index: 1
+	costDescription: "200 money"
 }
 
 var clickThree = {
@@ -42,48 +42,65 @@ var clickThree = {
 	unlockFormula: "1000 - clickCount",
 	purchased: false,
 	unlocked: false,
+	showFormula: "getUpgrade(clickTwo).unlocked === true",
 	show: false,
 	oneTime: true,
 	cost: 5000,
-	costDescription: "5000 money",
-	index: 2
+	costDescription: "5000 money"
 }
 	
 var bronzeMedal = {
 	onclick: buyBronzeMedal,
-	onload: "buyBronzeMedal",
+	onload: "applyBronzeMedal",
 	name: "Bronze Medal",
 	description: "A one time purchase that doubles the base rate of bronze goats money production.",
 	unlockId: "Bronze Medal Bronze Goats Count",
 	unlock: "Buy 5 bronze goats to unlock. <span id=\"Bronze Medal Bronze Goats Count\">0</span> left to go.",
-	unlockFormula: "5 - purchases[bronzeGoat.index].count",
+	unlockFormula: "5 - getPurchase(bronzeGoat).count",
 	purchased: false,
 	unlocked: false,
+	showFormula: "getPurchase(bronzeGoat).unlocked === true",
 	show: false,
 	oneTime: true,
-	cost: 1000,
-	costDescription: "1000 money",
-	index: 3
+	cost: 2000,
+	costDescription: "2000 money"
 }
 
 var silverMedal = {
 	onclick: buySilverMedal,
-	onload: "buySilverMedal",
+	onload: "applySilverMedal",
 	name: "Silver Medal",
 	description: "A one time purchase that doubles the base rate of silver goats money production.",
 	unlockId: "Silver Medal Silver Goats Count",
 	unlock: "Buy 5 silver goats to unlock. <span id=\"Silver Medal Silver Goats Count\">0</span> left to go.",
-	unlockFormula: "5 - purchases[silverGoat.index].count",
+	unlockFormula: "5 - getPurchase(silverGoat).count",
 	purchased: false,
 	unlocked: false,
+	showFormula: "getPurchase(silverGoat).unlocked === true",
 	show: false,
 	oneTime: true,
-	cost: 2000,
-	costDescription: "2000 money",
-	index: 4
+	cost: 10000,
+	costDescription: "10000 money"
 }
 
-var upgrades = [clickOne, clickTwo, clickThree, bronzeMedal, silverMedal];
+var goldMedal = {
+	onclick: buyGoldMedal,
+	onload: "applyGoldMedal",
+	name: "Gold Medal",
+	description: "A one time purchase that doubles the base rate of gold goats money production.",
+	unlockId: "Gold Medal Gold Goats Count",
+	unlock: "Buy 5 gold goats to unlock. <span id=\"Gold Medal Gold Goats Count\">0</span> left to go.",
+	unlockFormula: "5 - getPurchase(goldGoat).count",
+	purchased: false,
+	unlocked: false,
+	showFormula: "getPurchase(goldGoat).unlocked === true",
+	show: false,
+	oneTime: true,
+	cost: 100000,
+	costDescription: "100000 money"
+}
+
+var upgrades = [clickOne, clickTwo, clickThree, bronzeMedal, silverMedal, goldMedal];
 var upgrades_updated = upgrades;
 
 function showPurchasedUpgrades() {
@@ -91,7 +108,7 @@ function showPurchasedUpgrades() {
 	if(test === true) {
 		for(i = 0; i < upgrades.length; i++) {
 			if(upgrades[i].purchased === true) {
-				addPurchasedUpgrade(i);
+				addPurchasedUpgrade(upgrades[i]);
 			}
 		}
 	} else {
@@ -102,7 +119,7 @@ function showPurchasedUpgrades() {
 }
 
 function addPurchasedUpgrade(upgrade) {
-	var x = upgrades[upgrade];
+	var x = upgrades[upgrades.indexOf(upgrade)];
 	var test = document.getElementById("showUpgrades").checked;
 	
 	if(document.getElementById(x.name) !== null) document.getElementById(x.name).remove();
@@ -139,4 +156,31 @@ function addUpgrade(upgrade) {
 		addBreak(button);
 		addDescription(button, x.description);
 	}
+}
+
+function updateUpgrades() {
+	for(i = 0; i < upgrades.length; i++) {
+		if(typeof upgrades_updated[i] !== "undefined") {
+			upgrades_updated[i].purchased = upgrades[i].purchased;
+			upgrades_updated[i].unlocked = upgrades[i].unlocked;
+			upgrades_updated[i].show = upgrades[i].show;
+		}
+	}
+	
+	if(upgrades.length != upgrades_updated.length)
+		refresh = true;
+	upgrades = upgrades_updated;
+	
+	console.log(upgrades);
+}
+
+function checkUpgrades() {
+	for(i = 0; i < upgrades.length; i++) {
+		if(eval(upgrades[i].showFormula) && upgrades[i].show === false) addNextUpgrade(i);
+		if(eval(upgrades[i].unlockFormula) <= 0 && upgrades[i].unlocked === false) addUpgrade(i);
+	}
+}
+
+function getUpgrade(upgrade) {
+	return upgrades[upgrades.indexOf(upgrade)];
 }
