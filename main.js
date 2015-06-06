@@ -330,11 +330,11 @@ function autoBattle() {
 }
 
 function updateEnemy() {
-	Math.max(enemyLevel, 1);
+	enemyLevel = Math.max(enemyLevel, 1);
 	enemyHealth = (100 + 20 * enemyLevel);
 	enemyMaxHealth = enemyHealth;
 	enemyDefense = enemyLevel;
-	enemyStrength = 10 + (5 * enemyLevel);
+	enemyStrength = 100 + (5 * enemyLevel);
 
 	document.getElementById("enemyName").innerHTML = "Enemy Level " + enemyLevel;
 	document.getElementById("enemyDefense").innerHTML = enemyDefense;
