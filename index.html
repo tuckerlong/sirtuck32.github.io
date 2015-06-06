@@ -2,15 +2,18 @@
 <html>
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
-		<title id="title">Goats Galore v0.0023</title>
+		<title id="title">Goats Galore v0.0024</title>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
 		<link rel="stylesheet" type="text/css" href="buttons.css" />
 		<link rel="stylesheet" type="text/css" href="quest.css" />
+		<link rel="stylesheet" type="text/css" href="battle.css" />
 		
 		<script type="text/javascript" src="main.js"></script>
 		<script type="text/javascript" src="basic.js"></script>
+		<script type="text/javascript" src="battle.js"></script>
 		<script type="text/javascript" src="upgrades.js"></script>
 		<script type="text/javascript" src="purchases.js"></script>
+
 		
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -29,7 +32,7 @@
 			<img src="Gopollobanner.png">	
 		</div>
 
-		<div id="title" style="text-align:center">Goats Galore v0.0023</div>
+		<div id="title" style="text-align:center">Goats Galore v0.0024</div>
 
 		<div id="infoTabs">
 			<div id="statsTab" class="tab">Stats</div>
@@ -63,7 +66,17 @@
 			<div class="questDesc">Go on a quest with your amazing goat heroes!</div>
 		</div>
 		
-		<div id="graphics">
+		<div id="battle">
+			<div id="autoBattleButton" class="battleButton" onclick ="autoBattle()">Auto Battle</div>
+			<div class="battleButton" onclick ="battle()">Fight</div></br>
+			<div id="enemyName">Enemy Level 1</div>
+			<div class="battleItem">&nbsp;Army Defense: <span id="armyDefense">0</span> </div>
+			<div class="battleItem">&nbsp;Army Strength: <span id="armyStrength">0</span></div>
+			<div class="enemyBattleItem">&nbsp;Enemy Defense: <span id="enemyDefense">0</span> </div>
+			<div class="enemyBattleItem">&nbsp;Enemy Strength: <span id="enemyStrength">0</span></div>
+			<div id="recharge"></div><div id="rechargeOverlay"></div>
+			<div id="playerHealth"></div> <div id="playerOverlay"></div>
+			<div id="enemyHealth"></div> <div id="enemyOverlay"></div>
 		</div>
 		
 		<div id="tabs">

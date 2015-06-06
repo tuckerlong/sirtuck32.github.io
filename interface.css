@@ -23,18 +23,7 @@ h1 {
   top: 85px;
 }
 
-#graphics {
-  font-family: 'Chewy', cursive;
-  background-color: white;
-  position: fixed;
-  padding: 4px;
-  height: calc(100% - 185px);
-  width: calc(100% - 240px - 21% - 32px);
-  border: 1px solid black;
-  left: calc(2px + 21% + 13px);
-  top: 142px;
-  overflow-y: scroll;
-}
+
 
 #title {
   font-family: 'Chewy', cursive;

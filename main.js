@@ -2,6 +2,19 @@ var quest = "inactive";
 var spaceQuest = "inactive";
 var size = 0;
 var scienceGoatUpgradeOne = 0;
+var auto = 0;
+var armyStrength = 0;
+var armyDefense = 0;
+var armyHealth = 100;
+var armyMaxHealth = 100;
+var enemyHealth = 0;
+var enemyMaxHealth = 0;
+var enemyDefense = 0;
+var enemyStrength = 0;
+var enemyLevel = 1;
+var end = false;
+var dead = false;
+var inBattle = false;
 
 function createButton(onclick, text, varName, varCost, div) {
 	var button = document.createElement("div");
@@ -82,6 +95,7 @@ function updateAll() {
 function updateValues() {
 	document.getElementById("currency").innerHTML = prettify(currency);
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
+	document.getElementById("armyStrength").innerHTML = prettify(armyStrength);
 	
 	var ele;
 	for(i = 0; i < purchases.length; i++) {
@@ -229,6 +243,7 @@ function startup() {
 	document.getElementById("tabs").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	document.getElementById("purchase").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	document.getElementById("upgrades").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
+	document.getElementById("battle").addEventListener('mousedown', function(e){ e.preventDefault(); }, false);
 	//document.getElementById("quest").style.visibility = "hidden";
 	
 	document.getElementById("purchase").style.display = "block";	
@@ -264,7 +279,6 @@ function save() {
 function load() {
 	var savegame = JSON.parse(localStorage.getItem("save"));
 
-	console.log(savegame);
 	if(savegame !== null) {
 		if(typeof savegame.currency !== "undefined")
 			currency = savegame.currency;			
@@ -292,10 +306,105 @@ function load() {
 		}
 		
 		goatSpace = (getPurchase(plot).count * plotMod) - getPurchase(goat).count - getPurchase(bronzeGoat).count;
+		armyStrength = (getPurchase(goatInfantry).count * goatInfantryMod);
 	}
 	
 	updatePurchases();
 	updateAll();
+	setupBattle();
+	//console.log(purchases);
+	updateEnemy();
+}
+
+function setupBattle() {
+	
+}
+
+function autoBattle() {
+	auto = !auto;
+	if(auto) {
+		document.getElementById("autoBattleButton").style.backgroundColor = "DarkSeaGreen";
+		battle();
+	} else
+		document.getElementById("autoBattleButton").style.backgroundColor = "white";
+}
+
+function updateEnemy() {
+	enemyHealth = (100 + 20 * enemyLevel);
+	enemyMaxHealth = enemyHealth;
+	enemyDefense = enemyLevel;
+	enemyStrength = 10 + (5 * enemyLevel);
+
+	document.getElementById("enemyName").innerHTML = "Enemy Level " + enemyLevel;
+	document.getElementById("enemyDefense").innerHTML = enemyDefense;
+	document.getElementById("enemyStrength").innerHTML = enemyStrength;
+	
+	document.getElementById("enemyHealth").style.width = "calc((50% - 9px))";
+}
+
+function recharge() {
+	var charge = setInterval(function() {
+		if(!inBattle) {
+			setTimeout( function() {document.getElementById("recharge").style.width = "0px";}, 500);
+			document.getElementById("playerHealth").style.width = "calc((50% - 9px))";
+			if(auto) setTimeout( function() {battle()}, 3000);
+			clearInterval(charge);
+			return;
+		}
+		armyHealth += 5;
+		if(armyHealth >= armyMaxHealth) {
+			armyHealth = armyMaxHealth;
+			inBattle = false;
+		}
+		document.getElementById("recharge").style.width = "calc((100% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
+	}, 500);
+}
+
+function battle() {
+	if(!inBattle) {
+		inBattle = true;
+		//document.getElementById("playerHealth").style.width =  (document.getElementById("playerOverlay").clientWidth/2) + "px";
+		
+		end = false;
+		dead = false;
+
+		var fight = setInterval(function () {
+			if(end) {
+				enemyLevel += 1;
+				updateEnemy();
+				inBattle = false;
+				if(auto) setTimeout( function() {battle()}, 3000);
+				clearInterval(fight);
+				return;
+			}
+			
+			if(dead) {
+				enemyLevel -= 1;
+				updateEnemy();
+				inBattle = true;
+				recharge();
+				clearInterval(fight);
+				return;
+			}
+			
+			
+			enemyHealth -= Math.max((armyStrength - enemyDefense), 0);
+			
+			if(enemyHealth <= 0) {
+				enemyHealth = 0;
+				end = true;
+			}
+			document.getElementById("enemyHealth").style.width = "calc((50% - 9px) * " + (enemyHealth/enemyMaxHealth) + ")";
+			
+			armyHealth -= Math.max((enemyStrength - armyDefense), 0);
+			
+			if(armyHealth <= 0) {
+				armyHealth = 0;
+				dead = true;
+			}
+			document.getElementById("playerHealth").style.width = "calc((50% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
+		}, 1000);
+	}
 }
 
 function showSpace() {

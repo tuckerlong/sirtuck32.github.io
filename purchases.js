@@ -93,8 +93,27 @@ var goatHero = {
 	count: 0
 }
 
+var goatInfantry = {
+	onclick: buyGoatInfantry,
+	name: "Goat Infantry",
+	val: "goatInfantry",
+	descriptionId: "goatInfantryModDescription",
+	description: "Increases army strength by <span id=\"goatInfantryModDescription\">0.0</span> for each goat infantry.",
+	descriptionFormula: "goatInfantryMod",
+	unlockId: "Goat Infantry Goats Count",
+	unlock: "Buy 30 goats to unlock. <span id=\"Goat Infantry Goats Count\">0</span> left to go.",
+	unlockFormula: "30 - getPurchase(goat).count",
+	unlocked: false,
+	showFormula: "getPurchase(goatHero).unlocked === true",
+	show: false,
+	costId: "goatInfantryCost",
+	getCost: function() { return Math.floor(20 * (getPurchase(goatInfantry).count + 1)); },
+	cost: "<span id=\"goatInfantryCost\">0</span> money",
+	count: 0
+}
 
-var purchases = [plot, goat, bronzeGoat, silverGoat, goatHero]
+
+var purchases = [plot, goat, bronzeGoat, silverGoat, goatHero, goatInfantry]
 var purchases_updated = purchases;
 
 function addPurchase(purchase) {

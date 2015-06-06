@@ -6,6 +6,7 @@ var favorInc = 0;
 
 var goatHeroesUnlock = 0;
 var goatHeroes = 0;
+var goatHeroMod = 0;
 
 var sunGoats = 0;
 var sunGoatCurrencyMod = 1.0;
