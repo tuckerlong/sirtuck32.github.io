@@ -1,4 +1,4 @@
-var currency = 0;
+var currency = 100000;
 var currencyInc = 0;
 
 var clickCount = 0;

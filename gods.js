@@ -29,10 +29,10 @@ function unlockGoatHeroes() {
 
 function buyGoatHero() {
 	var curCost = getPurchase(goatHero).getCost();
-	if(getPurchase(goat).count >= curCost && goatSpace >= 1) {
+	if(currency >= curCost && goatSpace >= 1) {
 		getPurchase(goatHero).count += 1;
 		goatSpace = goatSpace - 1;
-		getPurchase(goat).count -= curCost;
+		currency -= curCost;
 		
 		if(getPurchase(goatHero).count == 1) goatHeroBonusOne();
 
