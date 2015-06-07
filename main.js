@@ -98,7 +98,7 @@ function updateAll() {
 }
 
 function updateValues() {
-	document.getElementById("currency").innerHTML = prettify(currency);
+	document.getElementById("currency").innerHTML = prettify(currency).toFixed(0).toLocaleString();
 	document.getElementById("electricity").innerHTML = prettify(electricity);
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
 	document.getElementById("armyStrength").innerHTML = prettify(armyStrength);
@@ -128,6 +128,11 @@ function updateValues() {
 			ele = document.getElementById(upgrades[i].unlockId);
 			if(ele !== null) ele.innerHTML = prettify(eval(upgrades[i].unlockFormula));
 		}
+	}
+	
+	for(i = 0; i < items.length; i++) {
+		ele = document.getElementById(items[i].countId);
+		if(ele !== null) ele.innerHTML = prettify(items[i].count);
 	}
 
 	/*
@@ -278,6 +283,7 @@ function save() {
 		electricity: electricity,
 		purchases: purchases,
 		upgrades: upgrades,
+		items: items,
 		clickCount: clickCount,
 		lastCleared: lastCleared
 	}
@@ -317,6 +323,9 @@ function load() {
 			else if(upgrades[i].unlocked === true) addUpgrade(i);
 			else if(upgrades[i].show === true) addNextUpgrade(i);
 		}
+
+		if(typeof savegame.items !== "undefined")
+			items = savegame.items;
 		
 		goatSpace = (getPurchase(plot).count * plotMod) - getPurchase(goat).count - getPurchase(bronzeGoat).count;
 		armyStrength = (getPurchase(goatInfantry).count * goatInfantryMod);
@@ -325,146 +334,24 @@ function load() {
 			lastCleared = savegame.lastCleared;	
 		
 		enemyLevel = lastCleared;
+		
+		if(getPurchase(goatHero).count > 0) {
+			goatHeroBonusOne();
+		}
 	}
 	
+	updateItems();
 	updatePurchases();
 	updateUpgrades();
 	updateAll();
 	setupBattle();
 	updateEnemy();
 	
+	showStats();
+	
 	if(refresh) {
 		save();
 		window.location.reload();
-	}
-}
-
-function setupBattle() {
-	document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
-}
-
-function autoBattle() {
-	auto = !auto;
-	if(auto) {
-		document.getElementById("autoBattleButton").style.backgroundColor = "DarkSeaGreen";
-		battle();
-	} else
-		document.getElementById("autoBattleButton").style.backgroundColor = "white";
-}
-
-function autoAdvance() {
-	advance = !advance;
-	if(advance) {
-		document.getElementById("autoAdvanceButton").style.backgroundColor = "DeepSkyBlue";
-	} else
-		document.getElementById("autoAdvanceButton").style.backgroundColor = "white";
-}
-
-function backLevel() {
-	inBattle = false;
-	enemyLevel = Math.max(1, enemyLevel - 1);
-	updateEnemy();
-}
-
-function advanceLevel() {
-	inBattle = false;
-	enemyLevel = Math.min(lastCleared, enemyLevel + 1);
-	updateEnemy();
-}
-
-function updateEnemy() {
-	enemyLevel = Math.max(enemyLevel, 1);
-	enemyHealth = (100 + 20 * enemyLevel);
-	enemyMaxHealth = enemyHealth;
-	enemyDefense = enemyLevel;
-	enemyStrength = 10 + (5 * enemyLevel);
-
-	document.getElementById("enemyName").innerHTML = "Enemy Level " + enemyLevel;
-	document.getElementById("enemyDefense").innerHTML = enemyDefense;
-	document.getElementById("enemyStrength").innerHTML = enemyStrength;
-	
-	document.getElementById("enemyHealth").style.width = "calc((50% - 9px))";
-	document.getElementById("enemyHp").innerHTML = enemyHealth + "/" + enemyMaxHealth;
-}
-
-function recharge() {
-	var charge = setInterval(function() {
-		if(!inBattle) {
-			setTimeout( function() {document.getElementById("recharge").style.width = "0px";}, 500);
-			document.getElementById("playerHealth").style.width = "calc((50% - 9px))";
-			if(auto) setTimeout( function() {battle()}, 3000);
-			clearInterval(charge);
-			return;
-		}
-		armyHealth += 5;
-		if(armyHealth >= armyMaxHealth) {
-			armyHealth = armyMaxHealth;
-			inBattle = false;
-		}
-		document.getElementById("recharge").style.width = "calc((100% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
-		document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
-	}, 500);
-}
-
-function battle() {
-	if(!inBattle) {
-		inBattle = true;
-		armyHealth = Math.min(armyMaxHealth, armyHealth + (getPurchase(goatMedic).count * goatMedicMod));
-		document.getElementById("playerHealth").style.width = "calc((50% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
-		document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
-		//document.getElementById("playerHealth").style.width =  (document.getElementById("playerOverlay").clientWidth/2) + "px";
-		
-		end = false;
-		dead = false;
-
-		var fight = setInterval(function () {
-			if(!inBattle) {
-				clearInterval(fight);
-				return;
-			}
-			
-			if(end && !dead) {
-				inBattle = false;
-				lastCleared = Math.max(enemyLevel, lastCleared);
-				if(advance) enemyLevel += 1;
-				updateEnemy();
-				if(auto) setTimeout( function() {battle()}, 3000);
-				clearInterval(fight);
-				return;
-			}
-			
-			if(dead) {
-				enemyLevel -= 1;
-				updateEnemy();
-				inBattle = true;
-				recharge();
-				clearInterval(fight);
-				return;
-			}
-			
-			
-			enemyHealth -= Math.max((armyStrength - enemyDefense), 0);
-			
-			if(enemyHealth <= 0) {
-				enemyHealth = 0;
-				var amount = (100 * enemyLevel);
-				currency += amount;
-				document.getElementById("battleRewards").innerHTML = amount + " money";
-				end = true;
-			}
-			document.getElementById("enemyHealth").style.width = "calc((50% - 9px) * " + (enemyHealth/enemyMaxHealth) + ")";
-			document.getElementById("enemyHp").innerHTML = enemyHealth + "/" + enemyMaxHealth;
-			
-			armyHealth -= Math.max((enemyStrength - armyDefense), 0);
-			
-			if(armyHealth <= 0) {
-				armyHealth = 0;
-				document.getElementById("battleRewards").innerHTML = "-";
-				dead = true;
-			}
-			document.getElementById("playerHealth").style.width = "calc((50% - 9px) * " + (armyHealth/armyMaxHealth) + ")";
-			document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
-		}, 1000);
 	}
 }
 
@@ -543,57 +430,6 @@ window.setInterval(function() {
 	electricityClick(electricityInc);
 	favorClick(favorInc);
 }, 1000);
-
-window.setInterval(function() {
-	if(quest === "active") {
-		document.getElementById("questBar").value += (1 * getPurchase(goatHero).count);
-		document.getElementById("progress").innerHTML = prettify(document.getElementById("questBar").value/document.getElementById("questBar").max * 100) + "%";
-		if(document.getElementById("questBar").value >= document.getElementById("questBar").max) {
-			quest = "inactive";
-			document.getElementById("questBar").value = 0;
-			document.getElementById("progress").innerHTML = "Finished"
-			
-			
-			rndm = Math.random();
-			if(god === "") {
-				if(rndm < 0.15) {
-					rndm = Math.random();
-					if(rndm < 0) {
-						if(confirm("You found the statue of the Ancient God Goatseidon. Will you worship it?") == true) {
-							god = "GOATSEIDON";
-							document.getElementById("godName1").innerHTML = "GOATSEIDON";
-							document.getElementById("god").style.display = "block";
-							document.getElementById("goatseidon").style.display = "block";	
-						}
-					} else if(rndm < 0) {
-						if(confirm("You found the statue of the Ancient God Gometer. Will you worship it?") == true) {
-							god = "GOMETER";
-							document.getElementById("godName2").innerHTML = "GOMETER";
-							document.getElementById("god").style.display = "block";
-							document.getElementById("gometer").style.display = "block";
-						}
-					} else {
-						if(confirm("You found the statue of the Ancient God Gopollo. Will you worship it?") == true) {
-							god = "GOPOLLO";
-							document.getElementById("banner").style.display = "block";
-							document.getElementById("godName3").innerHTML = "GOPOLLO";
-							document.getElementById("god").style.display = "block";
-							document.getElementById("gopollo").style.display = "block";
-						}
-					}
-				} else {
-					rndm = prettify(Math.floor(Math.random() * (100 + (100 * soothyGoats))) + 1 + (50 * soothyGoats)); 
-					alert("You found " + rndm + " money. Keep questing and you might find something amazing!");
-					currencyClick(rndm);
-				}
-			} else {
-				rndm = prettify(Math.floor(Math.random() * (100 + (100 * soothyGoats))) + 1 + (50 * soothyGoats)); 
-				alert("You found " + rndm + " money. Keep questing and you might find something amazing!");
-				currencyClick(rndm);
-			}
-		}
-	}
-}, 500);
 
 window.setInterval(function() {
 	if(spaceQuest === "active") {

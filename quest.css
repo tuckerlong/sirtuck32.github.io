@@ -6,7 +6,7 @@
   border: 1px solid black;
   left:  calc(2px + 21% + 13px);
   top: 40px;
-
+  display: none;
 }
 
 .questTab {
@@ -33,7 +33,7 @@
   border: 1px solid black;
   left: calc(2px + 21% + 13px);
   top: 85px;
-
+  display: none;
 }
 
 .questButton {
@@ -71,6 +71,16 @@
   font-size: 80%;
   height: 15px;
   left: 0px;
+  top: 24px;
+}
+
+.questReward{
+  font-family: 'Chewy', cursive;
+  position: absolute;
+  padding: 7px;
+  font-size: 80%;
+  height: 15px;
+  left: 50%;
   top: 24px;
 }
 

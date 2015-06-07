@@ -1,0 +1,50 @@
+.itemMenu {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  position: fixed;
+  height: calc(100% - 128px);
+  width: 21%;
+  border: 1px solid black;
+  left: 2px;
+  top: 85px;
+  display: none;
+  overflow-y: scroll;
+  padding: 4px;
+}
+
+
+.item {
+  position:relative;
+  border: 1px solid black;
+  width: calc(100% - 4px);
+  min-height: 75px;
+  overflow-y: scroll;
+}
+
+.itemImg {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.itemName {
+  position: absolute;
+  left: 30px;
+  top: 8px;
+}
+
+.itemCount {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+}
+
+.itemDesc {
+  position: relative;
+  font-size: 80%;
+  width: calc(100% - 20px);
+  height: 42px;
+  left: 10px;
+  top: 30px;
+  overflow-y: scroll;
+}

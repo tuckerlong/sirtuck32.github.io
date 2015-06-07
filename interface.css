@@ -11,7 +11,7 @@ h1 {
     display: none;
 }
 
-#info {
+.leftMenu {
   font-family: 'Chewy', cursive;
   padding: 4px;
   background-color: white;
@@ -21,6 +21,8 @@ h1 {
   border: 1px solid black;
   left: 2px;
   top: 85px;
+  display: none;
+  overflow-y: scroll;
 }
 
 

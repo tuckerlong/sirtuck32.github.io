@@ -34,7 +34,7 @@ var plotSize = 1;
 
 function currencyClick(number) {
 	currency = currency + prettify(number);
-	document.getElementById("currency").innerHTML = prettify(currency);
+	document.getElementById("currency").innerHTML = prettify(currency).toFixed(0).toLocaleString();
 	//updateAll();
 }
 

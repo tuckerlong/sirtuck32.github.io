@@ -131,3 +131,67 @@ window.setInterval(function() {
 		}
 	}
 }, 500);
+
+
+
+function finishQuest() {
+	rndm = Math.random();
+	if(rndm < 1.5) {
+		document.getElementById("heroicQuestReward").innerHTML = "<img src=\"armorSpike.png\" class=\"rewardIcon\" title=\"Armor Spike\">";
+		addItem(armorSpike, 1);
+		updateAll();
+	} else {
+		rndm = prettify(Math.floor(Math.random() * (100 + (100 * soothyGoats))) + 1 + (50 * soothyGoats)); 
+		document.getElementById("heroicQuestReward").innerHTML = rndm + " money";
+		currencyClick(rndm);
+	}
+}
+
+window.setInterval(function() {
+	if(quest === "active") {
+		document.getElementById("questBar").value += (1 * getPurchase(goatHero).count);
+		document.getElementById("progress").innerHTML = prettify(document.getElementById("questBar").value/document.getElementById("questBar").max * 100) + "%";
+		if(document.getElementById("questBar").value >= document.getElementById("questBar").max) {
+			quest = "inactive";
+			document.getElementById("questBar").value = 0;
+			document.getElementById("progress").innerHTML = "Finished"
+			
+			
+			rndm = Math.random();
+			if(god === "") {
+				if(rndm < 0.15) {
+					rndm = Math.random();
+					if(rndm < 0) {
+						if(confirm("You found the statue of the Ancient God Goatseidon. Will you worship it?") == true) {
+							god = "GOATSEIDON";
+							document.getElementById("godName1").innerHTML = "GOATSEIDON";
+							document.getElementById("god").style.display = "block";
+							document.getElementById("goatseidon").style.display = "block";	
+						}
+					} else if(rndm < 0) {
+						if(confirm("You found the statue of the Ancient God Gometer. Will you worship it?") == true) {
+							god = "GOMETER";
+							document.getElementById("godName2").innerHTML = "GOMETER";
+							document.getElementById("god").style.display = "block";
+							document.getElementById("gometer").style.display = "block";
+						}
+					} else {
+						if(confirm("You found the statue of the Ancient God Gopollo. Will you worship it?") == true) {
+							god = "GOPOLLO";
+							document.getElementById("banner").style.display = "block";
+							document.getElementById("godName3").innerHTML = "GOPOLLO";
+							document.getElementById("god").style.display = "block";
+							document.getElementById("gopollo").style.display = "block";
+						}
+					}
+				} else {
+					finishQuest();
+				}
+			} else {
+				finishQuest();
+			}
+		}
+	}
+}, 500);
+
+
