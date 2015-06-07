@@ -4,6 +4,7 @@ var size = 0;
 var scienceGoatUpgradeOne = 0;
 var auto = 0;
 var armyStrength = 0;
+var armyStrengthMod = 1;
 var armyDefense = 0;
 var armyHealth = 100;
 var armyMaxHealth = 100;
@@ -101,7 +102,7 @@ function updateValues() {
 	document.getElementById("currency").innerHTML = prettify(currency).toFixed(0).toLocaleString();
 	document.getElementById("electricity").innerHTML = prettify(electricity);
 	document.getElementById("goatSpace").innerHTML = prettify(goatSpace);
-	document.getElementById("armyStrength").innerHTML = prettify(armyStrength);
+	document.getElementById("armyStrength").innerHTML = prettify((armyStrength * armyStrengthMod));
 	
 	var ele;
 	for(i = 0; i < purchases.length; i++) {
@@ -285,7 +286,9 @@ function save() {
 		upgrades: upgrades,
 		items: items,
 		clickCount: clickCount,
-		lastCleared: lastCleared
+		lastCleared: lastCleared,
+		goatSouls: goatSouls,
+		ascension: ascension
 	}
 	localStorage.setItem("save", JSON.stringify(save));
 }
@@ -338,6 +341,21 @@ function load() {
 		if(getPurchase(goatHero).count > 0) {
 			goatHeroBonusOne();
 		}
+		
+		
+		if(typeof savegame.goatSouls !== "undefined")
+			goatSouls = savegame.goatSouls;
+			
+		if(typeof savegame.ascension !== "undefined")
+			ascension = savegame.ascension;
+			
+		updateAscensions();
+		
+		for(i = 0; i < ascension.length; i++) {
+			ascension[i].onload();
+		}
+
+		document.getElementById("goatSouls").innerHTML = goatSouls;
 	}
 	
 	
@@ -507,4 +525,17 @@ function resize() {
 		//console.log(plotId + " " + maxGoatSpace + " " + goatSpace);
 		document.getElementById("graphics").appendChild(img);
 	}	*/
+}
+
+function ascend() {
+	if(confirm("Coming soon") == true) {
+		/*localStorage.removeItem("save");
+		goatSouls += 10;
+		purchases = [];
+		upgrades = [];
+		currency = 0;
+		clickCount = 0;
+		save();
+		window.location="ascend.html";*/
+	}
 }

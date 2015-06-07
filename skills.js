@@ -10,13 +10,13 @@ var doubleStrength = {
 	onclick: function() {
 	    if(!getSkill(doubleStrength).active) {
 			getSkill(doubleStrength).active = true;
-			armyStrength *= 2;
+			armyStrengthMod *= 2;
 			updateAll();
 			
 			var active = setInterval( function() {
 				if(getSkill(doubleStrength).current == getSkill(doubleStrength).max) {
 					getSkill(doubleStrength).active = false;
-					armyStrength /= 2;
+					armyStrengthMod /= 2;
 					updateAll();
 					document.getElementById("doubleStrengthBar").style.width = "0px";
 					clearInterval(active);
@@ -29,22 +29,6 @@ var doubleStrength = {
 		}
 	}
 };
-
-function buyDoubleStrength() {
-	if(currency >= getUpgrade(doubleStrengthUpgrade).cost) {
-		applyDoubleStrength();
-		currency -= getUpgrade(doubleStrengthUpgrade).cost;
-		addPurchasedUpgrade(doubleStrengthUpgrade);
-		
-		updateAll();
-	}
-}
-
-function applyDoubleStrength() {
-	getSkill(doubleStrength).unlocked = true;
-	createSkill(skills.indexOf(doubleStrength));
-}
-
 
 var testSkill = {
 	name: "Test Skill",
@@ -124,4 +108,19 @@ function createSkill(i) {
 	div.appendChild(skill);
 	
 	document.getElementById(skills[i].barId).style.width = "0px";
+}
+
+function buyDoubleStrength() {
+	if(currency >= getUpgrade(doubleStrengthUpgrade).cost) {
+		applyDoubleStrength();
+		currency -= getUpgrade(doubleStrengthUpgrade).cost;
+		addPurchasedUpgrade(doubleStrengthUpgrade);
+		
+		updateAll();
+	}
+}
+
+function applyDoubleStrength() {
+	getSkill(doubleStrength).unlocked = true;
+	createSkill(skills.indexOf(doubleStrength));
 }

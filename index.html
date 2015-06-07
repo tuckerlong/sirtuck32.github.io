@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<link href='http://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
-		<title id="title">Goats Galore v0.26.0</title>
+		<title id="title">Goats Galore v0.27.0</title>
 		<link rel="stylesheet" type="text/css" href="interface.css" />
 		<link rel="stylesheet" type="text/css" href="buttons.css" />
 		<link rel="stylesheet" type="text/css" href="quest.css" />
@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="gods.js"></script>
 		<script type="text/javascript" src="science.js"></script>
 		<script type="text/javascript" src="battle.js"></script>
+		<script type="text/javascript" src="ascend.js"></script>
 		
 		<script type="text/javascript" src="items.js"></script>
 		<script type="text/javascript" src="skills.js"></script>
@@ -39,12 +40,13 @@
 			<img src="Gopollobanner.png">	
 		</div>
 
-		<div id="title" style="text-align:center">Goats Galore v0.26.0</div>
+		<div id="title" style="text-align:center">Goats Galore v0.27.0</div>
 
 		<div id="infoTabs">
-			<div class="tab" onclick="showStats()">Stats</div>
-			<div class="tab" onclick="showOptions()">Options</div>
-			<div class="tab" onclick="showItems()">Items</div>
+			<div class="infoTab" onclick="showStats()">Stats</div>
+			<div class="infoTab" onclick="showOptions()">Options</div>
+			<div class="infoTab" onclick="showItems()">Items</div>
+			<div class="infoTab" onclick="showAscend()">Ascend</div>
 		</div>
 		
 		<div id="stats" class="leftMenu">
@@ -61,6 +63,12 @@
 		</div>
 		
 		<div id="options" class="leftMenu">
+		</div>
+		
+		<div id="ascend" class="leftMenu">
+			<div>Goat Souls: <span id="goatSouls">0</span></div></br>
+			<div id="ascendButton" onclick="ascend()">Click to ascend.</div></br>
+			<div id="ascendDesc">Ascending will reset your game and give you goat souls in return. You can spend goat souls once you ascend to permanently unlock units, upgrades, skills and other useful things.</div>
 		</div>
 		
 		<div id="questTabs">

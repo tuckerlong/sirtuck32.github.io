@@ -139,7 +139,7 @@ function battle() {
 			}
 			
 			
-			enemyHealth -= Math.max((armyStrength - enemyDefense), 0);
+			enemyHealth -= Math.max(((armyStrength * armyStrengthMod) - enemyDefense), 0);
 			enemyHealth -= getItem(armorSpike).count;
 			
 			if(enemyHealth <= 0) {

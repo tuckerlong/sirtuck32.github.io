@@ -9,6 +9,7 @@ var plot = {
 	unlock: "Click a total of 10 times to unlock. <span id=\"Plot Clicks Count\">0</span> left to go.",
 	unlockFormula: "10 - clickCount",
 	unlocked: false,
+	purchased: false,
 	showFormula: "clickCount >= 0",
 	show: false,
 	costId: "plotCost",
@@ -28,6 +29,7 @@ var goat = {
 	unlock: "Buy 1 plot to unlock. <span id=\"Goat Plots Count\">0</span> left to go.",
 	unlockFormula: "1 - getPurchase(plot).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(plot).unlocked === true",
 	show: false,
 	costId: "goatCost",
@@ -47,6 +49,7 @@ var bronzeGoat = {
 	unlock: "Buy 5 goats to unlock. <span id=\"Bronze Goat Goats Count\">0</span> left to go.",
 	unlockFormula: "5 - getPurchase(goat).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(goat).unlocked === true",
 	show: false,
 	costId: "bronzeGoatCost",
@@ -66,6 +69,7 @@ var silverGoat = {
 	unlock: "Buy 10 bronze goats to unlock. <span id=\"Silver Goat Bronze Goats Count\">0</span> left to go.",
 	unlockFormula: "10 - getPurchase(bronzeGoat).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(bronzeGoat).unlocked === true",
 	show: false,
 	costId: "silverGoatCost",
@@ -85,6 +89,7 @@ var goldGoat = {
 	unlock: "Buy 10 silver goats to unlock. <span id=\"Gold Goat Silver Goats Count\">0</span> left to go.",
 	unlockFormula: "10 - getPurchase(silverGoat).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(silverGoat).unlocked === true",
 	show: false,
 	costId: "goldGoatCost",
@@ -104,6 +109,7 @@ var goatHero = {
 	unlock: "Buy 20 goats to unlock. <span id=\"Goat Hero Goats Count\">0</span> left to go.",
 	unlockFormula: "20 - getPurchase(goat).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(bronzeGoat).unlocked === true",
 	show: false,
 	costId: "goatHeroCost",
@@ -123,6 +129,7 @@ var goatInfantry = {
 	unlock: "Buy 30 goats to unlock. <span id=\"Goat Infantry Goats Count\">0</span> left to go.",
 	unlockFormula: "30 - getPurchase(goat).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(bronzeGoat).unlocked === true",
 	show: false,
 	costId: "goatInfantryCost",
@@ -142,6 +149,7 @@ var goatMedic = {
 	unlock: "Buy 10 goat infantry to unlock. <span id=\"Goat Medic Infantry Goats Count\">0</span> left to go.",
 	unlockFormula: "10 - getPurchase(goatInfantry).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(goatInfantry).unlocked === true",
 	show: false,
 	costId: "goatMedicCost",
@@ -161,6 +169,7 @@ var scienceGoat = {
 	unlock: "Buy 10 plots to unlock. <span id=\"Science Goat Plots Count\">0</span> left to go.",
 	unlockFormula: "10 - getPurchase(plot).count",
 	unlocked: false,
+	purchased: false,
 	showFormula: "getPurchase(plot).unlocked === true",
 	show: false,
 	costId: "scienceGoatCost",
@@ -200,6 +209,7 @@ function updatePurchases() {
 	for(i = 0; i < purchases.length; i++) {
 		if(typeof purchases_updated[i] !== "undefined") {
 			purchases_updated[i].count = purchases[i].count;
+			purchases_updated[i].purchased = purchases[i].purchased;
 			purchases_updated[i].unlocked = purchases[i].unlocked;
 			purchases_updated[i].show = purchases[i].show;
 		}
@@ -214,10 +224,18 @@ function updatePurchases() {
 function checkPurchases() {
 	for(i = 0; i < purchases.length; i++) {
 		if(eval(purchases[i].showFormula) && purchases[i].show === false) addNextPurchase(purchases[i]);
-		if(eval(purchases[i].unlockFormula) <= 0 && purchases[i].unlocked === false) addPurchase(purchases[i]);
+		if((eval(purchases[i].unlockFormula) <= 0 && purchases[i].unlocked === false) || (purchases[i].unlocked === false && purchases[i].purchased === true) ) addPurchase(purchases[i]);
 	}
 }
 
 function getPurchase(purchase) {
 	return purchases[purchases.indexOf(purchase)];
+}
+
+function clearPurchases() {
+	for(i = 0; i < purchases.length; i++) {
+		purchases[i].count = 0;
+		purchases[i].unlocked = false;
+		purchases[i].show = false;
+	}
 }

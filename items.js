@@ -89,6 +89,7 @@ function showStats() {
 	document.getElementById("stats").style.display = "block";
 	document.getElementById("options").style.display = "none";
 	document.getElementById("items").style.display = "none";
+	document.getElementById("ascend").style.display = "none";
 }
 
 /* MOVE TO MAIN.JS */
@@ -96,4 +97,13 @@ function showOptions() {
 	document.getElementById("stats").style.display = "none";
 	document.getElementById("options").style.display = "block";
 	document.getElementById("items").style.display = "none";
+	document.getElementById("ascend").style.display = "none";
+}
+
+/* MOVE TO MAIN.JS */
+function showAscend() {
+	document.getElementById("stats").style.display = "none";
+	document.getElementById("options").style.display = "none";
+	document.getElementById("items").style.display = "none";
+	document.getElementById("ascend").style.display = "block";
 }

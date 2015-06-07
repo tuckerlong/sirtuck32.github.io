@@ -65,6 +65,7 @@ h1 {
   border: 1px solid black;
   left: calc(100% - 240px - 4px);
   top: 40px;
+  overflow-y: scroll;
 }
 
 #infoTabs {
@@ -76,6 +77,21 @@ h1 {
   left: 2px;
   top: 40px;
   overflow-y: scroll;
+}
+
+.infoTab {
+  font-family: 'Chewy', cursive;
+  background-color: white;
+  border: 1px solid black;
+  padding: 5px;
+  width: 60px;
+  height: 21px;
+  margin-top: 3px;
+  margin-left: 2px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 #footer {
@@ -157,4 +173,12 @@ h1 {
   margin: 5px;
   margin-left: 15px;
   display: inline-block;
+}
+
+#ascendButton {
+	border: 1px solid black;
+	width: calc(100% - 8px);
+	height: 20px;
+	text-align: center;
+	cursor: pointer;
 }

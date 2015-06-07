@@ -187,8 +187,6 @@ function updateUpgrades() {
 	if(upgrades.length != upgrades_updated.length)
 		refresh = true;
 	upgrades = upgrades_updated;
-	
-	console.log(upgrades);
 }
 
 function checkUpgrades() {
@@ -200,4 +198,13 @@ function checkUpgrades() {
 
 function getUpgrade(upgrade) {
 	return upgrades[upgrades.indexOf(upgrade)];
+}
+
+function clearUpgrades() {
+	for(i = 0; i < upgrades.length; i++) {
+		upgrades[i].count = 0;
+		upgrades[i].purchased = false;
+		upgrades[i].unlocked = false;
+		upgrades[i].show = false;
+	}
 }
