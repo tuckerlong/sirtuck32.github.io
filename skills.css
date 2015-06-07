@@ -1,0 +1,57 @@
+#skills {
+  font-family: 'Chewy', cursive;
+  background-color: opaque;
+  position: absolute;
+  width: calc(100% - 2px);
+  height: calc(100% - 216px);
+  top: 210px;
+  overflow-y: scroll;
+}
+
+.skill {
+  border: 1px solid black;
+  width: 150px;
+  height: auto;
+  float: left;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.skillName {
+  width: calc(100% - 1px);
+  height: 20px;
+  text-align: center;
+  overflow-y: scroll;
+}
+
+.skillBar {
+  position: relative;
+  background-color: DarkTurquoise;
+  width: calc(100%);
+  height: 10px;
+  top: 10px;
+  z-index: 100;
+  
+  transition: width 1s;
+  -moz-transition: width 1s; /* Firefox 4 */
+  -webkit-transition: width 1s; /* Safari and Chrome */
+  -o-transition: width 1s; /* Opera */
+  -ms-transition: width 1s; /* IE9 (maybe) */
+}
+
+.skillOverlay {
+  position:relative;
+  border: 1px solid black;
+  width: calc(100% - 2px);
+  height: 9px;
+  z-index: 110;
+}
+
+.skillDesc {
+  position: relative;
+  font-size: 80%;
+  width: calc(100% - 5px);
+  height: 50px;
+  left: 2px;
+  overflow-y: scroll;
+}

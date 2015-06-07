@@ -340,6 +340,7 @@ function load() {
 		}
 	}
 	
+	
 	updateItems();
 	updatePurchases();
 	updateUpgrades();

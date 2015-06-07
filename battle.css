@@ -176,6 +176,7 @@
   height: auto;
   left: 4px;
   top: 186px;
+  overflow-y: scroll;
   
   transition: width 1s;
   -moz-transition: width 1s; /* Firefox 4 */
@@ -183,3 +184,4 @@
   -o-transition: width 1s; /* Opera */
   -ms-transition: width 1s; /* IE9 (maybe) */
 }
+

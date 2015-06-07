@@ -75,6 +75,7 @@ h1 {
   border: 1px solid black;
   left: 2px;
   top: 40px;
+  overflow-y: scroll;
 }
 
 #footer {

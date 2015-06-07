@@ -100,7 +100,24 @@ var goldMedal = {
 	costDescription: "100000 money"
 }
 
-var upgrades = [clickOne, clickTwo, clickThree, bronzeMedal, silverMedal, goldMedal];
+var doubleStrengthUpgrade = {
+	onclick: buyDoubleStrength,
+	onload: "applyDoubleStrength",
+	name: "Double Strength",
+	description: "A one time purchase that unlocks the double strength skill.",
+	unlockId: "Double Strength Silver Goats Count",
+	unlock: "Buy 11 silver goats to unlock. <span id=\"Double Strength Silver Goats Count\">0</span> left to go.",
+	unlockFormula: "11 - getPurchase(silverGoat).count",
+	purchased: false,
+	unlocked: false,
+	showFormula: "getUpgrade(silverMedal).unlocked === true",
+	show: false,
+	oneTime: true,
+	cost: 100000,
+	costDescription: "100000 money"
+}
+
+var upgrades = [clickOne, clickTwo, clickThree, bronzeMedal, silverMedal, goldMedal, doubleStrengthUpgrade];
 var upgrades_updated = upgrades;
 
 function showPurchasedUpgrades() {
