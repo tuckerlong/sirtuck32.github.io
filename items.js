@@ -12,6 +12,8 @@ var items_updated = items;
 var firstItemAccess = true;
 
 function addItem(item, amount) {
+	if(items[items.indexOf(item)].count == 0)
+		createItem(items.indexOf(item));
 	items[items.indexOf(item)].count += amount;
 }
 
@@ -21,7 +23,7 @@ function getItem(item) {
 
 function updateItems(item) {
 	for(i = 0; i < items.length; i++) {
-		if(typeof purchases_updated[i] !== "undefined") {
+		if(typeof items_updated[i] !== "undefined") {
 			items_updated[i].count = items[i].count;
 		}
 	}
@@ -43,39 +45,43 @@ function showItems() {
 	document.getElementById("items").style.display = "block";
 }
 
-function populateItems() {
-	var div = document.getElementById("items");
-	var item;
-	
+function populateItems() {	
 	for(i = 0; i < items.length; i++) {
-		item = document.createElement("div");
-		item.className = "item";
-		
-		itemImg = document.createElement("img");
-		itemImg.className = "itemImg";
-		itemImg.src = items[i].img;
-		
-		itemName = document.createElement("span");
-		itemName.className = "itemName";
-		itemName.innerHTML = items[i].name;
-		
-		itemCount = document.createElement("span");
-		itemCount.id = items[i].countId;
-		itemCount.className = "itemCount";
-		itemCount.innerHTML = items[i].count;
-		
-		itemDesc = document.createElement("div");
-		itemDesc.className = "itemDesc";
-		itemDesc.innerHTML = items[i].desc;
-		
-		item.appendChild(itemImg);
-		item.appendChild(itemName);
-		item.appendChild(itemCount);
-		item.appendChild(itemDesc);
-		
-		div.appendChild(item);
-		addBreak(div);
+		if(items[i].count > 0) {
+			createItem(i);
+		}
 	}
+}
+
+function createItem(i) {
+	var div = document.getElementById("items");
+	var item = document.createElement("div");
+	item.className = "item";
+	
+	itemImg = document.createElement("img");
+	itemImg.className = "itemImg";
+	itemImg.src = items[i].img;
+	
+	itemName = document.createElement("span");
+	itemName.className = "itemName";
+	itemName.innerHTML = items[i].name;
+	
+	itemCount = document.createElement("span");
+	itemCount.id = items[i].countId;
+	itemCount.className = "itemCount";
+	itemCount.innerHTML = items[i].count;
+	
+	itemDesc = document.createElement("div");
+	itemDesc.className = "itemDesc";
+	itemDesc.innerHTML = items[i].desc;
+	
+	item.appendChild(itemImg);
+	item.appendChild(itemName);
+	item.appendChild(itemCount);
+	item.appendChild(itemDesc);
+	
+	div.appendChild(item);
+	addBreak(div);
 }
 
 /* MOVE TO MAIN.JS */
