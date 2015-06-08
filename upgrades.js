@@ -106,8 +106,8 @@ var doubleStrengthUpgrade = {
 	name: "Double Strength",
 	description: "A one time purchase that unlocks the double strength skill.",
 	unlockId: "Double Strength Silver Goats Count",
-	unlock: "Buy 11 silver goats to unlock. <span id=\"Double Strength Silver Goats Count\">0</span> left to go.",
-	unlockFormula: "11 - getPurchase(silverGoat).count",
+	unlock: "Buy 10 silver goats to unlock. <span id=\"Double Strength Silver Goats Count\">0</span> left to go.",
+	unlockFormula: "10 - getPurchase(silverGoat).count",
 	purchased: false,
 	unlocked: false,
 	showFormula: "getUpgrade(silverMedal).unlocked === true",
@@ -117,7 +117,24 @@ var doubleStrengthUpgrade = {
 	costDescription: "100000 money"
 }
 
-var upgrades = [clickOne, clickTwo, clickThree, bronzeMedal, silverMedal, goldMedal, doubleStrengthUpgrade];
+var bandages = {
+	onclick: buyBandages,
+	onload: "applyBandages",
+	name: "Bandages",
+	description: "A one time purchase that doubles the amount of healing goat medics do.",
+	unlockId: "Bandages Goat Medic Count",
+	unlock: "Buy 5 goat medics to unlock. <span id=\"Bandages Goat Medic Count\">0</span> left to go.",
+	unlockFormula: "5 - getPurchase(goatMedic).count",
+	purchased: false,
+	unlocked: false,
+	showFormula: "getPurchase(goatMedic).unlocked === true",
+	show: false,
+	oneTime: true,
+	cost: 10000,
+	costDescription: "10000 money"
+}
+
+var upgrades = [clickOne, clickTwo, clickThree, bronzeMedal, silverMedal, goldMedal, doubleStrengthUpgrade, bandages];
 var upgrades_updated = upgrades;
 
 function showPurchasedUpgrades() {

@@ -34,6 +34,26 @@ function buyGoatMedic() {
 	}
 }
 
+/*  Goat Medic
+ *
+ *
+ *
+ */
+function buyBandages() {
+	var curCost = getUpgrade(bandages).cost;
+	if(currency >= curCost) {
+		currency -= curCost;
+		applyBandages();
+		addPurchasedUpgrade(bandages);
+		
+		updateAll();
+	}
+}
+
+function applyBandages() {
+	goatMedicMod *= 2;
+}
+
 
 function setupBattle() {
 	document.getElementById("armyHealth").innerHTML = armyHealth + "/" + armyMaxHealth;
